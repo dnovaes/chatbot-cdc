@@ -1,0 +1,27 @@
+{
+  "name": "chatbot-cdc",
+  "version": "1.0.0",
+  "description": "chatbot que ajuda cidadão consumidor a encontrar embasamento legal baseado no código de defesa do consumidor",
+  "main": "startServers.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/terciodejesus/chatbot-cdc.git"
+  },
+  "keywords": [
+    "chatbot",
+    "claims",
+    "brazil-law",
+    "cdc",
+    "consumer",
+    "consumidor"
+  ],
+  "author": "DiegoNovaes (github.com/dnovaes)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/terciodejesus/chatbot-cdc/issues"
+  },
+  "homepage": "https://github.com/terciodejesus/chatbot-cdc#readme"
+}
