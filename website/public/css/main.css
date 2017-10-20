@@ -1,0 +1,310 @@
+*{
+margin: 0 auto;
+}
+
+@media (max-width: 860px){
+  body{ 
+    width: 100%;
+    height: 600px;
+  }
+  
+  #div-img-center{
+    width: 100%;
+    height: 250px;
+  }
+  
+  #div-config{
+    position: absolute;
+    top: 40%;
+    left: 28%;
+    width: 40%;
+    height: 60px;
+    padding: 15px;
+    z-index: 9;
+    border-width: 2px;
+    border-color: #9191ff;
+    border-style: solid;
+    background-color: white;
+  }
+}
+
+@media (min-width: 860px) and (max-width: 1680px){
+  body{
+    width: 1024px;
+    height: 768px;
+  }
+  
+  #div-img-center{
+    width: 100%;
+    height: 320px;
+  }
+
+  #div-config{
+    position: absolute;
+    top: 40%;
+    left: 33%;
+    width: 400px;
+    height: 60px;
+    padding: 15px;
+    z-index: 9;
+    border-width: 2px;
+    border-color: #9191ff;
+    border-style: solid;
+    background-color: white;
+  }
+}
+
+@media (min-width: 1680px) and (max-width: 1920px){
+  body{
+    width: 1680px;
+    height: 800px;
+  }
+
+  #div-img-center{
+    width: 100%;
+    height: 384px;
+  }
+  
+  #div-config{
+    position: absolute;
+    top: 40%;
+    left: 38%;
+    width: 440px;
+    height: 50px;
+    padding: 15px;
+    z-index: 9;
+    border-width: 2px;
+    border-color: #9191ff;
+    border-style: solid;
+    background-color: white;
+  }
+
+}
+
+#div-img-center{
+  text-align:center;
+}
+
+#div-parent{
+  height: 100%;
+}
+
+#div-top{
+  height: 60%;
+  margin: 0px 30%;
+}
+
+#div-bottom{
+  width: 100%;
+  height: auto;
+}
+
+#div-opacity-config{
+  background-color:#485565;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width:100%;
+  height: 100%;
+  z-index: 8;
+  opacity: 0.4;
+}
+
+
+#div-parent span{
+  display:block;
+}
+
+#sw-field{
+  margin-top:1%;
+}
+
+#sw-field input{
+    height: 35px;
+    border-style: solid;
+    border-color: red;
+    border-width: 2px;
+    font-size: 13px;
+    padding: 0 3%;
+}
+
+#sw-field, #sw-field input{
+  width:100%;
+}
+
+#claim-field{
+  margin: 0% -2px;
+}
+
+#claim-field, #claim-field input{
+  width:100%;
+}
+
+#claim-field input{
+  border-style: solid;
+  border-color: #9191ff;
+  height: 35px;
+}
+
+
+#div-img-center img{
+height: 100%;
+}
+
+#results-search{
+  width: 100%;
+  height: 100%;
+}
+
+#results-search .title{
+  width: 100%;
+  display: inline-block;
+  padding: 0 0.5em;
+}
+
+#div-parent span.b{
+  display: inline;
+}
+
+#icons-bar{
+  width:100%;
+  height: 30px;
+}
+
+#gear-icon{
+  width: 30px;
+  height: 30px;
+  float: right;
+  cursor: pointer;
+  content:url("../imgs/icon_gear1.png");
+}
+
+.ruIcons{
+  width: 2%;
+  height: 35px;
+  line-height: 35px;
+  position: relative;
+  float: left;
+  font-size: 18px;
+}
+
+.ruText{
+  width: 98%;
+  height: 45px;
+  overflow: hidden;
+  white-space: pre-line;
+  text-overflow: ellipsis;
+  position: relative;
+  float: left;
+}
+
+.resultUnit{
+  width: 100%;
+  height: 45px;
+  border-style: solid;
+  border-width: 2px;
+  padding: 0.5%;
+  margin: 0.5%;
+  background: linear-gradient(#f7dcdc, white);
+}
+
+.resultUnit:hover{
+  cursor:pointer;
+}
+
+#search-options{
+  margin-bottom: 10px;
+}
+
+#search-options label{
+  font-size: 18px;
+  color: #757575;
+}
+
+#posCheckbox{
+  font-size:15px;
+  width: 17px;
+  height: 17px;
+}
+
+#postagger-result{
+  width: 80%;
+  background-color: slategray;
+  z-index: 99;
+  position: absolute;
+  left: 10%;
+  top: 50%;
+}
+
+#postagger-tab{
+  background-color:#006ca9;
+}
+
+#keywords-tab{
+  background-color:red;
+}
+
+#synonyms-tab{
+  background-color:green;
+}
+
+#tabs{
+  width: 410px;
+}
+.tab-unit{
+  position: relative;
+  float:left;
+  color:white;
+  font-weight:bold;
+  text-align:center;
+  cursor:pointer;
+  font-size: 15px;
+  margin-bottom: -4px;
+  width: 33.33%;
+  height: 1.5em;
+}
+
+/*
+ * Place Holder
+ */
+
+::-webkit-input-placeholder {
+  font-size: 20px;
+  text-align: center;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+  font-size: 20px;
+  text-align: center;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+  font-size: 20px;
+  text-align: center;
+}
+
+:-ms-input-placeholder {
+  font-size: 20px;
+  text-align: center;
+}
+
+
+/*
+ * General Tags 
+ */
+
+.b{
+  font-weight: bold;
+}
+
+/*
+ * Effects
+ */
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter, .fade-leave-to{
+  opacity: 0;
+}

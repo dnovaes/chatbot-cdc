@@ -1,0 +1,37 @@
+[2017-05-21T16:16:40,433][INFO ][o.e.n.Node               ] [] initializing ...
+[2017-05-21T16:16:40,555][INFO ][o.e.e.NodeEnvironment    ] [sbaMEj1] using [1] data paths, mounts [[/ (/dev/sdc2)]], net usable_space [81.2gb], net total_space [105.5gb], spins? [no], types [ext4]
+[2017-05-21T16:16:40,556][INFO ][o.e.e.NodeEnvironment    ] [sbaMEj1] heap size [1.9gb], compressed ordinary object pointers [true]
+[2017-05-21T16:16:40,570][INFO ][o.e.n.Node               ] [sbaMEj1] node name [sbaMEj1] derived from node ID; set [node.name] to override
+[2017-05-21T16:16:40,574][INFO ][o.e.n.Node               ] [sbaMEj1] version[5.0.0], pid[1904], build[253032b/2016-10-26T04:37:51.531Z], OS[Linux/4.10.13-1-ARCH/amd64], JVM[Oracle Corporation/OpenJDK 64-Bit Server VM/1.8.0_121/25.121-b13]
+[2017-05-21T16:16:41,394][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [aggs-matrix-stats]
+[2017-05-21T16:16:41,395][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [ingest-common]
+[2017-05-21T16:16:41,395][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [lang-expression]
+[2017-05-21T16:16:41,395][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [lang-groovy]
+[2017-05-21T16:16:41,395][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [lang-mustache]
+[2017-05-21T16:16:41,395][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [lang-painless]
+[2017-05-21T16:16:41,396][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [percolator]
+[2017-05-21T16:16:41,396][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [reindex]
+[2017-05-21T16:16:41,396][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [transport-netty3]
+[2017-05-21T16:16:41,396][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [transport-netty4]
+[2017-05-21T16:16:41,397][INFO ][o.e.p.PluginsService     ] [sbaMEj1] no plugins loaded
+[2017-05-21T16:16:43,159][INFO ][o.e.n.Node               ] [sbaMEj1] initialized
+[2017-05-21T16:16:43,159][INFO ][o.e.n.Node               ] [sbaMEj1] starting ...
+[2017-05-21T16:16:43,301][INFO ][o.e.t.TransportService   ] [sbaMEj1] publish_address {127.0.0.1:9300}, bound_addresses {127.0.0.1:9300}, {[::1]:9300}
+[2017-05-21T16:16:43,305][WARN ][o.e.b.BootstrapCheck     ] [sbaMEj1] max file descriptors [4096] for elasticsearch process likely too low, increase to at least [65536]
+[2017-05-21T16:16:43,306][WARN ][o.e.b.BootstrapCheck     ] [sbaMEj1] max virtual memory areas vm.max_map_count [65530] likely too low, increase to at least [262144]
+[2017-05-21T16:16:46,396][INFO ][o.e.c.s.ClusterService   ] [sbaMEj1] new_master {sbaMEj1}{sbaMEj1aRf2pNzm7tUcdrw}{a_qoPEd4Riy0Ec3eRhVvJQ}{127.0.0.1}{127.0.0.1:9300}, reason: zen-disco-elected-as-master ([0] nodes joined)
+[2017-05-21T16:16:46,435][INFO ][o.e.h.HttpServer         ] [sbaMEj1] publish_address {127.0.0.1:9200}, bound_addresses {127.0.0.1:9200}, {[::1]:9200}
+[2017-05-21T16:16:46,436][INFO ][o.e.n.Node               ] [sbaMEj1] started
+[2017-05-21T16:16:46,654][INFO ][o.e.g.GatewayService     ] [sbaMEj1] recovered [1] indices into cluster_state
+[2017-05-21T16:16:46,930][INFO ][o.e.c.r.a.AllocationService] [sbaMEj1] Cluster health status changed from [RED] to [YELLOW] (reason: [shards started [[cdc][0]] ...]).
+[2017-05-21T16:19:32,573][INFO ][o.e.c.m.MetaDataCreateIndexService] [sbaMEj1] [cdc] creating index, cause [api], templates [], shards [5]/[1], mappings []
+[2017-05-21T16:20:00,094][INFO ][o.e.c.m.MetaDataMappingService] [sbaMEj1] [cdc/EMAfzL2eQ0G1LTf0ZutBOg] create_mapping [Criminal Offenses]
+[2017-05-21T16:20:00,098][INFO ][o.e.c.m.MetaDataMappingService] [sbaMEj1] [cdc/EMAfzL2eQ0G1LTf0ZutBOg] create_mapping [Consumer Rights]
+[2017-05-21T16:20:00,126][INFO ][o.e.c.m.MetaDataMappingService] [sbaMEj1] [cdc/EMAfzL2eQ0G1LTf0ZutBOg] create_mapping [the National System of Consumer Protection]
+[2017-05-21T16:20:00,234][INFO ][o.e.c.m.MetaDataMappingService] [sbaMEj1] [cdc/EMAfzL2eQ0G1LTf0ZutBOg] create_mapping [Final dispositions]
+[2017-05-21T16:20:00,311][INFO ][o.e.c.m.MetaDataMappingService] [sbaMEj1] [cdc/EMAfzL2eQ0G1LTf0ZutBOg] create_mapping [the Collective Consumption Convention]
+[2017-05-21T16:20:00,326][INFO ][o.e.c.m.MetaDataMappingService] [sbaMEj1] [cdc/EMAfzL2eQ0G1LTf0ZutBOg] create_mapping [For Consumer Protection in Judgment]
+[2017-05-21T19:38:09,419][INFO ][o.e.n.Node               ] [sbaMEj1] stopping ...
+[2017-05-21T19:38:09,457][INFO ][o.e.n.Node               ] [sbaMEj1] stopped
+[2017-05-21T19:38:09,458][INFO ][o.e.n.Node               ] [sbaMEj1] closing ...
+[2017-05-21T19:38:09,465][INFO ][o.e.n.Node               ] [sbaMEj1] closed

@@ -1,0 +1,30 @@
+[2017-06-06T02:02:29,300][INFO ][o.e.n.Node               ] [sbaMEj1] stopping ...
+[2017-06-06T02:02:29,344][INFO ][o.e.n.Node               ] [sbaMEj1] stopped
+[2017-06-06T02:02:29,345][INFO ][o.e.n.Node               ] [sbaMEj1] closing ...
+[2017-06-06T02:02:29,352][INFO ][o.e.n.Node               ] [sbaMEj1] closed
+[2017-06-06T11:17:44,479][INFO ][o.e.n.Node               ] [] initializing ...
+[2017-06-06T11:17:44,582][INFO ][o.e.e.NodeEnvironment    ] [sbaMEj1] using [1] data paths, mounts [[/ (/dev/sdc2)]], net usable_space [80.2gb], net total_space [105.5gb], spins? [no], types [ext4]
+[2017-06-06T11:17:44,583][INFO ][o.e.e.NodeEnvironment    ] [sbaMEj1] heap size [1.9gb], compressed ordinary object pointers [true]
+[2017-06-06T11:17:44,610][INFO ][o.e.n.Node               ] [sbaMEj1] node name [sbaMEj1] derived from node ID; set [node.name] to override
+[2017-06-06T11:17:44,614][INFO ][o.e.n.Node               ] [sbaMEj1] version[5.0.0], pid[3704], build[253032b/2016-10-26T04:37:51.531Z], OS[Linux/4.10.13-1-ARCH/amd64], JVM[Oracle Corporation/OpenJDK 64-Bit Server VM/1.8.0_121/25.121-b13]
+[2017-06-06T11:17:45,464][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [aggs-matrix-stats]
+[2017-06-06T11:17:45,464][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [ingest-common]
+[2017-06-06T11:17:45,464][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [lang-expression]
+[2017-06-06T11:17:45,465][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [lang-groovy]
+[2017-06-06T11:17:45,465][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [lang-mustache]
+[2017-06-06T11:17:45,465][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [lang-painless]
+[2017-06-06T11:17:45,465][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [percolator]
+[2017-06-06T11:17:45,465][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [reindex]
+[2017-06-06T11:17:45,466][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [transport-netty3]
+[2017-06-06T11:17:45,466][INFO ][o.e.p.PluginsService     ] [sbaMEj1] loaded module [transport-netty4]
+[2017-06-06T11:17:45,466][INFO ][o.e.p.PluginsService     ] [sbaMEj1] no plugins loaded
+[2017-06-06T11:17:47,269][INFO ][o.e.n.Node               ] [sbaMEj1] initialized
+[2017-06-06T11:17:47,269][INFO ][o.e.n.Node               ] [sbaMEj1] starting ...
+[2017-06-06T11:17:47,407][INFO ][o.e.t.TransportService   ] [sbaMEj1] publish_address {127.0.0.1:9300}, bound_addresses {127.0.0.1:9300}, {[::1]:9300}
+[2017-06-06T11:17:47,412][WARN ][o.e.b.BootstrapCheck     ] [sbaMEj1] max file descriptors [4096] for elasticsearch process likely too low, increase to at least [65536]
+[2017-06-06T11:17:47,412][WARN ][o.e.b.BootstrapCheck     ] [sbaMEj1] max virtual memory areas vm.max_map_count [65530] likely too low, increase to at least [262144]
+[2017-06-06T11:17:50,542][INFO ][o.e.c.s.ClusterService   ] [sbaMEj1] new_master {sbaMEj1}{sbaMEj1aRf2pNzm7tUcdrw}{wLy0NTHxQqq9kDEz_Q1U0A}{127.0.0.1}{127.0.0.1:9300}, reason: zen-disco-elected-as-master ([0] nodes joined)
+[2017-06-06T11:17:50,584][INFO ][o.e.h.HttpServer         ] [sbaMEj1] publish_address {127.0.0.1:9200}, bound_addresses {127.0.0.1:9200}, {[::1]:9200}
+[2017-06-06T11:17:50,585][INFO ][o.e.n.Node               ] [sbaMEj1] started
+[2017-06-06T11:17:50,757][INFO ][o.e.g.GatewayService     ] [sbaMEj1] recovered [1] indices into cluster_state
+[2017-06-06T11:17:51,035][INFO ][o.e.c.r.a.AllocationService] [sbaMEj1] Cluster health status changed from [RED] to [YELLOW] (reason: [shards started [[cdc][2]] ...]).
