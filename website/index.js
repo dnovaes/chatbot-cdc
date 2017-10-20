@@ -165,5 +165,5 @@ app.use(function(req, res, next){
 // START THE SERVER
 if(!module.parent) {
   app.listen(port);
-  console.log("Server started at the port: "+port);
+  console.log("Website Server started at the port: "+port);
 }
