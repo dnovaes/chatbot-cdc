@@ -1,6 +1,6 @@
 const execFile = require('child_process').execFile;
 
-const childES = execFile('./bin/elasticsearch', (error, stdout, stderr) => {
+const childES = execFile('./elasticsearch-5.0.0/bin/elasticsearch', (error, stdout, stderr) => {
   if (error) {
     console.log(stderr);
     //throw error;
@@ -22,7 +22,7 @@ childES.on('exit', (code) => {
 });
 
 
-const childWebsite = execFile('node', ['../../Siri-Law-Br/elastic_node/index.js'], (error, stdout, stderr) => {
+const childWebsite = execFile('node', ['website/index.js'], (error, stdout, stderr) => {
   if (error) {
     console.log(stderr);
     //throw error;
