@@ -18,7 +18,7 @@ var app        = express()
 var path       = require('path');
 var bodyparser = require('body-parser');
 var functions  = require(__dirname+"/public/js/ext_functions.js");
-var port       = process.env.PORT || 8081;
+var port       = process.env.PORT || 3000;
 var nlp        = require(__dirname+"/public/js/natural.js");
 
 // There is a special routing method which is not derived from any HTTP method. 
