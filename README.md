@@ -6,6 +6,10 @@
 - Java 8 (1.8.0+)
 - NodeJs 6.11 +
 
+Obs:
+`A minimum of 3GB RAM assigned to Docker
+Elasticsearch alone needs at least 2GB of RAM to run.`
+
 ##Instalação:
 
 -> Ubuntu:
