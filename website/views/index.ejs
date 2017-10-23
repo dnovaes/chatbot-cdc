@@ -314,7 +314,7 @@ var app = new Vue({
           }
         };
 
-        axios.get('http://localhost:9200/cdc/_search?q='+app.claimData, config).then(function (res){
+        axios.get('http://localhost:3000/elastic/?q='+app.claimData, config).then(function (res){
           app.hits = res.data.hits
 
           //app.hits.hits.length = tell how many results were found.
