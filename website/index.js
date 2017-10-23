@@ -20,6 +20,7 @@ var bodyparser = require('body-parser');
 var functions  = require(__dirname+"/public/js/ext_functions.js");
 var port       = process.env.PORT || 3000;
 var nlp        = require(__dirname+"/public/js/natural.js");
+const http       = require('http');
 
 // There is a special routing method which is not derived from any HTTP method. 
 // This method is used for loading middleware functions at a path for all request methods.
@@ -103,7 +104,7 @@ router.post('/ajax/:function', function(req, res){
 
       //claim is the var that will be sent to the elasticsearch.
       claim = functions.stopWordsRemoval(claim).claim;
-      console.log(claim);
+      console.log("searching for keywords: "+claim);
       claim = { "claim" : claim, "keywords": keywords, "claimTagged": claimTagged}
       obj = JSON.stringify(claim);
       res.send(obj); 
@@ -111,7 +112,8 @@ router.post('/ajax/:function', function(req, res){
 }); 
 
 // route with parameters ex: localhost:8081/elastic/:id
-router.get('/elastic/:id', function(req, res){
+router.get('/elastic/', function(req, res){
+    /*
     var routePath = "Route path: "+req.originalUrl;
     var fullUrl = "Request URL: "+ "http://"+req.hostname+":"+port+req.originalUrl;
 
@@ -121,7 +123,24 @@ router.get('/elastic/:id', function(req, res){
     body+= "<p>Params: "+JSON.stringify(req.params)+"</p>";
 
     res.send(body);
-    
+    */
+    let q = req.query.q;
+    q.replace(/[\\$'"]/g, "\\$&");
+
+    http.get('http://localhost:9200/cdc/_search?q=\''+q+'\'', function(response) {
+        //console.log("Got response: " + response.statusCode);
+        var str = '';
+
+        response.on('data', function (chunk) {
+              str += chunk;
+         });
+
+        response.on('end', function () {
+             //console.log(str);
+             res.send(str);
+        });
+    });
+
     //other alternatives at sending content to client
     
     //res.write();
@@ -130,16 +149,6 @@ router.get('/elastic/:id', function(req, res){
     //res.set('Content-Type', 'text/html');
     //res.send(...);
 });
-
-//validation of a param
-//router.param('name', function
-
-/*
-router.get('/:viewname', function (req, res){
-    //res.render('default', { viewname: req.params.viewname+req.query.color });
-    res.render('default', { viewname: req.params.viewname});
-});
-*/
 
 //router contain functions that not allow the request to go beyound it (res.send)
 app.use('/', router);
