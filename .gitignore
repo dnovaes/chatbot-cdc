@@ -1,3 +1,7 @@
-elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/*
+elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/0/translog/*
+elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/1/translog/*
+elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/2/translog/*
+elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/3/translog/*
+elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/4/translog/*
 elasticsearch-5.0.0/logs/*
 npm-debug.log
