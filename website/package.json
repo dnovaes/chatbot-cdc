@@ -1,8 +1,8 @@
 {
-  "name": "siri-law",
+  "name": "chatbot-cdc",
   "version": "0.0.0",
-  "description": "init project of siriLaw (interface to connect with API)",
-  "main": "index.js",
+  "description": "Chatbot web com objetivo de mostrar aos cidadãos textos legais baseados em suas queixas ou casos jurídicos",
+  "main": "startServers.js",
   "dependencies": {
     "axios": "^0.16.1",
     "body-parser": "^1.17.2",
@@ -17,13 +17,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dnovaes/Siri-Law-Br.git"
+    "url": "https://github.com/terciodejesus/chatbot-cdc/"
   },
   "keywords": [
-    "sirilaw",
-    "law",
-    "lawbr",
-    "nlp"
+    "chatbot",
+    "cdc",
+    "queixas",
+    "código de defesa do consumidor",
+    "law"
   ],
   "author": "Diego Novaes <novaesdigo@gmail.com> (github.com/dnovaes)",
   "license": "MIT"
