@@ -27,12 +27,15 @@ sudo apt-get install -y nodejs
 
 ###### Git:
 ```
-git clone https://github.com/terciodejesus/chatbot-cdc`
+git clone https://github.com/terciodejesus/chatbot-cdc
+cd chatbot-cdc/website
+npm install
 ```
 
 ## Executando o servidor-aplicação
 
-###### Pra começar a rodar os servidores (elasticsearch e o website) digite o comando:
+###### Pra começar a rodar os servidores (elasticsearch e o website), vá para pasta inicial do
+sistema e digite o comando:
 
 `npm start`
 
