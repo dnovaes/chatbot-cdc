@@ -1,16 +1,6 @@
 elasticsearch-5.0.0/data/nodes/0/_state/global-*
+elasticsearch-5.0.0/data/nodes/0/indices/yHho8ob1T5Wm73132S7BaQ/**
 elasticsearch-5.0.0/data/nodes/0/_state/node-*
-elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/0/_state/state-*
-elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/0/translog/translog*
-elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/1/_state/state-*
-elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/1/translog/translog*
-elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/2/_state/state-*
-elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/2/translog/translog*
-elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/3/_state/state-*
-elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/3/translog/translog*
-elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/4/_state/state-*
-elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/4/translog/translog*
-elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/_state/state-*
 elasticsearch-5.0.0/logs/*
 website/node_modules/**
 npm-debug.log
