@@ -12,4 +12,5 @@ elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/4/_state/state-*
 elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/4/translog/translog*
 elasticsearch-5.0.0/data/nodes/0/indices/nmm9nhkASq-A7GssBG0fOA/_state/state-*
 elasticsearch-5.0.0/logs/*
+website/node_modules/**
 npm-debug.log
