@@ -350,9 +350,8 @@ var app = new Vue({
               app.hits.hits.forEach(function(val, i){
                 tempContent = val._source.content
 
-                //TODO: 
                 var articles= splitDocument(tempContent, app.configSearchStruct);
-                app.resultsTitle = "Documents ("+articles.length+") :";
+                console.log(articles);
 
                 //TODO: if the content wasnt highlighted, remove the article from the tempContent.
                 articles = highlight(articles);
@@ -369,6 +368,7 @@ var app = new Vue({
 
                 }
               });
+              app.resultsTitle = "Documents ("+j+") :";
 
             }
 
