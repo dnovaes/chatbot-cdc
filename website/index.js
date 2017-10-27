@@ -1,4 +1,13 @@
 /*
+ Ex1: 
+ Realizei uma compra e o pagamento para dois produtos na loja PurpleFire.com em Dezembro dia 9. Eles tinham 15 dias para postar o produto mas nada aconteceu. 
+ Tenho esperado mais de um mês. Contactei a empresa algumas vezes e conversei com Amanda, mas eles não resolveram meu problema. Tenho todas as conversas registradas.
+ PurpleFire não tem CNPJ ou endereço no site. Não recomendo que comprem na loja mencionada.
+
+ Ex2:
+ Eu gostaria de ter meu dinheiro de volta baseado no produto que eu comprei 25 dias atrás. O produto sofreu uma perda decadencial mas eu não estou satisfeito com o produto.
+ Não cumpriu com o que prometia.
+
  * ex1: "I made the purchase and payment for two products in \
 the PurpleFire.com store on December 9th. And they have 15 days to do \
 the posting. But there is no doing. And I've been waiting for more than\
@@ -54,7 +63,7 @@ router.get('/', function (req, res){
 //in case of post request, all "variable" are passed in req.body
 router.post('/ajax/:function', function(req, res){
     
-    if(req.params.function = "stopwordsremoval"){
+    if(req.params.function = "stopwordsremovalPT"){
       
       var posBool = req.body.posBool;
       var claimTagged = "";
@@ -62,7 +71,7 @@ router.post('/ajax/:function', function(req, res){
       if(!posBool){
 
         //apply stopword removal to the raw claim. return a object with the claim processed and keywords extracted
-        var result = functions.stopWordsRemoval(req.body.claim);
+        var result = functions.stopWordsRemovalPT(req.body.claim);
         var claim = result.claim;
         var keywords = result.keywords;
 
@@ -103,7 +112,6 @@ router.post('/ajax/:function', function(req, res){
       }
 
       //claim is the var that will be sent to the elasticsearch.
-      claim = functions.stopWordsRemoval(claim).claim;
       console.log("searching for keywords: "+claim);
       claim = { "claim" : claim, "keywords": keywords, "claimTagged": claimTagged}
       obj = JSON.stringify(claim);
