@@ -2,7 +2,7 @@
   "name": "chatbot-cdc",
   "version": "0.0.0",
   "description": "Chatbot web com objetivo de mostrar aos cidadãos textos legais baseados em suas queixas ou casos jurídicos",
-  "main": "startServers.js",
+  "main": "index.js",
   "dependencies": {
     "axios": "^0.16.1",
     "body-parser": "^1.17.2",
@@ -13,7 +13,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -23,8 +24,7 @@
     "chatbot",
     "cdc",
     "queixas",
-    "código de defesa do consumidor",
-    "law"
+    "código de defesa do consumidor"
   ],
   "author": "Diego Novaes <novaesdigo@gmail.com> (github.com/dnovaes)",
   "license": "MIT"
