@@ -1,4 +1,4 @@
-var client            = require('../connection.js');
+var client            = require('connection.js');
 //var bodyParser        = require('body-parser');
 
 //app.use(bodyParser.json());
