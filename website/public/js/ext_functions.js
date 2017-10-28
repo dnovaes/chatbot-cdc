@@ -84,7 +84,7 @@ var lib = {
       claim = claim.replace(regCharMarks, "");
 
   
-      var stopwords = "eu meu poderia gostaria disto isso deste esse desta esta dessa essa menos mais ele ela eles elas dela dele nosso nossa até apenas era eram sou uma um para de que em no na ter com sem";
+      var stopwords = "eu meu poderia gostaria disto isso deste esse desta esta dessa essa menos mais ele ela eles elas dela dele nosso nossa até apenas era eram sou uma um para ao de da do que em no na ter com sem nao não mas porem porém entretanto todavia";
       var filter_romanianNumerals = "I II III IV V VI VII VIII IX X XI XII XIII XIV";
       var numerals = "1 2 3 4 5 6 7 8 9";
       stopwords = stopwords+" "+filter_romanianNumerals+" "+numerals;
