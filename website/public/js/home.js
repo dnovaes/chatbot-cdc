@@ -77,28 +77,21 @@ function highlight(content){
   }
 }
 
-//split the content data string in the desirable type: section or article.
+//split the content data string in the articles
 //return an array o segments of this content string
 function splitDocument(content, type){
-  //if( type == 'article'){
     var articles=[];
 
     //pattern for start of the article
     //original pattern at the beggining of the conception:
     //(?<![\w\d])Art(?![\w\d]) but negative lookbehind doesnt work in js (?!>)
 
-    regExp = new RegExp("(?:^|\\s)Article ([\\d]+)|(?:^|\\s)Art. ([\\d]+)");
+    regExp = new RegExp("(?:^|\\s)Artigo([\\d]+)|(?:^|\\s)Art. ([\\d]+)");
 
     var i=0;
     while(content.length>0){
       //get start pos of the article
       var startPosMatch = regExp.exec(content);
-      /*
-      console.log("\nContent to check");
-      console.log(content);
-      console.log("startPosMatch");
-      console.dir(startPosMatch);
-      */
 
       if(startPosMatch){
         articles[i] = startPosMatch[0];
@@ -115,8 +108,6 @@ function splitDocument(content, type){
       }
       i++;
     }
-  //}
-  //else = nothing to do
   return articles; 
 }
 
@@ -199,9 +190,9 @@ Vue.component('comp-result-units',{
 var app = new Vue({
   el: '#div-parent',
   data: {
-    phValue: "Hey there! How can i help you?",
+    phValue: "Olá, Como vai?! Como posso ajuda-lo?",
     claimData: "",
-    claimDataSW: "",
+    claimDataSW: "", //contains the message of keywords of claim
     keywords: "",
     synonyms: [
       ["back", "return"],
@@ -214,12 +205,13 @@ var app = new Vue({
     kwordsDivShow: false, //shows the content of keywords div
     configDivBool: false, //bool that sinalizes the systems if it the configDiv should be visible or not
     resultsBool: false, //bool that sinalize the systems to show the div of results
-    resultsTitle: "Documents: ",
+    resultsTitle: "Documentos: ",
     results: "",
     hits: "",
     //index: 0,
     resultUnits: [],
-    configSearchStruct: "section",
+    configSearchStruct: "article",
+    questions: [] //contains questions related to every article. ex: question[0] = refere-se ao artigo 1
   },
   watch: {
     //if there is a claim type in the inputfield then outputBool = true (show the desc "searching...")
@@ -232,7 +224,7 @@ var app = new Vue({
     },
     resultsBool: function(){
       if(app.resultsBool){
-        app.phValue = "Would you like to ask again?"
+        app.phValue = "Gostaria de realizar outra queixa?"
       }else{
         app.phValue = "Olá! Como posso ajuda-lo ?"
       }
@@ -256,9 +248,10 @@ var app = new Vue({
             //always clear this variable before pushing new results to the page
             app.resultUnits = []
 
+            //configured to show results as section or articles?
             if(app.configSearchStruct=="section"){
 
-              app.resultsTitle = "Documents ("+app.hits.hits.length+") :";
+              app.resultsTitle = "Documentos ("+app.hits.hits.length+") :";
 
               // for each "hit" = document indexed found
               // app.results is handled as RawHtml text
@@ -278,15 +271,16 @@ var app = new Vue({
 
             }else{
 
-              //article model
               var j=0;
+
               app.hits.hits.forEach(function(val, i){
                 tempContent = val._source.content
 
+                //split document in articles units
                 var articles= splitDocument(tempContent, app.configSearchStruct);
                 console.log(articles);
 
-                //TODO: if the content wasnt highlighted, remove the article from the tempContent.
+                //highlight words in the articles that matches with the keywords from the user claim
                 articles = highlight(articles);
               
                 for(var k=0;k<articles.length;k++){
@@ -301,7 +295,7 @@ var app = new Vue({
 
                 }
               });
-              app.resultsTitle = "Documents ("+j+") :";
+              app.resultsTitle = "Documentos ("+j+") :";
 
             }
 
@@ -310,7 +304,7 @@ var app = new Vue({
             app.resultsBool = true;
 
           }else{
-            app.results = "Nothing was found. Try again with different claim."
+            app.results = "Não encontrei nada relacionado. Poderia escrever novamente com outras palavras?"
             alert(app.results);
             app.resultsBool = false;
             app.results = "";
@@ -318,7 +312,7 @@ var app = new Vue({
           app.claimData = "";
         }).catch(function (error){
             console.log(error);
-            alert("Sorry an error ocurred trying to connect the elasticsearch.");
+            alert("Erro ao tentar conectar ao elastic search.");
         });
       }
     },
