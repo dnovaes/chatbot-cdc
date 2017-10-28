@@ -1,25 +1,3 @@
-/*
- Ex1: 
- Realizei uma compra e o pagamento para dois produtos na loja PurpleFire.com em Dezembro dia 9. Eles tinham 15 dias para postar o produto mas nada aconteceu. 
- Tenho esperado mais de um mês. Contactei a empresa algumas vezes e conversei com Amanda, mas eles não resolveram meu problema. Tenho todas as conversas registradas.
- PurpleFire não tem CNPJ ou endereço no site. Não recomendo que comprem na loja mencionada.
-
- Ex2:
- Eu gostaria de ter meu dinheiro de volta baseado no produto que eu comprei 25 dias atrás. O produto sofreu uma perda decadencial mas eu não estou satisfeito com o produto.
- Não cumpriu com o que prometia.
-
- * ex1: "I made the purchase and payment for two products in \
-the PurpleFire.com store on December 9th. And they have 15 days to do \
-the posting. But there is no doing. And I've been waiting for more than\
-1 month. I contacted the company several times and talked to Amanda\
-(amandapt1313@gmail.com), but they did not solve my problem. I have all\
-the conversations filed. And I want to point out here that the \
-PurpleFire store has no CNPJ and no address on the site. I would not recommend\
-anyone to make any purchase with the store mentioned."
-ex2 :
-i would like to have my money back based on the product that i bought in 25 days back then. It suffered some decadential loss but still not satisfied with my product."
-*/
-
 // BASE SETUP 
 
 var express    = require('express')
