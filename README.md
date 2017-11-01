@@ -15,8 +15,9 @@ Obs:
 
 ###### Java JDK 8:
 ```
-sudo apt-update
-sudo apt-get install openjdk-8-jdk
+1. sudo add-apt-repository ppa:openjdk-r/ppa
+2. sudo apt-get update
+3. sudo apt-get install openjdk-8-jdk
 ```
 
 ###### Node 6.X:
