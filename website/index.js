@@ -1,9 +1,11 @@
 // BASE SETUP 
 
 var express    = require('express')
+const client   = require('./controller/connection.js');
 var app        = express()
 var path       = require('path');
 var bodyparser = require('body-parser');
+var es         = require('./controller/connection.js');
 var functions  = require(__dirname+"/public/js/ext_functions.js");
 var port       = process.env.PORT || 3000;
 var nlp        = require(__dirname+"/public/js/natural.js");
@@ -40,8 +42,7 @@ router.get('/', function (req, res){
 //route that handle ajax requests
 //in case of post request, all "variable" are passed in req.body
 router.post('/ajax/:function', function(req, res){
-    
-    if(req.params.function = "stopwordsremovalPT"){
+    if(req.params.function === "stopwordsremovalPT"){
       
       var posBool = req.body.posBool;
       var claimTagged = "";
@@ -50,6 +51,7 @@ router.post('/ajax/:function', function(req, res){
 
         //apply stopword removal to the raw claim. return a object with the claim processed and keywords extracted
         var result = functions.stopWordsRemovalPT(req.body.claim);
+
         var claim = result.claim;
         var keywords = result.keywords;
 
@@ -110,9 +112,20 @@ router.get('/elastic/', function(req, res){
 
     res.send(body);
     */
+
     let q = req.query.q;
     q.replace(/[\\$'"]/g, "\\$&");
 
+    //API of elasticsearch.js to connect the actual elastic search
+    let esParams = {
+      index: 'cdc',
+      q: q
+    }
+    client.search(esParams).then(function(response){
+      res.send(response);
+    });
+
+    /*
     http.get('http://localhost:9200/cdc/_search?q=\''+q+'\'', function(response) {
         //console.log("Got response: " + response.statusCode);
         var str = '';
@@ -122,10 +135,10 @@ router.get('/elastic/', function(req, res){
          });
 
         response.on('end', function () {
-             //console.log(str);
              res.send(str);
         });
     });
+    */
 
     //other alternatives at sending content to client
     
