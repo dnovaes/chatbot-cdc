@@ -5,7 +5,6 @@ const client   = require('./controller/connection.js');
 var app        = express()
 var path       = require('path');
 var bodyparser = require('body-parser');
-var es         = require('./controller/connection.js');
 var functions  = require(__dirname+"/public/js/ext_functions.js");
 var port       = process.env.PORT || 3000;
 var nlp        = require(__dirname+"/public/js/natural.js");
