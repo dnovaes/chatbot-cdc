@@ -210,7 +210,6 @@ var vueHeader = new Vue({
       //ajaxSearchSW triggered on keyup due to checking e.target.value.length which is update after a content is updated
       if(((e.key == "Enter")||(e.type == "click")) && (vueHeader.claimData != "")){
         
-        document.getElementById('chatbot-content').scrollIntoView();
         app.claimData = vueHeader.claimData;
 
         axios.post('/ajax/stopwordsremovalPT', {
@@ -345,21 +344,6 @@ var app = new Vue({
         }
       };
 
-      //console.dir(app.$refs["chatbot-input"]);
-      elTypingBox = document.getElementById("typingbox");
-
-      var cnt = 0;
-      var timer = setInterval(function(){
-        if (cnt==9){
-          elTypingBox.style.border = "none";
-          elTypingBox.style["border-bottom"] = "1px solid darkblue";
-          clearInterval(timer);
-        }else{
-          //cnt % 2 == 1 ? app.$refs["chatbot-input"].style.border = "1px solid gray" : app.$refs["chatbot-input"].style.border = "none";
-          cnt % 2 == 1 ? elTypingBox.style.border = "none" : elTypingBox.style.border = "2px solid darkblue";
-        }
-        cnt++;
-      }, 800);
 
       console.log("app.claimData: ", app.claimData);
 
@@ -369,6 +353,26 @@ var app = new Vue({
 
         //app.hits.hits.length = tell how many results were found.
         if(app.hits.hits.length> 0){
+          
+          //scroll down to the chatbot div
+          document.getElementById('chatbot-content').scrollIntoView();
+
+          //make div of typing texts in chatbot to flicker
+          elTypingBox = document.getElementById("typingbox");
+
+          var cnt = 0;
+          var timer = setInterval(function(){
+            if (cnt==9){
+              elTypingBox.style.border = "none";
+              elTypingBox.style["border-bottom"] = "1px solid darkblue";
+              clearInterval(timer);
+            }else{
+              //cnt % 2 == 1 ? app.$refs["chatbot-input"].style.border = "1px solid gray" : app.$refs["chatbot-input"].style.border = "none";
+              cnt % 2 == 1 ? elTypingBox.style.border = "none" : elTypingBox.style.border = "2px solid darkblue";
+            }
+            cnt++;
+          }, 800);
+
 
           //always clear this variable before pushing new results to the page
           app.resultUnits = []
