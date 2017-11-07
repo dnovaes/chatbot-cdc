@@ -1,0 +1,54 @@
+.banner {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../imgs/sample-banner.jpg") center no-repeat;
+  background-size: cover;
+  height: 380px; }
+
+  .banner .title {
+    font-size: 35px;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    color: white; }
+  .banner button {
+    border: 2px solid rgba(255, 255, 255, 0.7); }
+    .banner button:hover {
+      background-color: rgba(255, 255, 255, 0.3); }
+
+.features-content {
+  background-color: white;
+  color: #73767c;
+  padding-top: 100px; }
+  .features-content .title {
+    color: darkblue;
+    font-size: 24px; }
+  .features-content .description {
+    margin-top: 30px; }
+  .features-content .img-content {
+    margin-bottom: 30px; }
+
+.fluid {
+  width: 100%; }
+
+.border-radius {
+  border-radius: 5px !important; }
+
+.default-bt {
+  display: inline-block;
+  padding: 10px 10px;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  font-size: 13px;
+  text-align: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s; }
+  .default-bt.no-border {
+    border: none; }
+
+/*# sourceMappingURL=style.css.map */
