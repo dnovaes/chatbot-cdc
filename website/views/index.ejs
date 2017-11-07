@@ -6,32 +6,84 @@
   <script src="js/axios.min.js"></script>
 
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/foundation.min.css">
+  <link rel="stylesheet" href="css/style.css">
   <title>Siri Law BR</title>
 </head>
 <body>
 
-<div id="div-parent">
-  <div id="div-top">
-    <div id="icons-bar">
-      <div id="gear-icon" class="icon" @click="toggleConfigDiv(true)"></div>
+<div class="header" id="header-claim">
+  <div class="banner">
+    <div class="row">
+      <div class="columns">
+        <div class="title">
+          <div>Monstrando os seus direitos de uma</div>
+          <div>maneira rápida e fácil</div>
+        </div>
+      </div>
     </div>
-    <div id="div-img-center">
+    <div class="row">
+      <div class="large-offset-3 large-6 columns" id="claim-field" @keyup="ajaxSearchSW">
+        <input class="fluid border-radius" v-model="claimData" id="textarea-claim" type="text" name="claim-field" :placeholder="phValue" autofocus>
+      </div>
+    </div>
+    <div class="row">
+      <div class="large-offset-5 large-2 columns">
+       <button class="default-bt fluid" @click="ajaxSearchSW" >ABRIR QUEIXA</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="features-content">
+ <div class="row">
+   <div class="large-offset-1 large-10 columns">
+     <ul class="large-block-grid-3">
+       <li>
+         <div class="img-content">
+           <img src="imgs/search-key.png">
+         </div>
+         <div class="title">Feature 1</div>
+         <div class="description">
+           Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.
+         </div>
+       </li>
+       <li>
+         <div class="img-content">
+           <img src="imgs/search-key.png">
+         </div>
+         <div class="title">Feature 1</div>
+         <div class="description">
+           Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.
+         </div>
+       </li>
+       <li>
+         <div class="img-content">
+           <img src="imgs/search-key.png">
+         </div>
+         <div class="title">Feature 1</div>
+         <div class="description">
+           Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.
+         </div>
+       </li>
+     </ul>
+   </div>
+ </div>
+</div>
+
+<div id="div-chatbot">
+  <header id="title-bar">
+    <p>Seus direitos de consumidor mais claros para você</p>
+  </header>
+  <!--
+  <div id="icons-bar">
+    <div id="gear-icon" class="icon" @click="toggleConfigDiv(true)"></div>
+  </div>
+  -->
+  <div id="chatbot-content">
+    <div id="div-img-robot">
       <img src="imgs/cute_robot1.jpg"></img>
     </div>
-    <span id="search-options">
-      <input type="checkbox" v-model="posBool" id="posCheckbox">
-      <label for="posCheckbox"> Pos-Tagger</label>
-    </span>
-    <span id="claim-field">
-      <input v-model="claimData" type="text" name="claim-field" :placeholder="phValue" @keydown="ajaxSearchSW">
-      <p v-if="outputBool">Searching: {{ claimData }}</p>
-    </span>
-    <div id="tabs">
-      <span id="postagger-tab" class="tab-unit" v-if="resultsBool" @click="showPosTagger">POS Tagger</span>
-      <span id="keywords-tab" class="tab-unit" v-if="resultsBool" @click="showKeywords">Keywords</span>
-      <span id="synonyms-tab" class="tab-unit" v-if="resultsBool" @click="">Synonyms</span>
-    </div>
-    <!-- toggled spans/div -->
     <div id="div-config" v-if="configDivBool">
       <span id="search-struct-config">Choose the type of documents you want to receive:</span>
       <span id="search-struct-config">
@@ -45,18 +97,18 @@
     <span id="postagger-result" v-if="posDivShow" @click="showPosTagger">
       <p> {{posResult}}</p>
     </span>
-    <span id="sw-field" v-if="kwordsDivShow">
-      <input v-model="claimDataSW" type="text" name="claim-sw" disabled > 
-    </span> 
-    <!-- -->
-  </div>
-  <div id="div-bottom">
-    <transition name="fade">
-    <div id="results-search" v-if="resultsBool">
-      <span class="title">{{ resultsTitle }}</span>
-        <comp-result-units v-for="ru in resultUnits" :div-id="ru.divId" :span1-id="ru.span1Id" :data="ru.data"></comp-result-units>
+    <div id="content">
+
+      <div id="content-msgs">
+        <comp-chat-msgs v-for="el in msgUnits" :div-id="el.id" :div-class="el.class" :data="el.data" :key="el.id"></comp-chatmsgs-el>
+      </div>
+
+      <div id="typingbox">
+        <input type="text" name="chat-input" placeholder="Digite sua mensagem" @keyup="sendMessage" :model="inputChatbot" ref="chatbot-input">
+        <button id="btn-send-msg">Enviar</button> 
+        <div id="divide"></div>
+      </div>
     </div>
-    </transition>
   </div>
 </div>
 

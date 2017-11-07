@@ -84,8 +84,9 @@ var lib = {
       claim = claim.replace(regCharMarks, "");
 
   
-      var stopwords = "eu meu poderia gostaria disto isso deste esse desta esta dessa essa menos mais ele ela eles elas dela dele nosso nossa até apenas era eram sou uma um para ao de da do que em no na ter com sem nao não mas porem porém entretanto todavia";
-      var filter_romanianNumerals = "I II III IV V VI VII VIII IX X XI XII XIII XIV";
+      var stopwords = "eu meu poderia gostaria disto isso deste esse desta esta dessa essa menos mais ele ela eles elas dela dele nosso nossa até apenas era eram sou uma um para ou ao de da do que em no na ter com sem nao não mas porem porém entretanto todavia se os as";
+      //var filter_romanianNumerals = "I II III IV V VI VII VIII IX X XI XII XIII XIV";
+      filter_romanianNumerals = "";
       var numerals = "1 2 3 4 5 6 7 8 9";
       stopwords = stopwords+" "+filter_romanianNumerals+" "+numerals;
       stopwords = stopwords.split(" ");
@@ -104,6 +105,7 @@ var lib = {
       for(i=0;i<stopwords.length; i++){
         // \b pattern that checks for a word that contains exactly what is between \b
         // i = case insensitive, g = global search
+
         regExp = new RegExp("\\b"+stopwords[i]+"\\b", "ig");
         claim = claim.replace(regExp, "");
       }
@@ -111,6 +113,7 @@ var lib = {
       //remove emptySpace
       regExpWhiteSpace = new RegExp("(\\s+)", "g");
       claim = claim.replace(regExpWhiteSpace, " ");
+
 
       var keywords = claim.split(" ");
 
@@ -126,8 +129,6 @@ var lib = {
       return {claim: claim, keywords: keywords}
       //keywords = functions.rmEmptySpace(keywords);
   }
-
-  
 };
 
 module.exports = lib;

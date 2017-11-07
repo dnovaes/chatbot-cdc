@@ -7,7 +7,7 @@ function checkforSynonyms(){
 
   for(var i=0; i < kw.length; i++){
 
-    app.synonyms.forEach(function(ele, elei){
+    app.synonyms.forEach(function(ele, eli){
       ele.forEach(function(val, vali){
         if( kw[i] == val){
           flag = true;
@@ -16,19 +16,15 @@ function checkforSynonyms(){
       });
 
       if(flag){
-        var length = app.synonyms[elei].length;
-        for(var j=0; j<app.synonyms[elei].length; j++){
-          kw.unshift(app.synonyms[elei][j]);
+        var length = app.synonyms[eli].length;
+        for(var j=0; j<app.synonyms[eli].length; j++){
+          kw.unshift(app.synonyms[eli][j]);
         }
         flag = false;
       }
     });
 
   }
-}
-
-function checkSpecialChar(ch){
-  if(ch=="?") return true;
 }
 
 function highlight(content){
@@ -38,7 +34,7 @@ function highlight(content){
 
   var kwords = "";
   for(var i in kw){
-    if(checkSpecialChar(kw[i])){
+    if(kw[i]=="?"){
       kw[i]="\\?";
     }
     kwords += "\\b"+kw[i]+"\\b";
@@ -175,11 +171,10 @@ Vue.component('comp-result-units',{
         this.value = "&#8627";
         this.active = false
         $spanText.scrollTop = 0;
-
       }
     }
   },
-  data: function(){
+  data: function(){ //this.active and this.value acess here
     return {
       active: false,
       value: "&#8627;"
@@ -187,33 +182,140 @@ Vue.component('comp-result-units',{
   }
 }); 
 
+Vue.component('comp-chat-msgs',{
+  template: '\
+      <div :class="divClass" :id="divId">\
+        <div class="msg-text">{{ data }}</div>\
+        <div class="msg-photo"></div>\
+      </div>\
+  ',
+  props: ['divId', 'divClass', 'data'],
+  data: function(){ //this.active and this.value acess here
+    return {
+      active: false,
+    }
+  }
+});
+
+var vueHeader = new Vue({
+  el: '#header-claim',
+  data: function(){
+    return {
+      phValue: "Descreva seu problema",
+      claimData: ""
+    }
+  },
+  methods: {
+    ajaxSearchSW: function(e){
+      //ajaxSearchSW triggered on keyup due to checking e.target.value.length which is update after a content is updated
+      if(((e.key == "Enter")||(e.type == "click")) && (vueHeader.claimData != "")){
+        
+        document.getElementById('chatbot-content').scrollIntoView();
+        app.claimData = vueHeader.claimData;
+
+        axios.post('/ajax/stopwordsremovalPT', {
+          claim: app.claimData,
+          posBool: app.posBool
+        })
+        .then(function (res){
+          app.keywords = res.data.keywords;
+
+          //check if keywords has synonyms and add then to app.keywords
+          //checkforSynonyms();
+
+          app.claimDataSW = "Keywords: "+app.keywords;
+
+          //var synonyms = getSynonyms(res.data.keywords);
+
+          app.posResult = (res.data.claimTagged != "") ? res.data.claimTagged : "";
+
+          // update the app.claimData with the claim content processed by the backend. 
+          // app.claimData will always contain the input for the elasticsearch to search 
+          // for matchs in the documents
+          //app.claimData = res.data.claim;
+
+          app.ajaxSearch(e);
+        })
+        .catch(function(err){
+          console.log(err);
+        });
+      }else{
+        if(e.target.tagName === "INPUT" && e.target.value.length > 25){
+          /*
+          let inputTextEl = e.target;
+          let textareaEl = document.createElement("textarea-claim");
+          textareaEl.value = inputTextEl.value;
+          textareaEl.setAttribute("id", "textarea-claim");
+
+          let parentEl = inputTextEl.parentNode;
+          parentEl.removeChild(inputTextEl);
+
+          parentEl.appendChild(textareaEl);
+          */
+          let textareaComponent = Vue.extend({
+            template: '\
+              <textarea id="textarea-claim" autofocus>{{ this.claimData }} </textarea>\
+            ',
+            data: function(){
+              return {
+                claimData: vueHeader.claimData
+              }
+            },
+            mounted: function(){
+              this.$nextTick(function(){
+                //code that will run only after the
+                //entire view has been rendered
+              })
+            }
+          });
+
+          //this will replace #textarea-claim
+          new textareaComponent().$mount('#textarea-claim');
+          
+        }
+      }
+    }
+  }
+}); 
+
 var app = new Vue({
-  el: '#div-parent',
-  data: {
-    phValue: "Olá, Como vai?! Como posso ajuda-lo?",
-    claimData: "",
-    claimDataSW: "", //contains the message of keywords of claim
-    keywords: "",
-    synonyms: [
-      ["back", "return"],
-      ["time", "days"]
-    ],
-    outputBool: false,
-    posBool: false, //indicate to system if should apply the tagged on the claim or not
-    posResult: "", // var the has the contents of pos
-    posDivShow: false, //shows the div content of pos taggs
-    kwordsDivShow: false, //shows the content of keywords div
-    configDivBool: false, //bool that sinalizes the systems if it the configDiv should be visible or not
-    resultsBool: false, //bool that sinalize the systems to show the div of results
-    resultsTitle: "Documentos: ",
-    results: "",
-    hits: "",
-    //index: 0,
-    resultUnits: [],
-    configSearchStruct: "article",
-    questions: [] //contains questions related to every article. ex: question[0] = refere-se ao artigo 1
+  el: '#div-chatbot',
+  data: function(){
+    return {
+      claimData: "",
+      claimDataSW: "", //contains the message of keywords of claim
+      keywords: "",
+      synonyms: [
+        ["volta", "reembolso"],
+        ["tempo", "dias"],
+        ["uso", "vícios"]
+        ["usei", "vícios"],
+        ["defeito", "vícios"]
+      ],
+      outputBool: false,
+      posBool: false, //indicate to system if it should apply the POS Tagger on the claim or not
+      posResult: "", // var the has the contents of pos
+      posDivShow: false, //shows the div content of pos taggs
+      kwordsDivShow: false, //shows the content of keywords div
+      configDivBool: false, //bool that sinalizes the systems if it the configDiv should be visible or not
+      resultsBool: false, //bool that sinalize the systems to show the div of results
+      resultsTitle: "Documentos: ",
+      results: "",
+      hits: "",
+      resultUnits: [],
+      msgUnits: [],
+      configSearchStruct: "article",
+      questions: [], //contains questions related to every article. ex: question[0] = refere-se ao artigo 1
+      //chatbot vars
+      nMsgsBot: 1,
+      nMsgsUser: 0,
+      inputChatbot: ""
+    } 
   },
   watch: {
+    "vueHeader.claimData": function (newValue, oldValue) {
+        this.claimData= vueHeader.claimData;
+    },
     //if there is a claim type in the inputfield then outputBool = true (show the desc "searching...")
     claimData: function(event){
       if(app.claimData){
@@ -231,120 +333,112 @@ var app = new Vue({
     }
   },
   methods: {
-    ajaxSearch: function(e){
-      if((e.key == "Enter") && (app.claimData != "")){
-        config = {
-          headers: {
-            'Access-Control-Allow-Origin': '*'
-          }
-        };
-
-        axios.get('http://localhost:3000/elastic/?q='+app.claimData, config).then(function (res){
-          app.hits = res.data.hits
-
-          //app.hits.hits.length = tell how many results were found.
-          if(app.hits.hits.length> 0){
-
-            //always clear this variable before pushing new results to the page
-            app.resultUnits = []
-
-            //configured to show results as section or articles?
-            if(app.configSearchStruct=="section"){
-
-              app.resultsTitle = "Documentos ("+app.hits.hits.length+") :";
-
-              // for each "hit" = document indexed found
-              // app.results is handled as RawHtml text
-
-              app.hits.hits.forEach(function(val, i){
-                tempContent = val._source.content
-
-                tempContent = highlight(tempContent);
-                
-                app.resultUnits.push({
-                  divId: 'resultUnit-'+i,
-                  span1Id: 'ruStatus-'+i,
-                  data: tempContent
-                });
-                //app.index+=1;
-              });
-
-            }else{
-
-              var j=0;
-
-              app.hits.hits.forEach(function(val, i){
-                tempContent = val._source.content
-
-                //split document in articles units
-                var articles= splitDocument(tempContent, app.configSearchStruct);
-                console.log(articles);
-
-                //highlight words in the articles that matches with the keywords from the user claim
-                articles = highlight(articles);
-              
-                for(var k=0;k<articles.length;k++){
-                
-                  app.resultUnits.push({
-                    divId: 'resultUnit-'+j,
-                    span1Id: 'ruStatus-'+j,
-                    data: articles[k]
-                  });
-                  j++;
-                  //app.index+=1;
-
-                }
-              });
-              app.resultsTitle = "Documentos ("+j+") :";
-
-            }
-
-
-            //now that the vue.instances are populate, we can visualize the content in the page
-            app.resultsBool = true;
-
-          }else{
-            app.results = "Não encontrei nada relacionado. Poderia escrever novamente com outras palavras?"
-            alert(app.results);
-            app.resultsBool = false;
-            app.results = "";
-          }
-          app.claimData = "";
-        }).catch(function (error){
-            console.log(error);
-            alert("Erro ao tentar conectar ao elastic search.");
-        });
+    isEnterKey: function(e){
+      if(e.keyCode == "13"){
+        e.preventDefault();
       }
     },
-    ajaxSearchSW: function(e){
-      if((e.key == "Enter") && (app.claimData != "")){
-        axios.post('/ajax/stopwordsremoval', {
-          claim: app.claimData,
-          posBool: app.posBool
-        })
-        .then(function (res){
-          app.keywords = res.data.keywords;
+    ajaxSearch: function(e){
+      config = {
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        }
+      };
 
-          //check if keywords has synonyms and add then to app.keywords
-          checkforSynonyms();
+      //console.dir(app.$refs["chatbot-input"]);
+      elTypingBox = document.getElementById("typingbox");
 
-          app.claimDataSW = "Keywords: "+app.keywords;
+      var cnt = 0;
+      var timer = setInterval(function(){
+        if (cnt==9){
+          elTypingBox.style.border = "none";
+          elTypingBox.style["border-bottom"] = "1px solid darkblue";
+          clearInterval(timer);
+        }else{
+          //cnt % 2 == 1 ? app.$refs["chatbot-input"].style.border = "1px solid gray" : app.$refs["chatbot-input"].style.border = "none";
+          cnt % 2 == 1 ? elTypingBox.style.border = "none" : elTypingBox.style.border = "2px solid darkblue";
+        }
+        cnt++;
+      }, 800);
 
-          //var synonyms = getSynonyms(res.data.keywords);
+      console.log("app.claimData: ", app.claimData);
 
-          app.posResult = (res.data.claimTagged != "") ? res.data.claimTagged : "";
-          //call function that request a search in elasticsearch.js
+      axios.get('http://localhost:3000/elastic/?q='+app.claimData, config).then(function (res){
+        console.log(res);
+        app.hits = res.data.hits
 
-          // update the app.claimData var with the claim content processed by the backend. 
-          // app.claimData will always contain the input for the elasticsearch to search 
-          // for matchs in the documents
-          app.claimData = res.data.claim;
-          app.ajaxSearch(e);
-        })
-        .catch(function(err){
-          console.log(err);
-        });
-      }
+        //app.hits.hits.length = tell how many results were found.
+        if(app.hits.hits.length> 0){
+
+          //always clear this variable before pushing new results to the page
+          app.resultUnits = []
+
+          //configured to show results as section or articles?
+          if(app.configSearchStruct=="section"){
+
+            app.resultsTitle = "Documentos ("+app.hits.hits.length+") :";
+
+            // for each "hit" = document indexed found
+            // app.results is handled as RawHtml text
+
+            app.hits.hits.forEach(function(val, i){
+              tempContent = val._source.content
+
+              tempContent = highlight(tempContent);
+              
+              app.resultUnits.push({
+                divId: 'resultUnit-'+i,
+                span1Id: 'ruStatus-'+i,
+                data: tempContent
+              });
+              //app.index+=1;
+            });
+
+          }else{ //split Document in articles
+
+            var j=0;
+            console.log(app.keywords);
+
+            app.hits.hits.forEach(function(val, i){
+              tempContent = val._source.content
+
+              //split document in articles units
+              var articles= splitDocument(tempContent, app.configSearchStruct);
+
+              //highlight words in the articles that matches with the keywords from the user claim
+              articles = highlight(articles);
+            
+              for(var k=0;k<articles.length;k++){
+              
+                app.resultUnits.push({
+                  divId: 'resultUnit-'+j,
+                  span1Id: 'ruStatus-'+j,
+                  data: articles[k]
+                });
+                j++;
+              }
+            });
+            app.resultsTitle = "Documentos ("+j+") :";
+
+          }
+          //now that the vue.instances are populate, we can visualize the content in the page
+          app.resultsBool = true;
+          app.hits = "";
+
+          //iniciate chatbot with the user based on the result that we have in app.resultUnits
+          startChatbot();
+
+        }else{
+          app.results = "Não encontrei nada relacionado. Poderia escrever novamente com outras palavras?"
+          alert(app.results);
+          app.resultsBool = false;
+          app.results = "";
+          app.claimData = "";
+        }
+      }).catch(function (error){
+          console.log(error);
+          alert("Erro ao tentar conectar ao elastic search.");
+      });
     },
     showPosTagger: function(){
       app.posDivShow = !app.posDivShow; 
@@ -354,6 +448,31 @@ var app = new Vue({
     },
     toggleConfigDiv: function(bool){
       app.configDivBool = bool;
+    },
+    //chatbot methods
+    sendMessage: function(e){
+      if((e.key == "Enter") && (this.inputChatbot != "")){
+        console.log(this.inputChatbot);
+      } 
     }
   }
 });
+
+function startChatbot(){
+
+  //instanciate items of the chatbot like the claim of the user typed already, first message of chatbot...stuff
+  //User claim [first message] 
+  app.msgUnits.push({
+    id: 'user-msg-div-'+0,
+    class: 'div-user msg-unit-el',
+    data: app.claimData
+  });
+
+  //bot response [first response] 
+  app.msgUnits.push({
+    id: 'bot-msg-div-'+0,
+    class: 'div-bot msg-unit-el',
+    data: "Olá, processei sua queixa e encontrei "+app.resultUnits.length+" co-relações que podem te ajudar. Responda algumas perguntas para que eu possa lhe dar o melhor resultado :)"
+  });
+
+}
