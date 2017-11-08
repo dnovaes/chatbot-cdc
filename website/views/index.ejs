@@ -98,13 +98,12 @@
       <p> {{posResult}}</p>
     </span>
     <div id="content">
-
       <div id="content-msgs">
         <comp-chat-msgs v-for="el in msgUnits" :div-id="el.id" :div-class="el.class" :data="el.data" :key="el.id"></comp-chatmsgs-el>
       </div>
 
       <div id="typingbox">
-        <input type="text" name="chat-input" placeholder="Digite sua mensagem" @keyup="sendMessage" :model="inputChatbot" ref="chatbot-input">
+        <input type="text" name="chat-input" placeholder="Digite sua mensagem" @keyup="sendMessage" v-model="inputChatbot" ref="chatbot-input">
         <button id="btn-send-msg">Enviar</button> 
         <div id="divide"></div>
       </div>
