@@ -2,7 +2,6 @@
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../imgs/sample-banner.jpg") center no-repeat;
   background-size: cover;
   height: 380px; }
-
   .banner .title {
     font-size: 35px;
     text-align: center;
@@ -51,4 +50,18 @@
   .default-bt.no-border {
     border: none; }
 
-/*# sourceMappingURL=style.css.map */
+.header-link {
+  color: white;
+}
+
+.header-link:hover {
+  color: #73767c;
+}
+
+.margin-top-20 {
+  margin-top: 20px;
+}
+
+.banner ul li {
+  float: right;
+}
