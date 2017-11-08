@@ -270,6 +270,9 @@ var vueHeader = new Vue({
 
           //this will replace #textarea-claim
           new textareaComponent().$mount('#textarea-claim');
+
+          let elClaim = document.getElementById("textarea-claim");
+          elClaim.focus();
           
         }
       }
@@ -306,8 +309,8 @@ var app = new Vue({
       configSearchStruct: "article",
       questions: [], //contains questions related to every article. ex: question[0] = refere-se ao artigo 1
       //chatbot vars
-      nMsgsBot: 1,
-      nMsgsUser: 0,
+      nMsgsBot: -1,
+      nMsgsUser: -1,
       inputChatbot: ""
     } 
   },
@@ -354,24 +357,6 @@ var app = new Vue({
         //app.hits.hits.length = tell how many results were found.
         if(app.hits.hits.length> 0){
           
-          //scroll down to the chatbot div
-          document.getElementById('chatbot-content').scrollIntoView();
-
-          //make div of typing texts in chatbot to flicker
-          elTypingBox = document.getElementById("typingbox");
-
-          var cnt = 0;
-          var timer = setInterval(function(){
-            if (cnt==9){
-              elTypingBox.style.border = "none";
-              elTypingBox.style["border-bottom"] = "1px solid darkblue";
-              clearInterval(timer);
-            }else{
-              //cnt % 2 == 1 ? app.$refs["chatbot-input"].style.border = "1px solid gray" : app.$refs["chatbot-input"].style.border = "none";
-              cnt % 2 == 1 ? elTypingBox.style.border = "none" : elTypingBox.style.border = "2px solid darkblue";
-            }
-            cnt++;
-          }, 800);
 
 
           //always clear this variable before pushing new results to the page
@@ -455,28 +440,67 @@ var app = new Vue({
     },
     //chatbot methods
     sendMessage: function(e){
-      if((e.key == "Enter") && (this.inputChatbot != "")){
-        console.log(this.inputChatbot);
-      } 
+      if((e.key == "Enter") && (this.inputChatbot != "") && (this.nMsgsBot > -1)){
+       
+        this.nMsgsBot++;
+
+        app.msgUnits.push({
+          id: 'user-msg-div-'+this.nMsgsBot,
+          class: 'div-user msg-unit-el',
+          data: this.inputChatbot 
+        });
+        this.inputChatbot = "";
+
+        let elContentMsgs = document.getElementById("content-msgs");
+        setTimeout(function(){
+          elContentMsgs.scrollTop = elContentMsgs.scrollHeight;
+        }, 200);
+      }else if(this.nMsgsBot == -1){
+        alert("Digite sua queixa no início da página");
+      }
     }
   }
 });
 
 function startChatbot(){
+  //initialize variables for chatmessages
+  app.nMsgsBot = 0;
+  app.nMsgsUser= 0;
+
+  //scroll down to the chatbot div
+  document.getElementById('chatbot-content').scrollIntoView();
+
+  //make div of typing texts in chatbot to flicker
+  elTypingBox = document.getElementById("typingbox");
+
+  //focus on input of typing message to the chatbot
+  app.$refs["chatbot-input"].focus();
+
+  var cnt = 0;
+  var timer = setInterval(function(){
+    if (cnt==9){
+      elTypingBox.style.border = "none";
+      elTypingBox.style["border-bottom"] = "1px solid darkblue";
+      clearInterval(timer);
+    }else{
+      //cnt % 2 == 1 ? app.$refs["chatbot-input"].style.border = "1px solid gray" : app.$refs["chatbot-input"].style.border = "none";
+      cnt % 2 == 1 ? elTypingBox.style.border = "none" : elTypingBox.style.border = "2px solid darkblue";
+    }
+    cnt++;
+  }, 800);
 
   //instanciate items of the chatbot like the claim of the user typed already, first message of chatbot...stuff
   //User claim [first message] 
   app.msgUnits.push({
-    id: 'user-msg-div-'+0,
+    id: 'user-msg-div-'+app.nMsgsUser,
     class: 'div-user msg-unit-el',
     data: app.claimData
   });
 
   //bot response [first response] 
   app.msgUnits.push({
-    id: 'bot-msg-div-'+0,
+    id: 'bot-msg-div-'+app.nMsgsBot,
     class: 'div-bot msg-unit-el',
     data: "Olá, processei sua queixa e encontrei "+app.resultUnits.length+" co-relações que podem te ajudar. Responda algumas perguntas para que eu possa lhe dar o melhor resultado :)"
   });
-
 }
