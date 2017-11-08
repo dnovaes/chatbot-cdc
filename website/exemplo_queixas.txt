@@ -6,3 +6,7 @@
  Ex2:
  Eu gostaria de ter meu dinheiro de volta relacionado ao produto que eu comprei 25 dias atrás. O produto sofreu uma perda decadencial mas eu não estou satisfeito com o produto.
  Não cumpriu com o que prometia.
+
+ Ex3:
+ Eu gostaria de ter meu dinheiro de volta relacionado ao produto que eu comprei 25 dias atrás. Usei um pouco mas não estou satisfeito com o produto.
+ Não cumpriu com o que prometia.
