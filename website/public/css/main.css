@@ -378,24 +378,39 @@
   width: 100%;
   min-height: 40px;
   padding: 8px 1%;
-  overflow-y: hidden;
 }
 
 #chatbot-content #content-msgs{
   height: 88%;
+  overflow-y: auto;
+}
+
+#content-msgs > div{
+  overflow: hidden;
 }
 
 .msg-unit-el{
   min-height: 55px;
+  margin: 2% 0px;
+  position: relative;
+}
+
+.msg-unit-el:after{
+  content: '';
+  display: block;
+  clear: both;
 }
 
 .msg-text{
   width: 85%;
-  min-height: 90%;
+  //max-width: 85%;
+  min-height: 0;
+  //min-height: 90%;
   border-radius: 9px;
   padding: 5px;
   text-align: center;
   font-size: 14px;
+
 }
 
 .msg-photo{
@@ -404,7 +419,7 @@
 
 .div-bot .msg-text{
   //background-color: #e9ebf1;
-  background-color: darkblue;
+  background-color: #1c227c;
   color: white;
   float: left;
 }
@@ -424,6 +439,11 @@
   background-color: white;
   color: darkblue;
   float: right;
+/*
+  position: absolute;
+  bottom: 10px;
+  left: 60px;
+  */
 }
 
 .div-user .msg-photo{
@@ -444,6 +464,7 @@
   box-sizing: inherit;
   box-shadow: none;
   border-bottom: 1px solid darkblue;
+  overflow-y: hidden;
 }
 
 #typingbox input{
