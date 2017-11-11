@@ -1,6 +1,6 @@
 var fs = require("fs"); //module to read files
 var functions  = require("../public/js/ext_functions.js"); //for function getLastDirName
-var client = require("../connection.js"); //module responsible for the call to API elastic search
+var client = require("./connection.js");
 
 var dirPath = process.argv[2]!= undefined ? process.argv[2]: 0; 
 if (!dirPath){
@@ -43,7 +43,7 @@ var printAllFiles = function(dirPath, callback){
             var title = functions.getLastDirName(dirPath);
             console.log(title);
 
-            var titleName = fs.readFileSync(dirPath+title+".txt").toString().trim();
+            var titleName = fs.readFileSync(dirPath+title).toString().trim();
 
             // key 'title' and 'type' are required.
             jsonObj = {
