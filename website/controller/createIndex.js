@@ -1,4 +1,11 @@
-var client = require("connection.js");
+/*
+ * How to use:
+ * execute this file and pass the name of the index to be created as parameter.
+ * Ex: node createIndex.js indexnamehere
+ *
+*/
+
+var client = require("./connection.js");
 var process = require("process");
 
 client.indices.create({
