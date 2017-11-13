@@ -84,14 +84,14 @@ var lib = {
       claim = claim.replace(regCharMarks, "");
 
   
-      var stopwords = "eu meu poderia gostaria disto isso deste esse desta esta dessa essa menos mais ele ela eles elas dela dele nosso nossa até apenas era eram sou uma um para ou ao de da do que em no na ter com sem nao não mas porem porém entretanto todavia se os as";
+      var stopwords = "eu meu poderia gostaria disto isso deste esse desta esta dessa essa menos mais ele ela eles elas dela dele nosso nossa até apenas era eram sou uma um para ou ao de da do que em no na ter com sem nao não mas porem porém entretanto todavia ainda se os as";
       //var filter_romanianNumerals = "I II III IV V VI VII VIII IX X XI XII XIII XIV";
       filter_romanianNumerals = "";
       var numerals = "1 2 3 4 5 6 7 8 9";
       stopwords = stopwords+" "+filter_romanianNumerals+" "+numerals;
       stopwords = stopwords.split(" ");
 
-      var articleVowels = "a é í o";
+      var articleVowels = "a e é í o u";
       articleVowels = articleVowels.split(" ");
 
       var regExp = new RegExp();
