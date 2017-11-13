@@ -10,3 +10,8 @@
  Ex3:
  Eu gostaria de ter meu dinheiro de volta relacionado ao produto que eu comprei 25 dias atrás. Usei um pouco mas não estou satisfeito com o produto.
  Não cumpriu com o que prometia.
+
+ Ex4:
+ Comprei e efetuei o pagamento de uma camisa na LojaProject. 
+ Estou aguardando a 2 semanas e ainda sim o site não reconhece meu pagamento apesar de ter sido descontado no meu cartão de crédito.
+ Entrei em contato e eles não respondem há 10 dias. Queria receber meu dinheiro de volta.
