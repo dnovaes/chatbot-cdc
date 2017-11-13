@@ -290,9 +290,10 @@ var app = new Vue({
       synonyms: [
         ["volta", "reembolso"],
         ["tempo", "dias"],
-        ["uso", "vícios"]
+        ["uso", "vícios"],
         ["usei", "vícios"],
-        ["defeito", "vícios"]
+        ["defeito", "vícios"],
+        ["pagamento", "cobrança"]
       ],
       outputBool: false,
       posBool: false, //indicate to system if it should apply the POS Tagger on the claim or not
@@ -353,6 +354,8 @@ var app = new Vue({
       axios.get('http://localhost:3000/elastic/?q='+app.claimData, config).then(function (res){
         console.log(res);
         app.hits = res.data.hits
+
+        console.log(app.hits.hits);
 
         //app.hits.hits.length = tell how many results were found.
         if(app.hits.hits.length> 0){
