@@ -351,7 +351,7 @@ var app = new Vue({
 
       console.log("app.claimData: ", app.claimData);
 
-      axios.get('http://localhost:3000/elastic/?q='+app.claimData, config).then(function (res){
+      axios.get('/elastic/?q='+app.claimData, config).then(function (res){
         console.log(res);
         app.hits = res.data.hits
 
