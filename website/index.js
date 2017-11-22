@@ -38,11 +38,14 @@ router.get('/', function (req, res){
   res.render('index');
 });
 
+router.get('/dashboard', function(req, res) {
+  res.render("dashboard");
+});
+
 //route that handle ajax requests
 //in case of post request, all "variable" are passed in req.body
 router.post('/ajax/:function', function(req, res){
     if(req.params.function === "stopwordsremovalPT"){
-      
       var posBool = req.body.posBool;
       var claimTagged = "";
 
