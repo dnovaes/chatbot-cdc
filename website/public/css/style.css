@@ -91,4 +91,55 @@
 .bold {
   font-weight: bold; }
 
+.login-container {
+  margin-top: 50px; }
+  .login-container .content-form {
+    padding-top: 20px;
+    padding-bottom: 20px; }
+    .login-container .content-form.border-right {
+      border-right: 2px solid #ecf0f1; }
+  .login-container .title {
+    text-align: center;
+    color: #334145;
+    font-size: 15px;
+    font-weight: bold; }
+  .login-container input {
+    border-radius: 5px !important;
+    box-shadow: none !important;
+    height: 45px !important;
+    font-size: 18px !important; }
+  .login-container ::-webkit-input-placeholder {
+    /* Chrome/Opera/Safari */
+    color: #5e7980;
+    text-align: left; }
+  .login-container ::-moz-placeholder {
+    /* Firefox 19+ */
+    color: #5e7980;
+    text-align: left; }
+  .login-container :-ms-input-placeholder {
+    /* IE 10+ */
+    color: #5e7980;
+    text-align: left; }
+  .login-container :-moz-placeholder {
+    /* Firefox 18- */
+    color: #5e7980;
+    text-align: left; }
+  .login-container .login-bt {
+    background-color: darkblue;
+    color: white;
+    height: 45px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 61px; }
+    .login-container .login-bt:hover {
+      background-color: #000058; }
+  .login-container .new-bt {
+    background-color: #FF6600;
+    color: white;
+    height: 45px;
+    border-radius: 5px;
+    cursor: pointer; }
+    .login-container .new-bt:hover {
+      background-color: #cc5200; }
+
 /*# sourceMappingURL=style.css.map */
