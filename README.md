@@ -43,3 +43,8 @@ sistema e digite o comando:
 ###### Para testar a aplicação abra o navegador e acesse o link:
 
 `http://localhost:3000`
+
+## Links:
+
+Documentos com desenvolvimento do projeto: (requisitos, testes, arquitetura..)
+http://goo.gl/5bSDbb
