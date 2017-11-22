@@ -1,7 +1,7 @@
 .banner {
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../imgs/sample-banner.jpg") center no-repeat;
   background-size: cover;
-  height: 380px; }
+  height: 400px; }
   .banner .title {
     font-size: 35px;
     text-align: center;
@@ -12,6 +12,10 @@
     border: 2px solid rgba(255, 255, 255, 0.7); }
     .banner button:hover {
       background-color: rgba(255, 255, 255, 0.3); }
+  .banner ul li {
+    float: right; }
+    .banner ul li .header-link {
+      color: #fff; }
 
 .features-content {
   background-color: white;
@@ -50,18 +54,41 @@
   .default-bt.no-border {
     border: none; }
 
-.header-link {
-  color: white;
-}
+.gray-bg {
+  background-color: #ecf0f1; }
 
-.header-link:hover {
-  color: #73767c;
-}
+.white-bg {
+  background-color: #fff; }
+
+.margin-top-10 {
+  margin-top: 10px !important; }
 
 .margin-top-20 {
-  margin-top: 20px;
-}
+  margin-top: 20px !important; }
 
-.banner ul li {
-  float: right;
-}
+.margin-bottom-20 {
+  margin-bottom: 20px !important; }
+
+.border-radius {
+  border-radius: 5px; }
+
+.dashboard-content {
+  height: 500px;
+  padding-top: 20px;
+  padding-bottom: 20px; }
+  .dashboard-content .title {
+    color: darkblue; }
+  .dashboard-content .block {
+    padding: 20px; }
+    .dashboard-content .block .title {
+      color: darkblue;
+      font-size: 35px; }
+  .dashboard-content .menu {
+    padding: 20px; }
+    .dashboard-content .menu .item a {
+      color: #5e7980; }
+
+.bold {
+  font-weight: bold; }
+
+/*# sourceMappingURL=style.css.map */
