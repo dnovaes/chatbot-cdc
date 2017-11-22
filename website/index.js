@@ -42,6 +42,10 @@ router.get('/dashboard', function(req, res) {
   res.render("dashboard");
 });
 
+router.get('/login', function(req, res) {
+  res.render("login");
+});
+
 //route that handle ajax requests
 //in case of post request, all "variable" are passed in req.body
 router.post('/ajax/:function', function(req, res){

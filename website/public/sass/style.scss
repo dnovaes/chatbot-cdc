@@ -133,3 +133,73 @@
 .bold {
   font-weight: bold;
 }
+
+.login-container {
+
+  margin-top: 50px;
+
+  .content-form {
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    &.border-right {
+      border-right: 2px solid #ecf0f1;
+    }
+  }
+
+  .title {
+    text-align: center;
+    color: darken(#ecf0f1, 70%);
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  input {
+    border-radius: 5px !important;
+    box-shadow: none !important;
+    height: 45px !important;
+    font-size: 18px !important;
+  }
+
+  ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: darken(#ecf0f1, 50%);
+    text-align: left;
+  }
+  ::-moz-placeholder { /* Firefox 19+ */
+    color: darken(#ecf0f1, 50%);
+    text-align: left;
+  }
+  :-ms-input-placeholder { /* IE 10+ */
+    color: darken(#ecf0f1, 50%);
+    text-align: left;
+  }
+  :-moz-placeholder { /* Firefox 18- */
+    color: darken(#ecf0f1, 50%);
+    text-align: left;
+  }
+
+  .login-bt {
+    background-color: darkblue;
+    color: white;
+    height: 45px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 61px;
+
+    &:hover {
+      background-color: darken(darkblue, 10%);
+    }
+  }
+
+  .new-bt {
+    background-color: #FF6600;
+    color: white;
+    height: 45px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: darken(#FF6600, 10%);
+    }
+  }
+}
