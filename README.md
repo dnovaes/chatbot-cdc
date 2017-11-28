@@ -47,7 +47,8 @@ npm start
 
 ## Links:
 
-Documentos com desenvolvimento do projeto: (requisitos, testes, arquitetura..):<space><space>
-http://goo.gl/5bSDbb <space><space>
-Acesso a aplicação externamente:<space><space>
+Documentos com desenvolvimento do projeto: (requisitos, testes, arquitetura..):<br>
+http://goo.gl/5bSDbb
+
+Acesso a aplicação externamente:</br>
 https://blooming-eyrie-81507.herokuapp.com
