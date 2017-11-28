@@ -33,12 +33,13 @@ cd chatbot-cdc/website
 npm install
 ```
 
-## Executando o servidor-aplicação
+## Executando a aplicação
 
-###### Pra começar a rodar os servidores (elasticsearch e o website), vá para pasta inicial do
-sistema e digite o comando:
+###### Pra começar a rodar aplicação, vá para pasta 'website' do sistema e digite o comandos:
 
-`npm start`
+```
+npm start
+```
 
 ###### Para testar a aplicação abra o navegador e acesse o link:
 
@@ -46,5 +47,7 @@ sistema e digite o comando:
 
 ## Links:
 
-Documentos com desenvolvimento do projeto: (requisitos, testes, arquitetura..)
-http://goo.gl/5bSDbb
+Documentos com desenvolvimento do projeto: (requisitos, testes, arquitetura..):<space><space>
+http://goo.gl/5bSDbb <space><space>
+Acesso a aplicação externamente:<space><space>
+https://blooming-eyrie-81507.herokuapp.com
