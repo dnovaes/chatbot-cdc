@@ -3,22 +3,11 @@
 ## Pré-Requisitos:
 
 - Arquitetura x64
-- Java 8 (1.8.0+)
 - NodeJs 6.11 +
-
-Obs:
-> A minimum of 3GB RAM assigned to Docker Elasticsearch alone needs at least 2GB of RAM to run.
 
 ## Instalação:
 
 #### Ubuntu:
-
-###### Java JDK 8:
-```
-1. sudo add-apt-repository ppa:openjdk-r/ppa
-2. sudo apt-get update
-3. sudo apt-get install openjdk-8-jdk
-```
 
 ###### Node 6.X:
 ```
@@ -49,6 +38,9 @@ npm start
 
 Documentos com desenvolvimento do projeto: (requisitos, testes, arquitetura..):<br>
 http://goo.gl/5bSDbb
+
+Trello para gerenciamento das atividades:<br>
+Release 2: https://trello.com/b/Xtn4jnUl/dev-release-2
 
 Acesso a aplicação externamente:</br>
 https://blooming-eyrie-81507.herokuapp.com
