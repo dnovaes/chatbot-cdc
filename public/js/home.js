@@ -37,12 +37,14 @@ function checkforSynonyms(){
   //console.log(kw, app.keywords);
 }
 
-function highlight(content){
-  //content = content in string to highlight if possible
+//Highlight words in the article. if it doesnt find a match there. the article is excluded.
+//also, depending of how data is structured (section or in articles) the highlight function return diff data struct
+function highlight(content, dataStruct){
+  //content = group of articles [0]=> articles content, [2]=> article id
   //kw = keywords that could be matched and hightlight content
   var kw = app.keywords;
 
-  var kwords = "";
+  let kwords = "";
   for(var i in kw){
     if(kw[i]=="?"){
       kw[i]="\\?";
@@ -54,39 +56,55 @@ function highlight(content){
   }
   regExp = new RegExp(kwords, "ig");
 
-  if(typeof(content)=="string"){
+  if(dataStruct == "article"){
 
+    if(typeof(content[0])=="string"){
+      content = content[0].replace(regExp, function(match){
+          return "<span class='b'>"+match+"</span>";
+      });
+      return content[0];
+
+    }else if(typeof(content[0])=="object"){
+
+      let groupArticles = [];
+      let articles = [];
+      let numberArticles = [];
+      let foundBool = false;
+
+      //for each article inside of object of articles, replace matchs for words in bold
+      content[0].forEach(function(article, i){
+
+        article = article.replace(regExp, function(match){
+            foundBool = true;
+            return "<span class='b'>"+match+"</span>";
+        });
+
+        //if in the current article wasnt found a match then it is removed in the code below
+        if(foundBool){
+          articles.push(article);
+          numberArticles.push(content[1][i]);
+          foundBool = false;
+        }
+
+      });
+      groupArticles[0] = articles;
+      groupArticles[1] = numberArticles;
+      return groupArticles;
+
+    }
+  }else{
     content = content.replace(regExp, function(match){
         return "<span class='b'>"+match+"</span>";
     });
     return content;
-
-  }else if(typeof(content)=="object"){
-
-    var articles = [];
-    var foundBool = false;
-
-    content.forEach(function(article, i){
-
-      article = article.replace(regExp, function(match){
-          foundBool = true;
-          return "<span class='b'>"+match+"</span>";
-      });
-      if(foundBool){
-        articles.push(article);
-        foundBool = false;
-      }
-
-    });
-    return articles;
-
   }
 }
 
 //split the content data string in the articles
 //return an array o segments of this content string
 function splitDocument(content, type){
-    var articles=[];
+    let articles=[];
+    let numberArticles = [];
 
     //pattern for start of the article
     //original pattern at the beggining of the conception:
@@ -94,27 +112,40 @@ function splitDocument(content, type){
 
     regExp = new RegExp("(?:^|\\s)Artigo([\\d]+)|(?:^|\\s)Art. ([\\d]+)");
 
-    var i=0;
+    let i=0;
     while(content.length>0){
-      //get start pos of the article
+      //.exec returns an array "result" containing [0] = the full string of characters matched, [1]..[n] substring matches if any.
+      //[index] the 0-based index of the match in the string
+      //[input] original string
+ 
       var startPosMatch = regExp.exec(content);
 
       if(startPosMatch){
         articles[i] = startPosMatch[0];
         content = content.substr(startPosMatch.index+(startPosMatch[0].length), content.length-1);
 
+        //try a match again, if it finds more matchs after removing the previous match. Then this documents has more than one article
         var endPosMatch = regExp.exec(content);
         if(endPosMatch){
           articles[i] = articles[i] + content.substr(0, endPosMatch.index-1); 
           content = content.substr(endPosMatch.index, content.length-1);
         }else{
+          //not anymore articles was found.
           articles[i] = articles[i] + content;
           content = "";
         }
+
+        //add the number of the article found
+        numberArticles[i] = startPosMatch[2];
       }
       i++;
     }
-  return articles; 
+  let groupArticles = [];
+
+  groupArticles[0] = articles;
+  groupArticles[1] = numberArticles;
+
+  return groupArticles; 
 }
 
 function getSynonyms(keywords){
@@ -230,7 +261,7 @@ var vueHeader = new Vue({
           app.keywords = res.data.keywords;
 
           //check if keywords has synonyms and add then to app.keywords
-          //checkforSynonyms();
+          checkforSynonyms();
 
           app.claimDataSW = "Keywords: "+app.keywords;
 
@@ -300,8 +331,9 @@ var app = new Vue({
       synonyms: [
         ["volta", "reembolso", "devolução"],
         ["tempo", "dias"],
-        ["defeito", "vícios", "uso"],
-        ["pagamento", "cobrança"]
+        ["uso", "vícios", "defeito", "falha"],
+        ["pagamento", "cobrança"],
+        ["anuncio", "anunciando", "publicidade"]
       ],
       outputBool: false,
       posBool: false, //indicate to system if it should apply the POS Tagger on the claim or not
@@ -360,7 +392,6 @@ var app = new Vue({
       console.log("app.claimData: ", app.claimData);
 
       axios.get('/elastic/?q='+app.keywords, config).then(function (res){
-        console.log(res);
         app.hits = res.data.hits
 
         console.log(app.hits.hits);
@@ -403,18 +434,25 @@ var app = new Vue({
               tempContent = val._source.content
 
               //split document in articles units
-              var articles= splitDocument(tempContent, app.configSearchStruct);
+              //var articles is an array containing content-data of the articles.
+              //groupArticles[0] == content of the first article in this section... and on on.
+
+              let groupArticles = splitDocument(tempContent, app.configSearchStruct);
 
               //highlight words in the articles that matches with the keywords from the user claim
-              articles = highlight(articles);
+              //if it doesnt find a match, article is excluded
+              
+              groupArticles = highlight(groupArticles, app.configSearchStruct);
             
-              for(var k=0;k<articles.length;k++){
+              for(var k=0;k<groupArticles[0].length;k++){
               
                 app.resultUnits.push({
                   divId: 'resultUnit-'+j,
                   span1Id: 'ruStatus-'+j,
-                  data: articles[k]
+                  data: groupArticles[0][k],
+                  artId: groupArticles[1][k]
                 });
+
                 j++;
               }
             });
@@ -426,6 +464,7 @@ var app = new Vue({
           app.hits = "";
 
           //iniciate chatbot with the user based on the result that we have in app.resultUnits
+          console.log(app.resultUnits);
           startChatbot();
 
         }else{
