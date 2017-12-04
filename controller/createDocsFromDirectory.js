@@ -1,3 +1,9 @@
+/*
+ * How to Use:
+ * node createDocsFromDirectory.js folderPathHere
+ *
+*/
+
 var fs = require("fs"); //module to read files
 var functions  = require("../public/js/ext_functions.js"); //for function getLastDirName
 var client = require("./connection.js");

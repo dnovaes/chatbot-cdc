@@ -1,4 +1,4 @@
-var client = require("connection.js");
+var client = require("./connection.js");
 
 //using this file u can delete a index/shard in elasticsearch by the name of index by argument.
 //ex: node deleteIndex.js nameofindexhere
