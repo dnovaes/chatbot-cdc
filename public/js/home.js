@@ -2,29 +2,39 @@
 function checkforSynonyms(){
     
   //check if keyword has synonyms
-  var kw = app.keywords;
+  //if it find that keywords has synonyms, it adds all the others keywords-synonyms in the array of synonyms
+  let kw = app.keywords;
   flag = false;
 
   for(var i=0; i < kw.length; i++){
-
     app.synonyms.forEach(function(ele, eli){
+      //ele = element value,
+      //eli =  element index
+      //console.log(ele, eli);
+
+      //compares if element in array of synonyms is equal to keyword.
+      //if it is indeed, it is removed from keywords array right away
       ele.forEach(function(val, vali){
         if( kw[i] == val){
           flag = true;
           kw.splice(i, 1);
+          //console.log(kw);
         }
       });
 
       if(flag){
         var length = app.synonyms[eli].length;
+        console.log(app.synonyms[eli]);
         for(var j=0; j<app.synonyms[eli].length; j++){
           kw.unshift(app.synonyms[eli][j]);
         }
         flag = false;
+        //force break of the loop
+        i = kw.length;
       }
     });
-
   }
+  //console.log(kw, app.keywords);
 }
 
 function highlight(content){
@@ -288,12 +298,9 @@ var app = new Vue({
       claimDataSW: "", //contains the message of keywords of claim
       keywords: "",
       synonyms: [
-        ["volta", "reembolso"],
-        ["devolução", "reembolso"],
+        ["volta", "reembolso", "devolução"],
         ["tempo", "dias"],
-        ["uso", "vícios"],
-        ["usei", "vícios"],
-        ["defeito", "vícios"],
+        ["defeito", "vícios", "uso"],
         ["pagamento", "cobrança"]
       ],
       outputBool: false,
