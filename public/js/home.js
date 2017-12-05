@@ -352,7 +352,154 @@ var app = new Vue({
       //chatbot vars
       nMsgsBot: -1,
       nMsgsUser: -1,
-      inputChatbot: ""
+      inputChatbot: "",
+      //zero based array corresponding to i+1 article number. When i is the array index and (i+1) is the number of the article
+      questions: [
+        "Foi demonstrado alguma confusão pelo vendedor a respeito do papel de fornecedor ou consumidor?",
+        "Ant",
+        "Ant",
+        "Tem alguma  dúvida em relação aos princípios de proteção ao consumidor ditado pela Politica Nacional das Relações de Consumo?",
+        "Existe uma referência específica sobre as a execução dos princípios estabelecidos pela Ploticia Nacional das Relações de Consumo. Deseja visualizar?",
+        [
+          "O fornecimento deste produto indica risco a sua saúde e segurança de vida?",
+          "Você sente que igualdade ou sua liberdade de escolha foi quebrada durante a contratação?",
+          "A informação passada para você foi feita de forma devida? Isto é, A informação foi clara sobre o produto ou serviço adquirido?",
+          "Você suspeita que passou por algum tipo de publicidade enganosa?",
+          "Por acaso, percebeu que está pagando parcelas desproporcionais ao estabelecido em seu contrato?",
+          "Você passou por algum dano moral, patrimonial ($$), individual ou coletivo?",
+          "Tentou acessar algum órgão perto de você e não pôde ser atendido ou não encontrou nenhum órgão do governo que pudesse te ajudar?",
+          "Na recorrência de uma alegação, você pode utilizar a inversão do ônus de prova a favor no processo?",
+          "Durante a prestação do serviço público, seu problema foi solucionado?",
+        ],
+        "Um dos atores (fornecedores ou consumidores), rejeitam a responder pelo reparo de danos?",
+        "O produto ou serviço que adquiriu apresenta algum risco a sua saúde ou segurança?",
+        "No rotulo do produto ou a empresa que prestou lhe serviço que adquiriu informou devidamente a respeito da periculosidade que o mesmo apresenta?",
+        "O Fornecedor sabia do perigo que o produto ou serviço apresentava e mesmo assim lhe forneceu dizendo que era de 'ótima' qualidade?",
+        "-",
+        "Você deseja  ter reparo dos danos causados pelo produto adquirido?",
+        "Ant",
+        "O fornecedor, não identificado, se nega de alguma forma a reparação do casado pelo serviço e você deseja ser indenizado pelo serviço parcialmente ou totalmente realizado?",
+        "-", //Art 15
+        "-",
+        "-",
+        //Art 18
+        [
+          "A empresa não solucionou o problema e você gostaria de substituir o seu produto?", 
+          "A empresa não solucionou o problema e você gostaria de ter seu dinheiro de volta?",
+          "A empresa não solucionou o problema e você gostaria que o preço do produto sofresse um abatimento ?",
+          "Ao contactar a empresa, a mesma disse que o prazo da troca ou devolução do produto ou serviço COM DEFEITO não pode ser ampliado? (Em casos de prazos menores que 180 dias)",
+          "Ao substituir por um novo produto ou serviço, o mesmo apresentou outro problema e a empresa se negou a resolve-lo?",
+          "A empresa ou fornecedor diz que não tem o produto e por isso não pode efetuar troca?"
+        ],
+        "Lhe foi vendido um produto com medidas abaixo da informada na especificação e gostaria de ter abatimento do preço, complementação do peso / medida, substituição do produto ou restituição da quantia paga ?",
+        "O fornecedor prestou serviço de má qualidade ou impróprio para consumo ou ainda e se nega a assumir pelo dano que o serviço tenha causado ou disparidade da informação contida na oferta / propaganda?",
+        "O serviço prestado pela empresa utilizou de peças usadas ou inadequadas para reparação de seu produto, isto é, fora das especificações técnicas do fabricante sem sua autorização?",
+        //Art 22
+        "Você recebeu algum atendimento de um órgão público que demonstrou falta de profissionalismo para solucionar seu problema? Se sim, qual serviço você precisou para solucionar seu problema e qual foi o gargalo ou inadequação encontrado em seus serviços?",
+        "O fornecedor responde dizendo que não sabia que o produto vendido por ele estava neste estado e se nega a solucionar seu problema?",
+        "O fornecedor nega a solucionar seu problema devido a uma clausula contratual assinado entre você e ele que diminua ou anule a obrigação dele de indeniza-lo pelo defeito ou causado?",
+        "Ant",
+        [
+          "Fornecedor alega que a reclamação não pode ser feita porque passou do prazo do seu direito?",
+          "Ant",
+          "Você não tinha certeza se o produto tinha defeito e acha que percebeu tarde mais para fazer queixa do fornecedor?(vício oculto)"
+        ],
+        "O produto ou serviço que adquiriu te causou algum dano físico / quimico e acha que passou do prazo para tentar recorrer a reparação do dano?",
+        "Está dificil identificar quem são os sócios da empresa ou eles alegam que não possuem recursos para pagamento de débitos?",
+        "-",
+        //Art 30
+        "A oferta do produto ou serviço que viu ofereceu um determinado valor e no momento do pagamento você teve que pagar por outro valor mais alto?",
+        "O produto ou Serviço que adquiriu não possuia informações claras, corretas, precisas em portugês ou suas caracteristicas, qualidades, comprosição, preço, garantia ou ainda não informava riscos que apresenta a sua saúde e segurança?",
+        "O fabricantes ou importador do produto que adquiriu afirma que não possui peças de reposição para seu produto e este continua sendo fabricado e veiculado no mercado?",
+        [
+          "Foi oferecido a você ou você comprou um produto via telefone em que as informações do fabricante e endereço da companhia não foi informado na embalagem?",
+          "Foi cobrado de você uma taxa por aceitar uma ligação telefonica feita exclusivamente para realizar propaganda do produto?"
+        ],
+        "A empresa representante do produto ou serviço que você adquiriu nega a responder pela responsabilidade do dano",
+        //Art 35
+        "O fornecedor do produto ou serviço recusou a cumprir a oferta publicada pelo mesmo e não foi oferecido a você a escolha de um dos seguintes items ? (exigir cumprimento da oferta, aceitar outro produto ou serviço equivalente ou ainda rescindir o contrato com restituição)",
+        [
+          "Você acha que a propaganda foi colocada de forma confusa e complicada para visualização?",
+          "O fornecedor demonstra não conter os dados utilizados para construção da mensagem publcitária?"
+        ],
+        [
+          "O fornecedor deixou de informar na propaganda / oferta uma informação essencial no produto ou serviço que você pagou? (propaganda enganosa)",
+          "Você considera que a publicidade é discrimatória, te induz ao erro ou contém total ou parcialmente informações falsas?"
+        ],
+        "-",
+        [
+          "O vendedor disse que só poderia adquirir um produto ou serviço se adquirisse um outro diferente produto ou serviço?",
+          "O vendedor recusou atendimento a ti mesmo em condições de prestar o serviço ou com disponibilidade de estoque ou ainda sem justificativa?",
+          "Te enviaram um produto ou serviço sem solicitação feita por ti e em seguida te cobraram por isso?",
+          "O vendedor lhe vendeu um produto ou serviço utilizando sua falta de informação sobre os mesmo para realizar a venda? Que informação ele disse ou deixou de dizer propositalmente para que fosse feita a cobrança por ti? Nesses casos, é preciso de um acompanhando melhor do caso.",
+          "O fornecedor lhe fez uma cobrança indevida por algum serviço não prestado ? (lucro excessivo)",
+          "O fornecedor te vendeu um produto sem informar o cálculo de custos ou um serviço sem autorização para ser feito",
+          "Fornecedor te passou uma informação incorreta, maliciosa ou tendenciosa na compra do produto ou serviço?",
+          "Um dos produtos ofertados pelo fornecedor está fora das normas da ABNT ou outra instituição oficial de medidas?",
+          "Você ofereceu o pagamento imediato (dinheiro) porém o fornecedor negou dizendo que não aceita pagamento no momento que decidiu a compra e só aceita compras a prazo (cartão, cheque, vales)?",
+          "O fornecedor lhe fez uma cobrança indevida por algum serviço não prestado ? (lucro excessivo)",
+          "Fornecedor reajustou os valores dos produto ou serviço sem previa negociação, diferente do estabelecido no contrato?",
+          "Na compra do bem ou serviço, o fornecedor não estabeleceu datas e turno da entrega do mesmo ou/e não disponibilizou direito de escolha a você?",
+          "Fornecedor reajustou os valores dos produto ou serviço sem previa negociação, diferente do estabelecido no contrato?",
+          "O estabelecimento que você acessou na busca de um serviço ou compra continha maior número de consumidores permitidos pela autoridade oficial para o local? Conseguiu registrar o momento de alguma forma (foto, vídeo, horario, testemunha) ?"
+        ],
+        //Art 40
+        [
+          "O fornecedor estipulou um outro valor para pagamento do serviço ou produto diferente do escrito no orçamento feito em até 10 dias atrás?",
+          "O fornecedor aumentou o orçamento de um produto ou serviço sem aviso ou não discutiu contigo antes de alterar e solicita que você pague esse acrescimo ?",
+          "Ant"
+        ],
+        "O fornecedor vendeu um produto ou serviço fora do valor estabelecido pela instituição oficial? (só responda sim se o preço seguir de um tabelamento oficial)",
+        [
+          "Você foi exposto sofreu algum tipo de constrangimento ou ameaça durante a cobrança de débitos ou foi cobrado indevidamente?",
+          "Você foi solicitado a pagamento de um serviço ou produto através de um documento que não possui informações suficientes acerca do fornecedor (cpf, cnpf, endereço, nome) ?"
+        ],
+        //Art 43
+        [
+          "O fornecedor nega informar todas as informações contidas em seu banco de dados a seu respeito ?",
+          "Os seus dados cadastrados no banco do fornecedor possuem informações duvidosas e/ou possuem informções negativas a mais de 5 anos?",
+          "Você foi cobrado ou não informado sobre uma compra registrada no banco de dados que não realizou?",
+          "O arquivista ou responsável pelo banco de dados com seus registros negou sua solicitação para correção dos dados ou não comunicou eventuais destinatários a respeito das informações incorretas?",
+          "Você encontrou seus dados sendo veiculado em entidades de caráter privado? (viola também a garantia a intimidade e vida privada)",
+          "Passado o período de registro de inadimplencia no banco de dados público ou privado, você teve dificuldade em realizar compras ou emprestimos em algum fornecedor / vendedor de produto ou serviço?",
+          "Você, consumidor com deficiente, foi impossibilitado de visualizar  seus dados no banco por causa de inacessibilidade?"
+        ],
+        "Você realizou uma queixa em um orgão publica e esta não pode ser armazenada e retida para consulta posteriormente ou sua queixa não pôde ser registrada?",
+        "-",
+        "O fornecedor obrigou a aceitar uma clausula contratual sem a oportunidade de ler e verificar previamente ou ainda,  o fornecedor dificultou a compreensão do contrato?",
+        "Você assinou um contrato que contém clausulas contratuais duvidosas em que o fornecedor só as interpreta ao favor dele?",
+        "O fornecedor antes de enviar um contrato legal a ti pelo produto ou serviço, comunicou ou preparou algum documento prometendo algumas caracteristicas acerca do serviço ou produto porém o mesmo não pode ser encontrado no contrato?",
+        "Você arrependeu-se do plano assinado, solicitou o cancelamento do plano contratual assinado em até 7 dias atrás e o pedido foi negado pelo fornecedor?",
+        //Art 50
+        "O produto ou serviço que realizou não foi respeitado pela garantia ou teve sua garantia invalidada pelo fornecedor afirmando que a mesma já havia sido utilizada por uma troca de defeito anterior?",
+        [
+          "No regulamento ou contrato indicado pelo fornecedor, ele diminui ou anula seus direitos acerca de devolução, substituição ou reembolso em caso de falhas, defeitos ou outros vícios associados ao produto / serviço ?",
+          "Ant",
+          "O fornecedor não assume a falha do prejuízo exercido pelo serviço ou incluso no produto e transfere culpa para terceiros?",
+          "O fornecedor estabeleceu obrigações no contrato que te deixou em desvantagem exagerada acerca do roduto ou serviço que adquiriu?",
+          "-",
+          "-",
+          "Estabelece no contrato que no caso de conflito você PRECISA aceitar e comunicar-se com um arbitro para tentar solucionar seu problema ao invés de diretamente a justiça/ consumidor?",
+          "O fornecedor impõe um representante para realizar e tomar decisões de negocio por você?",
+          "O fornecedor obriga você a cumprir  o disposta no contrato enquanto ele pode sair quando quiser ?",
+          "O fornecedor diz em contrato que ele pode variar o preço acordado sem informar a você?",
+          "É estabelecido que o fornecedor pode desistir do contrato quando quiser sem aviso prévio e negociação contigo?",
+          "O fornecedor te obriga a você consumidor a ressarcir custos da sua obrigação sem oferecer o mesmo a ti em casa de falhas ?",
+          "O fornecedor afirma que poderá modificar o conteúdo ou qualidade do contrato após adesão do contrato e sem acordo de negociação contigo (consumidor)?",
+          "O fornecedor dá liberdade a si mesmo de infringir normais ambientais?",
+          "Você acha que as clausulas contratuais inferem ou estão em desacorod com o Sistema de Proteção ao Consumidor? Isto é, restringe direitos e obrigações fundamentais do consumidor?",
+          "O fornecedor não garante o direito de indenização em casos de vícos (defeito, falhas, indevido a consumo, prejudicial) ?",
+        ],
+        "O fornecedor antes de gerar o financiamento ou prestações não informa previamente o preço do produto ou serviço em moeda naciona, juros e acrescimsmos legais, número e periodo de prestações e soma total a pagar ou ainda não dá direito a liquidação total ou parcial da prestação ou financiamento ?",
+        "Você, após pagar total ou parcialmente prestações não teve direito a retorno do valor pago após se retirar do consórcio ",
+        //Art 54
+        [
+          "O fornecedor inseriu uma nova clausula no formulario do contrato e você suspeita que isso seja infração perante ao código de defesa do consumidor?",
+          "O fornecedor de um bem que você adquiriu induz a idéia de que você não pode cancelar o contrato (clausula resolutória ou rescisória)?",
+          "O contrato criado e oferecido a você pelo fornecedor possui termos estranhos ou de dificil compreensão ou ainda está escrito em fonte muito pequena isto é, menor que 12 ?",
+          "No contrato que vc aderiu ou está prestes a aderir, possui clausulas que limitam o direito do consumidor e não foram indicadas em destaque no documento?",
+        ]
+      ]
     } 
   },
   watch: {
