@@ -2,5 +2,5 @@ elasticsearch-5.0.0/data/nodes/0/_state/global-*
 elasticsearch-5.0.0/data/nodes/0/indices/ATIq0VqcR1OYbgApj35wvw/**
 elasticsearch-5.0.0/data/nodes/0/_state/node-*
 elasticsearch-5.0.0/logs/*
-website/node_modules/**
+node_modules/**
 npm-debug.log
