@@ -10,7 +10,6 @@ var functions  = require(__dirname+"/public/js/ext_functions.js");
 var port       = process.env.PORT || 3000;
 var nlp        = require(__dirname+"/public/js/natural.js");
 const http     = require('http');
-var db         = require('./config/db.js');
 var user       = require('./routes/user');
 
 // There is a special routing method which is not derived from any HTTP method. 
