@@ -11,19 +11,34 @@
   </head>
   <body class="gray-bg">
     <div class="row">
-      <div class="large-offset-2 large-8 columns white-bg login-container">
-        <div class="large-6 columns content-form border-right">
-          <div class="title">JÁ TENHO CADASTRO</div>
-          <input type="text" class="fluid margin-top-20" placeholder="E-mail">
-          <input type="password" class="fluid" placeholder="Sua senha">
-          <button class="fluid login-bt">ENTRAR</button>
+      <div class="large-offset-2 large-8 columns">
+      </div>
+    </div>
+    <% if (sessionFlash && sessionFlash.message) { %>
+      <div class="row margin-top-20">
+        <div class="large-offset-2 large-8 columns alert <%= sessionFlash.type %>">
+          <%= sessionFlash.message %>
         </div>
+      </div>
+    <% }%>
+    <div class="row">
+      <div class="large-offset-2 large-8 columns white-bg login-container">
         <div class="large-6 columns content-form">
+          <div class="title">JÁ TENHO CADASTRO</div>
+          <form action="/signin" method="post">
+            <input type="text" name="email" class="fluid margin-top-20" placeholder="E-mail" required>
+            <input type="password" name="password" class="fluid" placeholder="Sua senha" required>
+            <button class="fluid login-bt">ENTRAR</button>  
+          </form>
+        </div>
+        <div class="large-6 columns content-form border-left">
           <div class="title">NÃO TENHO CADASTRO</div>
-          <input type="text" class="fluid margin-top-20" placeholder="E-mail">
-          <input type="password" class="fluid" placeholder="Sua senha">
-          <input type="password" class="fluid" placeholder="Repita a sua senha">
-          <button class="fluid new-bt">CRIAR</button>
+          <form action="/signup" method="post">
+            <input type="text" name="name" class="fluid margin-top-20" placeholder="Nome" required>
+            <input type="text" name="email" class="fluid margin-top-20" placeholder="E-mail" required>
+            <input type="password" name="password" class="fluid" placeholder="Sua senha" required>
+            <button class="fluid new-bt">CRIAR</button>  
+          </form>
         </div>
       </div>
     </div>
