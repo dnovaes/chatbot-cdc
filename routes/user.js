@@ -12,16 +12,12 @@ exports.signup = function(req, res) {
     "modified" : new Date()
   }
 
-  db.connect();
-
   db.query("SELECT email, name from users where email = '" + user.email + "'", function(err, results) {
     if(err) {
       req.session.sessionFlash = {
         type: "danger",
         message: 'Um erro inesperado ocorreu. Favor tentar novamente.'
       }
-
-      db.end();
 
       res.redirect('/login');
     } else {
@@ -31,15 +27,10 @@ exports.signup = function(req, res) {
           message: 'Endereço de e-mail ja se encontra cadastrado. Favor tentar novamente com outro e-mail.'
         }
 
-        db.end();
-
         res.redirect("/login");
       } else {
         db.query('INSERT INTO users SET ?', user, function(err, results) {
           if (err) {
-
-            db.end();
-
             res.redirect('/login');
           } else {
             req.session.userEmail = user.email;
@@ -50,16 +41,12 @@ exports.signup = function(req, res) {
               message: 'Registro efetuado com sucesso!'
             }
 
-            db.end();
-
             res.redirect('/dashboard');
           }
         });
       }
     }
   });
-
-  db.end();
 }
 
 exports.signin = function(req, res) {
@@ -69,8 +56,6 @@ exports.signin = function(req, res) {
   var password = req.body.password;
 
   var sql = "SELECT email, name, password from users where email = '" + email + "'"; 
-
-  db.connect();
 
   db.query(sql, function(err, results) {
     if (results.length && bcrypt.compareSync(password, results[0].password)) {
@@ -82,8 +67,6 @@ exports.signin = function(req, res) {
         message: 'Login efetuado com sucesso'
       }
 
-      db.end();
-
       res.redirect('/dashboard');
     } else {
       req.session.sessionFlash = {
@@ -91,13 +74,9 @@ exports.signin = function(req, res) {
         message: 'Credenciais inválidas. Tente novamente.'
       }
 
-      db.end();
-
       res.redirect('/login');
     }
-  });
-
-  db.end(); 
+  }); 
 }
 
 exports.signout = function(req, res) {
