@@ -57,26 +57,31 @@ exports.signin = function(req, res) {
 
   var sql = "SELECT email, name, password from users where email = '" + email + "'"; 
 
-  db.query(sql, function(err, results) {
-    if (results.length && bcrypt.compareSync(password, results[0].password)) {
-      req.session.userEmail = results[0].email;
-      req.session.user = results[0];
+  db.getConnection(function(err, connection) {
+    connection.query(sql, function(err, results) {
 
-      req.session.sessionFlash = {
-        type: "success",
-        message: 'Login efetuado com sucesso'
+      if (results.length && bcrypt.compareSync(password, results[0].password)) {
+        req.session.userEmail = results[0].email;
+        req.session.user = results[0];
+
+        req.session.sessionFlash = {
+          type: "success",
+          message: 'Login efetuado com sucesso'
+        }
+
+        res.redirect('/dashboard');
+        
+        } else {
+          req.session.sessionFlash = {
+          type: "danger",
+          message: 'Credenciais inválidas. Tente novamente.'
+        }
+
+        res.redirect('/login');
       }
-
-      res.redirect('/dashboard');
-    } else {
-      req.session.sessionFlash = {
-        type: "danger",
-        message: 'Credenciais inválidas. Tente novamente.'
-      }
-
-      res.redirect('/login');
-    }
-  }); 
+      connection.release();
+    });  
+  });
 }
 
 exports.signout = function(req, res) {
