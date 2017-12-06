@@ -1,6 +1,7 @@
 // BASE SETUP 
 
 var express    = require('express')
+var session    = require('express-session');
 const client   = require('./controller/connection.js');
 var app        = express()
 var path       = require('path');
@@ -8,7 +9,9 @@ var bodyparser = require('body-parser');
 var functions  = require(__dirname+"/public/js/ext_functions.js");
 var port       = process.env.PORT || 3000;
 var nlp        = require(__dirname+"/public/js/natural.js");
-const http       = require('http');
+const http     = require('http');
+var db         = require('./config/db.js');
+var user       = require('./routes/user');
 
 // There is a special routing method which is not derived from any HTTP method. 
 // This method is used for loading middleware functions at a path for all request methods.
@@ -29,6 +32,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyparser.urlencoded({ extended: true}));
 app.use(bodyparser.json());
 
+app.use(session({
+  secret: 'chatbot',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { maxAge: 60000 }
+}));
+
+app.use(function(req, res, next){
+  // if there's a flash message in the session request, make it available in the response, then delete it
+  res.locals.sessionFlash = req.session.sessionFlash;
+  delete req.session.sessionFlash;
+  next();
+});
+
+
+
 //load file of route configs | also called as controllers
 //require('./controller/routing.js')(app, { verbose: !module.parent, express: express });
 
@@ -38,13 +57,11 @@ router.get('/', function (req, res){
   res.render('index');
 });
 
-router.get('/dashboard', function(req, res) {
-  res.render("dashboard");
-});
-
-router.get('/login', function(req, res) {
-  res.render("login");
-});
+router.post('/signin', user.signin);
+router.post('/signup', user.signup);
+router.get('/signout', user.signout);
+router.get('/dashboard', user.dashboard);
+router.get('/login', user.login)
 
 //route that handle ajax requests
 //in case of post request, all "variable" are passed in req.body

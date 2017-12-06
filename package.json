@@ -9,7 +9,10 @@
     "ejs": "^2.5.6",
     "elasticsearch": "^13.0.1",
     "express": "^4.15.2",
-    "natural": "^0.5.4"
+    "natural": "^0.5.4",
+    "mysql": "2.15.0",
+    "express-session": "^1.15.1",
+    "bcrypt": "1.0.3"
   },
   "devDependencies": {},
   "scripts": {

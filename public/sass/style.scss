@@ -142,8 +142,8 @@
     padding-top: 20px;
     padding-bottom: 20px;
 
-    &.border-right {
-      border-right: 2px solid #ecf0f1;
+    &.border-left {
+      border-left: 2px solid #ecf0f1;
     }
   }
 
@@ -184,7 +184,7 @@
     height: 45px;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 61px;
+    margin-top: 65px;
 
     &:hover {
       background-color: darken(darkblue, 10%);
@@ -202,4 +202,31 @@
       background-color: darken(#FF6600, 10%);
     }
   }
+}
+
+.alert {
+  padding: 10px 10px;
+  font-weight: 500;
+  font-size: 80%;
+  margin-bottom: 5px;
+  border-radius: 5px;
+
+  &.danger {
+    color: #C7254E;
+    background-color: #F9F2F4;
+  }
+
+  &.success {
+    color: #07A68E;
+    background-color: #DAF4EB;
+  }
+}
+
+.no-margin {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+.orange-color {
+  color: #FF6600 !important;
 }

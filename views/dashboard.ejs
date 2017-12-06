@@ -24,13 +24,20 @@
               <a href="#">Minhas Queixas</a>
             </div>
             <div class="item">
-              <a href="#">Sair</a>
+              <a class="orange-color" href="/signout">Sair</a>
             </div>
           </div>
         </div>
         <div class="large-9 columns">
           <div class="white-bg border-radius">
             <div class="block">
+              <% if (sessionFlash && sessionFlash.message) { %>
+                <div class="row no-margin">
+                  <div class="columns alert <%= sessionFlash.type %>">      
+                    <%= sessionFlash.message %>         
+                  </div>
+                </div>
+              <% } %>
               <div class="title">BEM VINDO</div>
               <p class="margin-top-20">Essa é seu dashboard contento suas últimas atividades</p>
             </div>
