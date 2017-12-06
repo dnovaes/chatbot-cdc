@@ -24,7 +24,6 @@ function checkforSynonyms(){
 
       if(flag){
         var length = app.synonyms[eli].length;
-        console.log(app.synonyms[eli]);
         for(var j=0; j<app.synonyms[eli].length; j++){
           kw.unshift(app.synonyms[eli][j]);
         }
@@ -281,17 +280,6 @@ var vueHeader = new Vue({
         });
       }else{
         if(e.target.tagName === "INPUT" && e.target.value.length > 25){
-          /*
-          let inputTextEl = e.target;
-          let textareaEl = document.createElement("textarea-claim");
-          textareaEl.value = inputTextEl.value;
-          textareaEl.setAttribute("id", "textarea-claim");
-
-          let parentEl = inputTextEl.parentNode;
-          parentEl.removeChild(inputTextEl);
-
-          parentEl.appendChild(textareaEl);
-          */
           let textareaComponent = Vue.extend({
             template: '\
               <textarea id="textarea-claim" autofocus>{{ this.claimData }} </textarea>\
@@ -422,8 +410,9 @@ var app = new Vue({
           "Você acha que a propaganda foi colocada de forma confusa e complicada para visualização?",
           "O fornecedor demonstra não conter os dados utilizados para construção da mensagem publcitária?"
         ],
+        //Art 37, Propaganda Enganosa
         [
-          "O fornecedor deixou de informar na propaganda / oferta uma informação essencial no produto ou serviço que você pagou? (propaganda enganosa)",
+          "O fornecedor deixou de informar na propaganda  / oferta uma informação essencial no produto ou serviço que você ficou interessado ou ainda, ofertou a venda um produto ou serviço não existente em seu estabelecimento? (propaganda enganosa)",
           "Você considera que a publicidade é discrimatória, te induz ao erro ou contém total ou parcialmente informações falsas?"
         ],
         "-",
@@ -473,13 +462,14 @@ var app = new Vue({
         //Art 50
         "O produto ou serviço que realizou não foi respeitado pela garantia ou teve sua garantia invalidada pelo fornecedor afirmando que a mesma já havia sido utilizada por uma troca de defeito anterior?",
         [
+          "Você assinou algum contrato com o fornecedor durante a compra ou pagamento pelo serviço?",
           "No regulamento ou contrato indicado pelo fornecedor, ele diminui ou anula seus direitos acerca de devolução, substituição ou reembolso em caso de falhas, defeitos ou outros vícios associados ao produto / serviço ?",
           "Ant",
           "O fornecedor não assume a falha do prejuízo exercido pelo serviço ou incluso no produto e transfere culpa para terceiros?",
           "O fornecedor estabeleceu obrigações no contrato que te deixou em desvantagem exagerada acerca do roduto ou serviço que adquiriu?",
           "-",
           "-",
-          "Estabelece no contrato que no caso de conflito você PRECISA aceitar e comunicar-se com um arbitro para tentar solucionar seu problema ao invés de diretamente a justiça/ consumidor?",
+          "O fornecedor estabelece no contrato que no caso de conflito você PRECISA aceitar e comunicar-se com um arbitro para tentar solucionar seu problema ao invés de diretamente a justiça/ consumidor?",
           "O fornecedor impõe um representante para realizar e tomar decisões de negocio por você?",
           "O fornecedor obriga você a cumprir  o disposta no contrato enquanto ele pode sair quando quiser ?",
           "O fornecedor diz em contrato que ele pode variar o preço acordado sem informar a você?",
@@ -541,7 +531,8 @@ var app = new Vue({
       axios.get('/elastic/?q='+app.keywords, config).then(function (res){
         app.hits = res.data.hits
 
-        console.log(app.hits.hits);
+        //debug in log results found
+        //console.log(app.hits.hits);
 
         //app.hits.hits.length = tell how many results were found.
         if(app.hits.hits.length> 0){
@@ -611,7 +602,6 @@ var app = new Vue({
           app.hits = "";
 
           //iniciate chatbot with the user based on the result that we have in app.resultUnits
-          console.log(app.resultUnits);
           startChatbot();
 
         }else{
@@ -637,15 +627,17 @@ var app = new Vue({
     },
     //chatbot methods
     sendMessage: function(e){
+      //if user pressed enter and inputChat bot is different from empty AND there is 
+      //already at least one message from bot then insert message from user
       if((e.key == "Enter") && (this.inputChatbot != "") && (this.nMsgsBot > -1)){
        
-        this.nMsgsBot++;
-
         app.msgUnits.push({
           id: 'user-msg-div-'+this.nMsgsBot,
           class: 'div-user msg-unit-el',
           data: this.inputChatbot 
         });
+        this.nMsgsUser++;
+
         this.inputChatbot = "";
 
         let elContentMsgs = document.getElementById("content-msgs");
@@ -654,6 +646,89 @@ var app = new Vue({
         }, 200);
       }else if(this.nMsgsBot == -1){
         alert("Digite sua queixa no início da página");
+      }
+    },
+    sendMessageBot: function(msg){
+
+        app.msgUnits.push({
+          id: 'bot-msg-div-'+this.nMsgsBot,
+          class: 'div-bot msg-unit-el',
+          data: msg
+        });
+        this.nMsgsBot++;
+
+        let elContentMsgs = document.getElementById("content-msgs");
+        setTimeout(function(){
+          elContentMsgs.scrollTop = elContentMsgs.scrollHeight;
+        }, 200);
+    },
+    //recursive request to questions
+    generateQuestionsToUser: function(){
+      //flag that indicates that the system could identify the claim typed from the user
+      let questionIndex;
+
+      if(app.resultUnits.length>0){
+        
+        console.log("Imprimir pergunta relacionada ao artigo "+app.resultUnits[0]["artId"]);
+        console.log("Index: "+parseInt(app.resultUnits[0]["artId"])-1);
+
+        questionIndex = parseInt(app.resultUnits[0]["artId"])-1; 
+
+        //console.log(typeof(app.questions[questionIndex]));
+
+        //send question to the user
+        if(typeof(app.questions[questionIndex]) == "object"){
+          console.log(app.questions[questionIndex][0]);
+          app.sendMessageBot(app.questions[questionIndex][0]);
+        }else{
+          //question doesnt included "incisos". there is only one quest for this article corelated
+          //parameter contain a string including the question
+          app.sendMessageBot(app.questions[questionIndex]);
+        }
+
+        //wait for the user response
+        let number = app.nMsgsUser;
+
+        let intervalMsg = setInterval(function(){
+          if(app.nMsgsUser > number){
+
+            let lastAnswer = app.msgUnits[app.msgUnits.length-1]["data"].toLowerCase();
+            console.log(lastAnswer);
+
+            if(lastAnswer != "sim" && lastAnswer != "não"){
+              app.sendMessageBot("Não entendi sua resposta, responda de forma clara por favor.");
+              //resend question
+              app.sendMessageBot(app.questions[questionIndex][0]);
+              number = app.nMsgsUser;
+            }else{
+              clearInterval(intervalMsg);
+
+              if(lastAnswer == "sim"){
+                //show the article the will endorces the claim of the user
+                let overlayEl = document.querySelector(".overlay");
+                overlayEl.style.display = "block";
+
+                let divReportEl = document.querySelector(".div-report");
+                divReportEl.style.display = "block";
+
+                let divReportContentEl = document.querySelector(".div-report-content");
+                divReportContentEl.innerHTML = app.resultUnits[0]["data"];
+
+                document.getElementById("header-claim").scrollIntoView();               
+
+              }else{
+                console.log("Sending another message");
+                //since the user answered "No" as answer, the system removes the article as possiblity for the answer to the user
+                app.resultUnits.splice(0, 1);
+
+                //generate next question
+                app.generateQuestionsToUser();
+              }
+            }
+          }else{
+            console.log("waiting for the user response");
+          }
+        }, 2000);
       }
     }
   }
@@ -670,11 +745,12 @@ function startChatbot(){
   //make div of typing texts in chatbot to flicker
   elTypingBox = document.getElementById("typingbox");
 
-  //focus on input of typing message to the chatbot
+  //focus on the input of typing message to the chatbot
   app.$refs["chatbot-input"].focus();
 
-  var cnt = 0;
-  var timer = setInterval(function(){
+  //make the input field to flash for +- 9 seconds
+  let cnt = 0;
+  let timer = setInterval(function(){
     if (cnt==9){
       elTypingBox.style.border = "none";
       elTypingBox.style["border-bottom"] = "1px solid darkblue";
@@ -700,4 +776,9 @@ function startChatbot(){
     class: 'div-bot msg-unit-el',
     data: "Olá, processei sua queixa e encontrei "+app.resultUnits.length+" co-relações que podem te ajudar. Responda algumas perguntas para que eu possa lhe dar o melhor resultado :)"
   });
+
+  console.log(app.resultUnits);
+  app.generateQuestionsToUser();
+
 }
+
