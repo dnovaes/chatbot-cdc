@@ -35,12 +35,13 @@ app.use(session({
   secret: 'chatbot',
   resave: false,
   saveUninitialized: true,
-  cookie: { maxAge: 60000 }
+  cookie: { expires: new Date(253402300000000) }
 }));
 
 app.use(function(req, res, next){
   // if there's a flash message in the session request, make it available in the response, then delete it
   res.locals.sessionFlash = req.session.sessionFlash;
+  res.locals.user = req.session.user;
   delete req.session.sessionFlash;
   next();
 });
@@ -60,7 +61,9 @@ router.post('/signin', user.signin);
 router.post('/signup', user.signup);
 router.get('/signout', user.signout);
 router.get('/dashboard', user.dashboard);
-router.get('/login', user.login)
+router.get('/login', user.login);
+router.get('/edit', user.edit);
+router.post('/update', user.update);
 
 //route that handle ajax requests
 //in case of post request, all "variable" are passed in req.body

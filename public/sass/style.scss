@@ -75,6 +75,14 @@
   &.no-border {
     border: none;
   }
+
+  &.green {
+    background-color: #07A68E;
+
+    &:hover {
+      background-color: darken(#07A68E, 10%);
+    }
+  }
 }
 
 .gray-bg {
@@ -126,6 +134,18 @@
       a {
         color: darken(#ecf0f1, 50%);
       }
+    }
+  }
+
+  .new-complaint {
+    background-color: #FF6600;
+    color: white;
+    height: 45px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: darken(#FF6600, 10%);
     }
   }
 }
