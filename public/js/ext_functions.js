@@ -79,8 +79,8 @@ var lib = {
 
       claim = " "+claim+" ";
 
-      //remove point, exclamation, interrogation marks
-      regCharMarks = new RegExp("(\\.)|(\\?)|(\\!)|(\\/)", "g");
+      //remove comma, point, exclamation, interrogation marks
+      regCharMarks = new RegExp("(\\,)|(\\.)|(\\?)|(\\!)|(\\/)", "g");
       claim = claim.replace(regCharMarks, "");
 
   
@@ -103,6 +103,10 @@ var lib = {
         claim = claim.replace(regExp, " ");
       }
 
+      console.log("--");
+      console.log("after removed words-vowels-only: "+claim);
+      console.log("--");
+
       for(i=0;i<stopwords.length; i++){
         // \b pattern that checks for a word that contains exactly what is between \b
         // i = case insensitive, g = global search
@@ -111,10 +115,17 @@ var lib = {
         claim = claim.replace(regExp, "");
       }
 
+      console.log("--");
+      console.log("after removed stopwords: "+claim);
+      console.log("--");
+
       //remove emptySpace
       regExpWhiteSpace = new RegExp("(\\s+)", "g");
       claim = claim.replace(regExpWhiteSpace, " ");
 
+      console.log("--");
+      console.log("after removed empty space: "+claim);
+      console.log("--");
 
       var keywords = claim.split(" ");
 
