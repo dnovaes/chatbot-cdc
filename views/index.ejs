@@ -22,7 +22,11 @@
           <div class="large-6 columns">
             <ul class="large-block-grid-4 text-center margin-top-20">
               <li>
-                <a class="header-link" href="/login">Login</a>
+                <% if (user && user.email) { %>
+                  <a class="header-link" href="/dashboard">Dashboard</a>
+                <% } else { %>
+                  <a class="header-link" href="/login">Login</a>
+                <% } %>
               </li>
               <li>
                 <a class="header-link" href="#">Contato</a>

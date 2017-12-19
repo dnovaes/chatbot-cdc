@@ -53,6 +53,10 @@
   transition: all 0.2s; }
   .default-bt.no-border {
     border: none; }
+  .default-bt.green {
+    background-color: #07A68E; }
+    .default-bt.green:hover {
+      background-color: #057564; }
 
 .gray-bg {
   background-color: #ecf0f1; }
@@ -87,6 +91,14 @@
     padding: 20px; }
     .dashboard-content .menu .item a {
       color: #5e7980; }
+  .dashboard-content .new-complaint {
+    background-color: #FF6600;
+    color: white;
+    height: 45px;
+    border-radius: 5px;
+    cursor: pointer; }
+    .dashboard-content .new-complaint:hover {
+      background-color: #cc5200; }
 
 .bold {
   font-weight: bold; }

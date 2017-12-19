@@ -12,54 +12,46 @@ exports.signup = function(req, res) {
     "modified" : new Date()
   }
 
-  db.connect();
+  var sql = "SELECT email, name from users where email = '" + user.email + "'";
 
-  db.query("SELECT email, name from users where email = '" + user.email + "'", function(err, results) {
-    if(err) {
-      req.session.sessionFlash = {
-        type: "danger",
-        message: 'Um erro inesperado ocorreu. Favor tentar novamente.'
-      }
-
-      db.end();
-
-      res.redirect('/login');
-    } else {
-      if (results.length > 0) {
+  db.getConnection(function(err, connection) {
+    connection.query(sql, function(err, results) {
+      if(err) {
         req.session.sessionFlash = {
           type: "danger",
-          message: 'Endereço de e-mail ja se encontra cadastrado. Favor tentar novamente com outro e-mail.'
+          message: 'Um erro inesperado ocorreu. Favor tentar novamente.'
         }
 
-        db.end();
-
-        res.redirect("/login");
+        res.redirect('/login');
       } else {
-        db.query('INSERT INTO users SET ?', user, function(err, results) {
-          if (err) {
-
-            db.end();
-
-            res.redirect('/login');
-          } else {
-            req.session.userEmail = user.email;
-            req.session.user = user;
-
-            req.session.sessionFlash = {
-              type: "success",
-              message: 'Registro efetuado com sucesso!'
-            }
-
-            db.end();
-
-            res.redirect('/dashboard');
+        if (results.length > 0) {
+          req.session.sessionFlash = {
+            type: "danger",
+            message: 'Endereço de e-mail ja se encontra cadastrado. Favor tentar novamente com outro e-mail.'
           }
-        });
-      }
-    }
-  });
 
-  db.end();
+          res.redirect("/login");
+        } else {
+          db.query('INSERT INTO users SET ?', user, function(err, results) {
+            if (err) {
+              res.redirect('/login');
+            } else {
+              req.session.userEmail = user.email;
+              req.session.user = user;
+
+              req.session.sessionFlash = {
+                type: "success",
+                message: 'Registro efetuado com sucesso!'
+              }
+
+              res.redirect('/dashboard');
+            }
+          });
+        }
+      }
+      connection.release();
+    });
+  });
 }
 
 exports.signin = function(req, res) {
@@ -70,34 +62,31 @@ exports.signin = function(req, res) {
 
   var sql = "SELECT email, name, password from users where email = '" + email + "'"; 
 
-  db.connect();
+  db.getConnection(function(err, connection) {
+    connection.query(sql, function(err, results) {
 
-  db.query(sql, function(err, results) {
-    if (results.length && bcrypt.compareSync(password, results[0].password)) {
-      req.session.userEmail = results[0].email;
-      req.session.user = results[0];
+      if (results.length && bcrypt.compareSync(password, results[0].password)) {
+        req.session.userEmail = results[0].email;
+        req.session.user = results[0];
 
-      req.session.sessionFlash = {
-        type: "success",
-        message: 'Login efetuado com sucesso'
+        req.session.sessionFlash = {
+          type: "success",
+          message: 'Login efetuado com sucesso'
+        }
+
+        res.redirect('/dashboard');
+        
+        } else {
+          req.session.sessionFlash = {
+          type: "danger",
+          message: 'Credenciais inválidas. Tente novamente.'
+        }
+
+        res.redirect('/login');
       }
-
-      db.end();
-
-      res.redirect('/dashboard');
-    } else {
-      req.session.sessionFlash = {
-        type: "danger",
-        message: 'Credenciais inválidas. Tente novamente.'
-      }
-
-      db.end();
-
-      res.redirect('/login');
-    }
+      connection.release();
+    });  
   });
-
-  db.end(); 
 }
 
 exports.signout = function(req, res) {
@@ -118,7 +107,7 @@ exports.dashboard = function(req, res) {
     res.redirect('/login');
     return;
   } else {
-    res.render('dashboard');  
+    res.render('users/dashboard');  
   }
 }
 
@@ -129,4 +118,39 @@ exports.login = function(req, res) {
   } else {
     res.redirect('/dashboard');
   }
+}
+
+exports.edit = function(req, res) {
+ 
+  var user = req.session.user;
+  var userEmail = req.session.userEmail;
+
+  if (userEmail == null) {
+    res.redirect('/login');
+    return;
+  } else {
+    res.render('users/edit');  
+  }
+}
+
+exports.update = function(req, res) {
+  var name = req.body.name;
+  var email = req.body.email;
+
+  var sql = "UPDATE users SET name = '" + name + "', email = '" + req.session.userEmail + "'";
+
+  db.getConnection(function(err, connection) {
+    connection.query(sql, function(err, results) {
+
+      console.log(results[0]);
+      
+      req.session.sessionFlash = {
+        type: "success",
+        message: 'Modificações realizadas com sucesso'
+      }
+
+      res.render('users/edit');
+      connection.release();
+    });  
+  });
 }
