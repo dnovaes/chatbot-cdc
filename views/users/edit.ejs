@@ -40,6 +40,13 @@
           <div class="columns">
             <div class="white-bg border-radius">
               <div class="block">
+                <% if (sessionFlash && sessionFlash.message) { %>
+                  <div class="row no-margin">
+                    <div class="columns alert <%= sessionFlash.type %>">      
+                      <%= sessionFlash.message %>         
+                    </div>
+                  </div>
+                <% } %>
                 <div class="row">
                   <div class="large-offset-3 large-6 columns">
                     <form action="/update" method="post">

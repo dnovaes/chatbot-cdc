@@ -121,12 +121,6 @@ exports.login = function(req, res) {
 }
 
 exports.edit = function(req, res) {
- 
-  var user;
-
-  req.session.reload(function(err) {
-    user = req.session.user;
-  });
 
   var userEmail = req.session.userEmail;
 
@@ -145,29 +139,25 @@ exports.update = function(req, res) {
 
   db.getConnection(function(err, connection) {
     connection.query("UPDATE users SET name = '" + name + "', email = '" + email + "' where id = '" + user.id +"'", function(err, results) {
-      
-      req.session.sessionFlash = {
-        type: "success",
-        message: 'Modificações realizadas com sucesso'
-      }
-
       connection.release();
     });  
   });
 
   db.getConnection(function(err, connection) {
     connection.query("SELECT id, email, name, password from users where id = '" + user.id + "'", function(err, results) {
+      connection.release();
 
       req.session.user = results[0];
+      req.session.sessionFlash = {
+        type: "success",
+        message: 'Modificações realizadas com sucesso'
+      }
+
       req.session.save(function(err) {
-        req.session.reload(function(err) {
-          console.log("oi");
+        req.session.reload(function(err){
+          res.redirect('/edit');
         })
       })
-
-      connection.release();
     });
   });
-
-  res.redirect('/edit');
 }
