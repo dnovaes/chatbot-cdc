@@ -11,6 +11,7 @@ var port       = process.env.PORT || 3000;
 var nlp        = require(__dirname+"/public/js/natural.js");
 const http     = require('http');
 var user       = require('./routes/user');
+var historical_learning = require('./routes/historical_learning');
 
 // There is a special routing method which is not derived from any HTTP method. 
 // This method is used for loading middleware functions at a path for all request methods.
@@ -64,6 +65,8 @@ router.get('/dashboard', user.dashboard);
 router.get('/login', user.login);
 router.get('/edit', user.edit);
 router.post('/update', user.update);
+
+router.post('/historical_learning/create', historical_learning.create);
 
 //route that handle ajax requests
 //in case of post request, all "variable" are passed in req.body

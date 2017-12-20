@@ -718,6 +718,15 @@ var app = new Vue({
                 console.log("Keywords: "+app.keywords);
                 console.log("Artigo relacionado: "+app.resultUnits[0]["artId"]);
 
+                var request = new XMLHttpRequest();
+                
+                request.open('POST', '/historical_learning/create', true);
+                request.setRequestHeader('Content-Type', 'application/json');
+                request.send(JSON.stringify({
+                  keywords: app.keywords,
+                  article_number: app.resultUnits[0]["artId"]
+                }));
+
               }else{
                 console.log("Sending another message");
                 //since the user answered "No" as answer, the system removes the article as possiblity for the answer to the user
