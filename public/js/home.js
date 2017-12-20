@@ -33,7 +33,6 @@ function checkforSynonyms(){
       }
     });
   }
-  //console.log(kw, app.keywords);
 }
 
 //Highlight words in the article. if it doesnt find a match there. the article is excluded.
@@ -668,10 +667,8 @@ var app = new Vue({
       let questionIndex;
 
       if(app.resultUnits.length>0){
-        
-        console.log("Imprimir pergunta relacionada ao artigo "+app.resultUnits[0]["artId"]);
-        console.log("Index: "+parseInt(app.resultUnits[0]["artId"])-1);
-
+       
+        console.log("Queston related to Article Number: "+app.resultUnits[0]["artId"]);
         questionIndex = parseInt(app.resultUnits[0]["artId"])-1; 
 
         //console.log(typeof(app.questions[questionIndex]));
@@ -681,7 +678,7 @@ var app = new Vue({
           console.log(app.questions[questionIndex][0]);
           app.sendMessageBot(app.questions[questionIndex][0]);
         }else{
-          //question doesnt included "incisos". there is only one quest for this article corelated
+          //question doesnt include "incisos". there is only one quest for this article co-related
           //parameter contain a string including the question
           app.sendMessageBot(app.questions[questionIndex]);
         }
@@ -693,7 +690,7 @@ var app = new Vue({
           if(app.nMsgsUser > number){
 
             let lastAnswer = app.msgUnits[app.msgUnits.length-1]["data"].toLowerCase();
-            console.log(lastAnswer);
+            console.log("Answer identified: "+lastAnswer);
 
             if(lastAnswer != "sim" && lastAnswer != "não"){
               app.sendMessageBot("Não entendi sua resposta, responda de forma clara por favor.");
@@ -716,12 +713,17 @@ var app = new Vue({
 
                 document.getElementById("header-claim").scrollIntoView();               
 
+                //adicione aqui essas informações no banco de dados #Tercio #ToDo
+                console.log("Segue abaixo informações para historico_aprendizado");
+                console.log("Keywords: "+app.keywords);
+                console.log("Artigo relacionado: "+app.resultUnits[0]["artId"]);
+
               }else{
                 console.log("Sending another message");
                 //since the user answered "No" as answer, the system removes the article as possiblity for the answer to the user
                 app.resultUnits.splice(0, 1);
 
-                //generate next question
+                //generate next question (recursive call)
                 app.generateQuestionsToUser();
               }
             }
@@ -777,7 +779,6 @@ function startChatbot(){
     data: "Olá, processei sua queixa e encontrei "+app.resultUnits.length+" co-relações que podem te ajudar. Responda algumas perguntas para que eu possa lhe dar o melhor resultado :)"
   });
 
-  console.log(app.resultUnits);
   app.generateQuestionsToUser();
 
 }
