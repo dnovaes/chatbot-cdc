@@ -60,7 +60,7 @@ exports.signin = function(req, res) {
   var name = req.body.name;
   var password = req.body.password;
 
-  var sql = "SELECT email, name, password from users where email = '" + email + "'"; 
+  var sql = "SELECT id, email, name, password from users where email = '" + email + "'"; 
 
   db.getConnection(function(err, connection) {
     connection.query(sql, function(err, results) {
@@ -121,8 +121,7 @@ exports.login = function(req, res) {
 }
 
 exports.edit = function(req, res) {
- 
-  var user = req.session.user;
+
   var userEmail = req.session.userEmail;
 
   if (userEmail == null) {
@@ -136,21 +135,29 @@ exports.edit = function(req, res) {
 exports.update = function(req, res) {
   var name = req.body.name;
   var email = req.body.email;
-
-  var sql = "UPDATE users SET name = '" + name + "', email = '" + req.session.userEmail + "'";
+  var user = req.session.user;
 
   db.getConnection(function(err, connection) {
-    connection.query(sql, function(err, results) {
+    connection.query("UPDATE users SET name = '" + name + "', email = '" + email + "' where id = '" + user.id +"'", function(err, results) {
+      connection.release();
+    });  
+  });
 
-      console.log(results[0]);
-      
+  db.getConnection(function(err, connection) {
+    connection.query("SELECT id, email, name, password from users where id = '" + user.id + "'", function(err, results) {
+      connection.release();
+
+      req.session.user = results[0];
       req.session.sessionFlash = {
         type: "success",
         message: 'Modificações realizadas com sucesso'
       }
 
-      res.render('users/edit');
-      connection.release();
-    });  
+      req.session.save(function(err) {
+        req.session.reload(function(err){
+          res.redirect('/edit');
+        })
+      })
+    });
   });
 }
