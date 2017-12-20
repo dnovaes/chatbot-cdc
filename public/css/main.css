@@ -519,9 +519,14 @@
   top: 0;
   left: 0;
   background-color: white;
-  margin: 10%;
+  margin: 7%;
   display: none;
-  padding: 0 2%;
+  padding: 2%;
+  border: 2px solid #1c227c;
+}
+
+.div-report h3{
+  text-align: center;
 }
 
 .div-report-content{
@@ -536,4 +541,49 @@
   left: 0;
   opacity: 0.8;
   display: none;
+}
+
+.div-report-divide{
+  font-weight: bold;
+  padding: 16px;
+  font-size: 18px;
+  text-align: center;
+}
+
+.div-report-voting{
+  text-align: center;
+}
+
+.vote-button{
+  width: 110px;
+  height: 77px;
+  background-repeat: no-repeat;
+}
+
+
+.vote-button:hover{
+  animation: pulse 2s infinite;
+  animation-direction: alternate;
+  animation-name: pulse;
+}
+
+@keyframes pulse{
+  0%{
+    transform: scale(1);
+  }
+  50%{
+    transform: scale(1.1);
+  }
+  100%{
+    transform: scale(1);
+
+  }
+}
+
+#vote-pos{
+  background-image: url("../imgs/vote_pos.png");
+}
+
+#vote-neg{
+  background-image: url("../imgs/vote_neg.png");
 }
