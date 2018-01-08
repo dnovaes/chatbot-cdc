@@ -80,7 +80,7 @@ var lib = {
       claim = " "+claim+" ";
 
       //remove comma, point, exclamation, interrogation marks
-      regCharMarks = new RegExp("(\\,)|(\\.)|(\\?)|(\\!)|(\\/)", "g");
+      regCharMarks = new RegExp("(\\,)|(\\.)|(\\?)|(\\!)|(\\/)|(&)|($)|(%)|(#)|(*)", "g");
       claim = claim.replace(regCharMarks, "");
 
   
@@ -92,7 +92,7 @@ var lib = {
       stopwords = stopwords+" "+filter_romanianNumerals+" "+numerals;
       stopwords = stopwords.split(" ");
 
-      var articleVowels = "a e é í o u";
+      var articleVowels = "à a e é í o u";
       articleVowels = articleVowels.split(" ");
 
       var regExp = new RegExp();
