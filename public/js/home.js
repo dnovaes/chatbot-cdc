@@ -154,7 +154,7 @@ function getSynonyms(keywords){
   };
 
   keywords.forEach(function(keyword, i){
-    axios.get('http://thesaurus.altervista.org/thesaurus/v1?word='+keyword+'&language=en_US&output=json&key=hDIA5jHnTlXbyA8SPLw5').then(function (res){
+    axios.get('http://thesaurus.altervista.org/thesaurus/v1?word='+keyword+'&language=pt_BR&output=json&key=hDIA5jHnTlXbyA8SPLw5').then(function (res){
       console.log("synonyms of keyword: "+keyword);
       res.data.response.forEach(function(val, i){
         console.log(val.list.synonyms);
