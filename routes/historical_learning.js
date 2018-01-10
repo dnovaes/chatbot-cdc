@@ -12,8 +12,10 @@ exports.create = function(req, res) {
       connection.release();
 
       req.session.currclaimid = results.insertId;
+
       console.log("session before");
       console.log(req.session);
+
       req.session.save();
     });
   });
@@ -104,6 +106,6 @@ exports.voteClaim = function(req, res) {
       }
     });
   });
-
+  delete req.session.currclaimid;
   res.sendStatus(200);
 }
