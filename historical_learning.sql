@@ -6,5 +6,6 @@ CREATE TABLE `historical_learning` (
  `vote_negative` int(11) DEFAULT 0,
  `historical_user_id` int(11) DEFAULT NULL,
  `valid_claim` tinyint(1) DEFAULT 0,
+ `user_id` int(11) DEFAULT NULL,
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
