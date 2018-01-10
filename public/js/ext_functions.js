@@ -80,7 +80,7 @@ var lib = {
       claim = " "+claim+" ";
 
       //remove comma, point, exclamation, interrogation marks
-      regCharMarks = new RegExp("(\\,)|(\\.)|(\\?)|(\\!)|(\\/)|(&)|($)|(%)|(#)|(*)", "g");
+      regCharMarks = new RegExp("(\\,)|(\\.)|(\\?)|(\\!)|(\\/)|(\\&)|(\\$)|(\\%)|(\\#)|(\\*)", "g");
       claim = claim.replace(regCharMarks, "");
 
   
