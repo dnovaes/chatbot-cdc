@@ -33,10 +33,6 @@ exports.create = function(req, res) {
 
 exports.voteClaim = function(req, res) {
 
-  console.log(req.session);
-
-  console.log("request to vote plus or minus: "+ req.body.voting+"\n");
-
   let claimId = req.session.currclaimid;
 
   let sqlSelect = "SELECT vote_positive, vote_negative FROM historical_learning WHERE id = " + claimId;
