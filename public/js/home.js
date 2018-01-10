@@ -749,14 +749,28 @@ var app = new Vue({
       console.log("Keywords: "+app.keywords);
       console.log("Artigo relacionado: "+app.resultUnits[0]["artId"]);
       */
+      //remove div of voting
+      let div_voting = document.querySelector(".div-report-voting");
+      while(div_voting.firstChild) {
+          div_voting.removeChild(div_voting.firstChild);
+      }
+
+      //added div with message of Thanks.
+      let thanksVoting= document.createElement("div");
+      let content = document.createTextNode("Seu voto foi computado com sucesso. Obrigado por participar");
+      thanksVoting.appendChild(content);
+      thanksVoting.className = "thanks-voting";
+      div_voting.appendChild(thanksVoting);
+
 
       axios.post('/historical_learning/voteclaim', {
         voting: voting_char,
       })
       .then(function (res){
-        console.log("Voto registrado com sucesso1");
+        console.log("Voto registrado com sucesso");
       })
       .catch(function(err){
+        console.log("Voto não foi registrado. Segue erro abaixo:");
         console.log(err);
       });
     }
