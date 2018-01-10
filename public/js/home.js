@@ -1,4 +1,5 @@
 
+
 function checkforSynonyms(){
     
   //check if keyword has synonyms
@@ -479,7 +480,7 @@ var app = new Vue({
           "Você acha que as clausulas contratuais inferem ou estão em desacorod com o Sistema de Proteção ao Consumidor? Isto é, restringe direitos e obrigações fundamentais do consumidor?",
           "O fornecedor não garante o direito de indenização em casos de vícos (defeito, falhas, indevido a consumo, prejudicial) ?",
         ],
-        "O fornecedor antes de gerar o financiamento ou prestações não informa previamente o preço do produto ou serviço em moeda naciona, juros e acrescimsmos legais, número e periodo de prestações e soma total a pagar ou ainda não dá direito a liquidação total ou parcial da prestação ou financiamento ?",
+        "O fornecedor antes de gerar o financiamento ou prestações não informa previamente o preço do produto ou serviço em moeda naciona, juros e acrescimos legais, número e periodo de prestações e soma total a pagar ou ainda não dá direito a liquidação total ou parcial da prestação ou financiamento ?",
         "Você, após pagar total ou parcialmente prestações não teve direito a retorno do valor pago após se retirar do consórcio ",
         //Art 54
         [
@@ -713,7 +714,7 @@ var app = new Vue({
 
                 document.getElementById("header-claim").scrollIntoView();               
 
-                //adicione aqui essas informações no banco de dados #Tercio #ToDo
+                //register claim at the history
                 console.log("Segue abaixo informações para historico_aprendizado");
                 console.log("Keywords: "+app.keywords);
                 console.log("Artigo relacionado: "+app.resultUnits[0]["artId"]);
@@ -726,6 +727,7 @@ var app = new Vue({
                   keywords: app.keywords,
                   article_number: app.resultUnits[0]["artId"]
                 }));
+
 
               }else{
                 console.log("Sending another message");
@@ -741,6 +743,22 @@ var app = new Vue({
           }
         }, 2000);
       }
+    },
+    voteClaim: function(voting_char){
+      /*
+      console.log("Keywords: "+app.keywords);
+      console.log("Artigo relacionado: "+app.resultUnits[0]["artId"]);
+      */
+
+      axios.post('/historical_learning/voteclaim', {
+        voting: voting_char,
+      })
+      .then(function (res){
+        console.log("Voto registrado com sucesso1");
+      })
+      .catch(function(err){
+        console.log(err);
+      });
     }
   }
 });

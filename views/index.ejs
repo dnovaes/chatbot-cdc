@@ -146,8 +146,8 @@
     <div class="div-report-content"></div>
     <div class="div-report-divide"><center>Essa sugestão te ajudou a encontrar o que procurava?</center></div>
     <div class="div-report-voting">
-      <button id="vote-pos" class="vote-button"></button>
-      <button id="vote-neg" class="vote-button"></button>
+      <button id="vote-pos" class="vote-button" @click="voteClaim('+')"></button>
+      <button id="vote-neg" class="vote-button" @click="voteClaim('-')"></button>
     </div>
 </div>
 </div>

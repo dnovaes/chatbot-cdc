@@ -9,7 +9,6 @@ var bodyparser = require('body-parser');
 var functions  = require(__dirname+"/public/js/ext_functions.js");
 var port       = process.env.PORT || 3000;
 var nlp        = require(__dirname+"/public/js/natural.js");
-const http     = require('http');
 var user       = require('./routes/user');
 var historical_learning = require('./routes/historical_learning');
 
@@ -67,6 +66,7 @@ router.get('/edit', user.edit);
 router.post('/update', user.update);
 
 router.post('/historical_learning/create', historical_learning.create);
+router.post('/historical_learning/voteclaim', historical_learning.voteClaim);
 
 //route that handle ajax requests
 //in case of post request, all "variable" are passed in req.body
