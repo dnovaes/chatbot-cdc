@@ -4,11 +4,19 @@ var db = require('../config/db.js');
 const CONST_VOTES_TOTAL = 3;
 
 exports.create = function(req, res) {
-  var keywords = req.body.keywords;
-  var article_number = req.body.article_number;
+  let keywords = req.body.keywords;
+  let article_number = req.body.article_number;
+
+  let sqlInsert = "";
+  
+  if(req.session.user.id){
+    sqlInsert = "INSERT INTO historical_learning (keywords, article_number, user_id) VALUES ('" + keywords + "', '" + article_number + "', '" +req.session.user.id+ "')";
+  }else{
+    sqlInsert = "INSERT INTO historical_learning (keywords, article_number) VALUES ('" + keywords + "', '" + article_number + "')";
+  }
 
   db.getConnection(function(err, connection) {
-    connection.query("INSERT INTO historical_learning (keywords, article_number) VALUES ('" + keywords + "', '" + article_number + "')", function(err, results) {
+    connection.query(sqlInsert, function(err, results) {
       connection.release();
 
       req.session.currclaimid = results.insertId;
