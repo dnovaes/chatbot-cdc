@@ -749,10 +749,16 @@ var app = new Vue({
       console.log("Keywords: "+app.keywords);
       console.log("Artigo relacionado: "+app.resultUnits[0]["artId"]);
       */
+
+      //removes informative info for voting
       //remove div of voting
       let div_voting = document.querySelector(".div-report-voting");
       while(div_voting.firstChild) {
           div_voting.removeChild(div_voting.firstChild);
+      }
+      let div_divide = document.querySelector(".div-report-divide");
+      while(div_divide.firstChild) {
+          div_divide.removeChild(div_divide.firstChild);
       }
 
       //added div with message of Thanks.
@@ -761,6 +767,7 @@ var app = new Vue({
       thanksVoting.appendChild(content);
       thanksVoting.className = "thanks-voting";
       div_voting.appendChild(thanksVoting);
+
 
 
       axios.post('/historical_learning/voteclaim', {
