@@ -1,6 +1,6 @@
-var db = require('../config/db.js');
+const db = require('../config/db.js');
 
-var bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 
 exports.signup = function(req, res) {
 
