@@ -29,6 +29,12 @@ npm install
 ```
 npm start
 ```
+or the command below to use star with nodemon
+```
+npm run dev 
+```
+
+
 
 ###### Para testar a aplicação abra o navegador e acesse o link:
 
