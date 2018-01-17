@@ -1,3 +1,5 @@
+$orange: #FF6600;
+
 .banner {
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../imgs/sample-banner.jpg") center no-repeat;
   background-size: cover;
@@ -248,5 +250,9 @@
 }
 
 .orange-color {
-  color: #FF6600 !important;
+  color: $orange !important;
+}
+
+.gray-color {
+  color: #707070 !important;
 }
