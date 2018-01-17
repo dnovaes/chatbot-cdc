@@ -133,43 +133,74 @@ exports.edit = function(req, res) {
   }
 }
 
-exports.update = function(req, res) {
-  var name        = req.body.name;
-  var email       = req.body.email;
-  var phone       = req.body.phone;
-  var cpf         = req.body.cpf;
-  var cep         = req.body.cep;
-  var street      = req.body.street;
-  var number      = req.body.number;
-  var complement  = req.body.complement;
-  var district    = req.body.district;
-  var city        = req.body.city;
-  var state       = req.body.state;
-  var user        = req.session.user;
+exports.update = function(req, res){
 
+  let name        = req.body.name;
+  let email       = req.body.email;
+  let phone       = req.body.phone;
+  let cpf         = req.body.cpf;
+  let cep         = req.body.cep;
+  let street      = req.body.street;
+  let number      = req.body.number;
+  let complement  = req.body.complement;
+  let district    = req.body.district;
+  let city        = req.body.city;
+  let state       = req.body.state;
+  let user        = req.session.user;
+
+  //Requisi o banco de dados um conexão e envia um callback
   db.getConnection(function(err, connection) {
-    connection.query("UPDATE users SET name = '" + name + "', email = '" + email + "', phone = '" + phone + "', cpf = '" + cpf + "', address_cep = '" + cep + "', address_street = '" + street + "', address_number = '" + number + "', address_complement = '" + complement + "', address_district = '" + district + "', address_city = '" + city + "', address_state = '" + state + "' where id = '" + user.id +"'", function(err, results) {
-      connection.release();
-    });
-  });
 
-  db.getConnection(function(err, connection) {
-    connection.query("SELECT id, email, name, phone, cpf, address_cep, address_street, address_number, address_complement, address_district, address_city, address_state, password from users where id = '" + user.id + "'", function(err, results) {
-      connection.release();
+    //conexão permitida. Solicitar conexão com a conexão aberta passando também um callback quando terminar de executar. 
+    //(Toda função async geralmente um callback)
+    //
+    let sqlUpdate = `UPDATE users SET 
+                      name = '${name}',
+                      email = '${email}',
+                      phone = '${phone}',
+                      cpf = '${cpf}',
+                      address_cep = '${cep}',
+                      address_street = '${street}',
+                      address_number = '${number}',
+                      address_complement = '${complement}',
+                      address_district = '${district}',
+                      address_city = '${city}',
+                      address_state = '${state}'
+                    WHERE id = '${user.id}'`;
 
-      req.session.user = results[0];
-      req.session.sessionFlash = {
-        type: "success",
-        message: 'Modificações realizadas com sucesso'
-      }
+    connection.query(sqlUpdate, function(err, results) {
+      if(err) throw err;
 
-      req.session.save(function(err) {
-        req.session.reload(function(err){
-          res.redirect('/edit');
+      //sqlUpdate finalizado e callback acionado. A partir daqui pode-se fazer outra requisição utilizando a mesma 'connection' aberta.
+      let sqlSelect = `SELECT 
+                        id, email, name, phone, cpf, address_cep, address_street, 
+                        address_number, address_complement, address_district, 
+                        address_city, address_state, password
+                      FROM users 
+                      WHERE id = '${user.id}'`;
+
+      connection.query(sqlSelect, function(err, results) {
+        if(err) throw err;
+
+        //sqlSelect finalizado e callback finalizado. Como não será usamos mais a conexão aberta, terminamos o contato com o banco.
+        connection.release();
+
+        req.session.user = results[0];
+        req.session.sessionFlash = {
+          type: "success",
+          message: 'Modificações realizadas com sucesso'
+        }
+
+        req.session.save(function(err) {
+          req.session.reload(function(err){
+            res.redirect('/edit');
+          })
         })
-      })
+      });
+
     });
   });
+
 }
 
 exports.complaints = function(req, res) {
