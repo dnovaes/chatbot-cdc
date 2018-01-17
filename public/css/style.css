@@ -73,6 +73,9 @@
 .margin-bottom-20 {
   margin-bottom: 20px !important; }
 
+.margin-bottom-10 {
+  margin-bottom: 10px !important; }
+
 .border-radius {
   border-radius: 5px; }
 
@@ -167,11 +170,27 @@
     color: #07A68E;
     background-color: #DAF4EB; }
 
+.complaint-block {
+  padding: 10px;
+  color: #707070;
+  border-bottom: 3px solid #cfd9db; }
+  .complaint-block .complaint-title {
+    font-size: 18px; }
+
 .no-margin {
   margin-left: 0px !important;
   margin-right: 0px !important; }
 
 .orange-color {
   color: #FF6600 !important; }
+
+.gray-color {
+  color: #707070 !important; }
+
+.green-color {
+  color: #07A68E !important; }
+
+.text-center {
+  text-align: center; }
 
 /*# sourceMappingURL=style.css.map */

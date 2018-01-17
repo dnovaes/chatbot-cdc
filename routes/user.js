@@ -60,7 +60,7 @@ exports.signin = function(req, res) {
   var name = req.body.name;
   var password = req.body.password;
 
-  var sql = "SELECT id, email, name, password from users where email = '" + email + "'"; 
+  var sql = "SELECT id, email, name, phone, cpf, address_cep, address_street, address_number, address_complement, address_district, address_city, address_state, password from users where email = '" + email + "'"; 
 
   db.getConnection(function(err, connection) {
     connection.query(sql, function(err, results) {
@@ -75,7 +75,7 @@ exports.signin = function(req, res) {
         }
 
         res.redirect('/dashboard');
-        
+
         } else {
           req.session.sessionFlash = {
           type: "danger",
@@ -85,16 +85,16 @@ exports.signin = function(req, res) {
         res.redirect('/login');
       }
       connection.release();
-    });  
+    });
   });
 }
 
 exports.signout = function(req, res) {
-  
+
   req.session.destroy(function(err) {
     if (!err) {
       res.redirect('/login');
-    }   
+    }
   })
 }
 
@@ -107,7 +107,7 @@ exports.dashboard = function(req, res) {
     res.redirect('/login');
     return;
   } else {
-    res.render('users/dashboard');  
+    res.render('users/dashboard');
   }
 }
 
@@ -123,28 +123,38 @@ exports.login = function(req, res) {
 exports.edit = function(req, res) {
 
   var userEmail = req.session.userEmail;
+  var user = req.session.user;
 
   if (userEmail == null) {
     res.redirect('/login');
     return;
   } else {
-    res.render('users/edit');  
+    res.render('users/edit');
   }
 }
 
 exports.update = function(req, res) {
-  var name = req.body.name;
-  var email = req.body.email;
-  var user = req.session.user;
+  var name        = req.body.name;
+  var email       = req.body.email;
+  var phone       = req.body.phone;
+  var cpf         = req.body.cpf;
+  var cep         = req.body.cep;
+  var street      = req.body.street;
+  var number      = req.body.number;
+  var complement  = req.body.complement;
+  var district    = req.body.district;
+  var city        = req.body.city;
+  var state       = req.body.state;
+  var user        = req.session.user;
 
   db.getConnection(function(err, connection) {
-    connection.query("UPDATE users SET name = '" + name + "', email = '" + email + "' where id = '" + user.id +"'", function(err, results) {
+    connection.query("UPDATE users SET name = '" + name + "', email = '" + email + "', phone = '" + phone + "', cpf = '" + cpf + "', address_cep = '" + cep + "', address_street = '" + street + "', address_number = '" + number + "', address_complement = '" + complement + "', address_district = '" + district + "', address_city = '" + city + "', address_state = '" + state + "' where id = '" + user.id +"'", function(err, results) {
       connection.release();
-    });  
+    });
   });
 
   db.getConnection(function(err, connection) {
-    connection.query("SELECT id, email, name, password from users where id = '" + user.id + "'", function(err, results) {
+    connection.query("SELECT id, email, name, phone, cpf, address_cep, address_street, address_number, address_complement, address_district, address_city, address_state, password from users where id = '" + user.id + "'", function(err, results) {
       connection.release();
 
       req.session.user = results[0];
@@ -160,4 +170,16 @@ exports.update = function(req, res) {
       })
     });
   });
+}
+
+exports.complaints = function(req, res) {
+  var user = req.session.user;
+  var userEmail = req.session.userEmail;
+
+  if (userEmail == null) {
+    res.redirect('/login');
+    return;
+  } else {
+    res.render('users/complaints');
+  }
 }
