@@ -67,6 +67,8 @@ router.post('/update', user.update);
 
 router.post('/historical_learning/create', historical_learning.create);
 router.post('/historical_learning/voteclaim', historical_learning.voteClaim);
+router.post('/historical_learning/searchMostSimilarClaim', historical_learning.searchMostSimilarClaim);
+router.post('/historical_learning/selectClaimById', historical_learning.selectClaimById);
 
 //route that handle ajax requests
 //in case of post request, all "variable" are passed in req.body
