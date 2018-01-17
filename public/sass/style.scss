@@ -1,4 +1,7 @@
 $orange: #FF6600;
+$green: #07A68E;
+$gray: #707070;
+$gray_bg: #ecf0f1;
 
 .banner {
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../imgs/sample-banner.jpg") center no-repeat;
@@ -105,6 +108,10 @@ $orange: #FF6600;
 
 .margin-bottom-20 {
   margin-bottom: 20px !important;
+}
+
+.margin-bottom-10 {
+  margin-bottom: 10px !important;
 }
 
 .border-radius {
@@ -244,6 +251,16 @@ $orange: #FF6600;
   }
 }
 
+.complaint-block {
+  padding: 10px;
+  color: $gray;
+  border-bottom: 3px solid darken($gray_bg, 10%);
+
+  .complaint-title {
+    font-size: 18px;
+  }
+}
+
 .no-margin {
   margin-left: 0px !important;
   margin-right: 0px !important;
@@ -255,4 +272,12 @@ $orange: #FF6600;
 
 .gray-color {
   color: #707070 !important;
+}
+
+.green-color {
+  color: $green !important;
+}
+
+.text-center {
+  text-align: center;
 }

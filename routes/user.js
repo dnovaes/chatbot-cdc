@@ -171,3 +171,15 @@ exports.update = function(req, res) {
     });
   });
 }
+
+exports.complaints = function(req, res) {
+  var user = req.session.user;
+  var userEmail = req.session.userEmail;
+
+  if (userEmail == null) {
+    res.redirect('/login');
+    return;
+  } else {
+    res.render('users/complaints');
+  }
+}
