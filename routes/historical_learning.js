@@ -31,19 +31,17 @@ exports.create = function(req, res) {
   res.sendStatus(200);
 }
 
-/*
- `id` int(11) NOT NULL AUTO_INCREMENT,
- `keywords` text COLLATE utf8_unicode_ci NOT NULL,
- `article_number` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
- `vote_positive` int(11) DEFAULT 0,
- `vote_negative` int(11) DEFAULT 0,
- `historical_user_id` int(11) DEFAULT NULL,
- `valid_claim` tinyint(1) DEFAULT 0,
-*/
-
 exports.voteClaim = function(req, res) {
 
-  let claimId = req.session.currclaimid;
+  let claimId = 0;
+
+  if(req.body.claimId == 0){
+    //new claim registered, getting id of the claim registered by session
+    claimId = req.session.currclaimid;
+  }else{
+    //similar claim was found
+    claimId = req.body.claimId;
+  }
 
   let sqlSelect = "SELECT vote_positive, vote_negative FROM historical_learning WHERE id = " + claimId;
 
@@ -65,7 +63,6 @@ exports.voteClaim = function(req, res) {
 
         if(req.body.voting == '+'){
           votes_positive = results[0].vote_positive + 1;
-          console.log(votes_positive);
 
           let sqlUpdate = "UPDATE historical_learning SET `vote_positive`= "+ votes_positive + " WHERE `id` = "+ claimId;
 
@@ -74,8 +71,11 @@ exports.voteClaim = function(req, res) {
               if(err){
                 console.log(err);
               }else{
-                console.log(results);
+                console.log("Voto computado com sucesso");
+                res.sendStatus(200);
+                //console.log(results);
               }
+
               connection.release();
             });
           });
@@ -111,9 +111,132 @@ exports.voteClaim = function(req, res) {
             });
           }
         }
+        console.log(`Número de votos atuais da queixa atualizada. Pos: ${votes_positive}, Neg: ${votes_negative}`);
       }
     });
   });
   delete req.session.currclaimid;
+}
+
+exports.searchMostSimilarClaim= function(req, res) {
+
+  //console.log("this is my currently keywords:");
+  //console.log(req.body.myKeywords);
+  let myKeywords = req.body.myKeywords;
+
+  db.getConnection(function(err, connection) {
+
+    let sqlSelect = "SELECT id, keywords FROM historical_learning";
+    connection.query(sqlSelect, function(err, results) {
+
+      connection.release();
+
+      if(err){
+        req.session.sessionFlash = {
+          type: "danger",
+          message: 'Um erro inesperado ocorreu. Favor tentar novamente. (selectClaim)'
+        }
+        res.redirect('/');
+
+      }else{
+        //use the returned data from database
+        //results =  array of claim. So for each claim, check the similarity (bag of words algorithm)
+        //row data packet = rowdp
+        
+        //Checking similarity of the claim [begin]
+        let objMostSimilar = {
+          claimId: 0,
+          ratio: 0
+        }
+
+        results.forEach(function(rowdp, i, arr){
+          let cnt = 0;
+          // val =  object containing id and keywords for each claims registered
+          console.log(i+" id: "+rowdp.id+", keywords: "+rowdp.keywords);
+          let arrkeywords = rowdp.keywords.split(",");
+
+          //console.log("arrkeywords");
+          //console.log(arrkeywords);
+
+          //#refactor forEach to some
+          myKeywords.forEach(function(val, ind){
+            //console.log("comparing '"+val+"'");
+            //console.log("comparing '"+val+"' in "+arrkeywords);
+
+            if(arrkeywords.indexOf(val) > -1){
+              cnt++;
+            }
+          });
+
+          console.log("grau de similaridade desta queixa é de:");
+          console.log("cnt: "+cnt+" arrkeywords.length: "+arrkeywords.length);
+          let ratio = cnt/arrkeywords.length*100;
+          console.log(ratio);
+         
+          if(ratio > objMostSimilar.ratio){
+            objMostSimilar.claimId = rowdp.id;
+            objMostSimilar.ratio = ratio;
+          }
+
+          //since the ratio more than limiar, the objective was found. a claim very well similar 
+          //if(ratio > 90){ break;}
+          //end
+        });
+
+        //check if similarity was too high. then do not register, instead, shows the claim to the user
+        if(objMostSimilar.ratio < 90){
+          //authorized to register new claim, no identical claim was found
+          objMostSimilar.claimId = 0;
+          objMostSimilar.ratio = 0;
+        }
+
+        console.log(objMostSimilar);
+        obj = JSON.stringify(objMostSimilar);
+        res.send(obj); 
+      }
+
+    });
+  });
+
+/*
+  claim = { "claim" : claim, "keywords": keywords, "claimTagged": claimTagged}
+  obj = JSON.stringify(claim);
+  res.send(obj); 
+  //or
   res.sendStatus(200);
+*/
+
+}
+
+exports.selectClaimById = function(req, res) {
+
+  let claimId = req.body.id
+  
+  let obj = {}
+  db.getConnection(function(err, connection) {
+
+    let sqlSelect = `SELECT 
+                      h.id, a.art_id, a.text, user_id, vote_positive, vote_negative 
+                    FROM historical_learning AS h 
+                    INNER JOIN articles AS a ON h.article_number = a.art_id
+                    WHERE h.id = ${claimId}`;
+
+    connection.query(sqlSelect, function(err, results) {
+
+      connection.release();
+
+      if(err){
+        throw err;
+      }else{
+        obj = {
+          id: results[0].id,
+          artId: results[0].art_id,
+          artText: results[0].text,
+          votePos: results[0].vote_positive,
+          voteNeg: results[0].vote_negative
+        }
+      }
+      res.send(obj);
+    });
+  });
 }

@@ -11,7 +11,6 @@ function checkforSynonyms(){
     app.synonyms.forEach(function(ele, eli){
       //ele = element value,
       //eli =  element index
-      //console.log(ele, eli);
 
       //compares if element in array of synonyms is equal to keyword.
       //if it is indeed, it is removed from keywords array right away
@@ -19,7 +18,6 @@ function checkforSynonyms(){
         if( kw[i] == val){
           flag = true;
           kw.splice(i, 1);
-          //console.log(kw);
         }
       });
 
@@ -341,6 +339,7 @@ var app = new Vue({
       nMsgsBot: -1,
       nMsgsUser: -1,
       inputChatbot: "",
+      viewCase: {},
       //zero based array corresponding to i+1 article number. When i is the array index and (i+1) is the number of the article
       questions: [
         "Foi demonstrado alguma confusão pelo vendedor a respeito do papel de fornecedor ou consumidor?",
@@ -662,6 +661,57 @@ var app = new Vue({
           elContentMsgs.scrollTop = elContentMsgs.scrollHeight;
         }, 200);
     },
+    showCaseToUser: function(caseClaim){
+      console.log("caseClaim");
+      console.log(caseClaim);
+
+      /* Exemplo do obj da queixa similar encontrada:
+       *
+        artId: 51
+        artText:"↵Art. 51. São nulas de pleno direito, entre outras, as cláusulas contratuais relativas ao fornecimento de produtos e serviços que:↵↵I - impossibilitem, exonerem ou atenuem a responsabilidade do fornecedor por vícios de qualquer natureza dos produtos e serviços ou impliquem renúncia ou disposição de direitos. Nas relações de consumo entre o fornecedor e o consumidor pessoa jurídica, a indenização poderá ser limitada, em situações justificáveis;↵↵II - subtraiam ao consumidor a opção de reembolso da quantia já paga, nos casos previstos neste código;↵↵III - transfiram responsabilidades a terceiros;↵↵IV - estabeleçam obrigações consideradas iníquas, abusivas, que coloquem o consumidor em desvantagem exagerada, ou sejam incompatíveis com a boa-fé ou a eqüidade;↵↵V - (Vetado);↵↵VI - estabeleçam inversão do ônus da prova em prejuízo do consumidor;↵↵VII - determinem a utilização compulsória de arbitragem;↵↵VIII - imponham representante para concluir ou realizar outro negócio jurídico pelo consumidor;↵↵IX - deixem ao fornecedor a opção de concluir ou não o contrato, embora obrigando o consumidor;↵↵X - permitam ao fornecedor, direta ou indiretamente, variação do preço de maneira unilateral;↵↵XI - autorizem o fornecedor a cancelar o contrato unilateralmente, sem que igual direito seja conferido ao consumidor;↵↵XII - obriguem o consumidor a ressarcir os custos de cobrança de sua obrigação, sem que igual direito lhe seja conferido contra o fornecedor;↵↵XIII - autorizem o fornecedor a modificar unilateralmente o conteúdo ou a qualidade do contrato, após sua celebração;↵↵XIV - infrinjam ou possibilitem a violação de normas ambientais;↵↵XV - estejam em desacordo com o sistema de proteção ao consumidor;↵↵XVI - possibilitem a renúncia do direito de indenização por benfeitorias necessárias.↵↵§ 1º Presume-se exagerada, entre outros casos, a vantagem que:↵↵I - ofende os princípios fundamentais do sistema jurídico a que pertence;↵↵II - restringe direitos ou obrigações fundamentais inerentes à natureza do contrato, de tal modo a ameaçar seu objeto ou equilíbrio contratual;↵↵III - se mostra excessivamente onerosa para o consumidor, considerando-se a natureza e conteúdo do contrato, o interesse das partes e outras circunstâncias peculiares ao caso.↵↵§ 2° A nulidade de uma cláusula contratual abusiva não invalida o contrato, exceto quando de sua ausência, apesar dos esforços de integração, decorrer ônus excessivo a qualquer das partes.↵↵§ 3° (Vetado).↵↵§ 4° É facultado a qualquer consumidor ou entidade que o represente requerer ao Ministério Público que ajuíze a competente ação para ser declarada a nulidade de cláusula contratual que contrarie o disposto neste código ou de qualquer forma não assegure o justo equilíbrio entre direitos e obrigações das partes.↵"
+        id:311
+        voteNeg:0
+        votePos:1
+      */
+
+      app.viewCase = caseClaim;
+      
+      //show the article found by the system the endorces the claim of the user
+      let overlayEl = document.querySelector(".overlay");
+      overlayEl.style.display = "block";
+
+      let divReportEl = document.querySelector(".div-report");
+      divReportEl.style.display = "block";
+
+      document.getElementById("header-claim").scrollIntoView();
+
+      if(caseClaim.id != undefined){
+        alert("Foi encontrado uma queixa muito similar ao seu caso!");
+
+        let divReportContentEl = document.querySelector(".div-report-content");
+        divReportContentEl.innerHTML = caseClaim.artText;
+
+      }else{
+
+        let divReportContentEl = document.querySelector(".div-report-content");
+        divReportContentEl.innerHTML = app.resultUnits[0]["data"];
+
+        //register claim at the history
+        console.log("Segue abaixo informações para historico_aprendizado");
+        console.log("Keywords: "+app.keywords);
+        console.log("Artigo relacionado: "+app.resultUnits[0]["artId"]); 
+
+        //Envia requisição ajax para registrar queixa no servidor.
+        var request = new XMLHttpRequest();
+        request.open('POST', '/historical_learning/create', true);
+        request.setRequestHeader('Content-Type', 'application/json');
+        request.send(JSON.stringify({
+          keywords: app.keywords,
+          article_number: app.resultUnits[0]["artId"]
+        }));
+
+      }
+    },
     //recursive request to questions
     generateQuestionsToUser: function(){
       //flag that indicates that the system could identify the claim typed from the user
@@ -702,31 +752,44 @@ var app = new Vue({
               clearInterval(intervalMsg);
 
               if(lastAnswer == "sim"){
-                //show the article the will endorces the claim of the user
-                let overlayEl = document.querySelector(".overlay");
-                overlayEl.style.display = "block";
+                let similarClaim = {};
 
-                let divReportEl = document.querySelector(".div-report");
-                divReportEl.style.display = "block";
+                //checks if there is already a article too similar to that one based on the keywords and questions answered
+                //[1] if there is, then do not register claim at history, shows the one that is already registered.
+                //[2] if there is, then do register claim, but copy the related claim to this one.... no doesnt make sense
+                //start to checck for keywords arrays:
+                //
+                // make a request to databse to retrieve all the keywords from the registered claims
+                // question here: make the server or client process this ?
+                //
+                // try #1: processing by the server and return if this is a new claim or not
 
-                let divReportContentEl = document.querySelector(".div-report-content");
-                divReportContentEl.innerHTML = app.resultUnits[0]["data"];
 
-                document.getElementById("header-claim").scrollIntoView();               
+                //function will return a equivalent claim in case was found one. 
+                axios.post('/historical_learning/searchMostSimilarClaim', {
+                  myKeywords: app.keywords 
+                })
+                .then(function (res){
+                  //if(claim returned is higher than 90, select claim and article from the database
+                  if(res.data.ratio > 90){
+                    
+                    axios.post('/historical_learning/selectClaimById', {
+                      id: res.data.claimId 
+                    })
+                    .then(function (res){
 
-                //register claim at the history
-                console.log("Segue abaixo informações para historico_aprendizado");
-                console.log("Keywords: "+app.keywords);
-                console.log("Artigo relacionado: "+app.resultUnits[0]["artId"]);
-
-                var request = new XMLHttpRequest();
-                
-                request.open('POST', '/historical_learning/create', true);
-                request.setRequestHeader('Content-Type', 'application/json');
-                request.send(JSON.stringify({
-                  keywords: app.keywords,
-                  article_number: app.resultUnits[0]["artId"]
-                }));
+                      console.log("This is the similar claim found");
+                      console.log(res.data);
+                      app.showCaseToUser(res.data);
+                      
+                    });
+                  }else{
+                    app.showCaseToUser({});
+                  }
+                })
+                .catch(function(err){
+                  console.log(err);
+                });
 
 
               }else{
@@ -768,13 +831,17 @@ var app = new Vue({
       thanksVoting.className = "thanks-voting";
       div_voting.appendChild(thanksVoting);
 
-
+      let claimId = 0;
+      if(app.viewCase){
+        claimId = app.viewCase.id; 
+      }
 
       axios.post('/historical_learning/voteclaim', {
         voting: voting_char,
+        claimId: claimId 
       })
       .then(function (res){
-        console.log("Voto registrado com sucesso");
+        //console.log("Voto registrado com sucesso");
       })
       .catch(function(err){
         console.log("Voto não foi registrado. Segue erro abaixo:");
@@ -817,7 +884,7 @@ function startChatbot(){
   app.msgUnits.push({
     id: 'user-msg-div-'+app.nMsgsUser,
     class: 'div-user msg-unit-el',
-    data: app.claimData
+    data: app.claimData  //user claim
   });
 
   //bot response [first response] 
