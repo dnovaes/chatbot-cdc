@@ -102,10 +102,11 @@ var lib = {
         regExp = new RegExp("\\s"+articleVowels[i]+"\\s", "ig");
         claim = claim.replace(regExp, " ");
       }
-
+/*
       console.log("--");
       console.log("after removed words-vowels-only: "+claim);
       console.log("--");
+*/
 
       for(i=0;i<stopwords.length; i++){
         // \b pattern that checks for a word that contains exactly what is between \b
@@ -114,18 +115,21 @@ var lib = {
         regExp = new RegExp("\\b"+stopwords[i]+"\\b", "ig");
         claim = claim.replace(regExp, "");
       }
-
+/*
       console.log("--");
       console.log("after removed stopwords: "+claim);
       console.log("--");
+*/
 
       //remove emptySpace
       regExpWhiteSpace = new RegExp("(\\s+)", "g");
       claim = claim.replace(regExpWhiteSpace, " ");
 
+/*
       console.log("--");
       console.log("after removed empty space: "+claim);
       console.log("--");
+*/
 
       var keywords = claim.split(" ");
 
@@ -137,7 +141,6 @@ var lib = {
         }
       }
 
-      console.log(claim, keywords);
       return {claim: claim, keywords: keywords}
       //keywords = functions.rmEmptySpace(keywords);
   }
