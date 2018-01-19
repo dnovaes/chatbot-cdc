@@ -1,5 +1,4 @@
 
-
 function checkforSynonyms(){
     
   //check if keyword has synonyms
@@ -693,8 +692,8 @@ var app = new Vue({
       let overlayEl = document.querySelector(".overlay");
       overlayEl.style.display = "block";
 
-      let divViewReportEl = document.querySelector(".div-view-report");
-      divViewReportEl.style.display = "block";
+      let divReportEl = document.querySelector(".div-view-report");
+      divReportEl.style.display = "block";
 
       document.getElementById("header-claim").scrollIntoView();
 
