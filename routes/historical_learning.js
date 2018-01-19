@@ -216,7 +216,7 @@ exports.selectClaimById = function(req, res) {
   db.getConnection(function(err, connection) {
 
     let sqlSelect = `SELECT 
-                      h.id, a.art_id, a.text, user_id, vote_positive, vote_negative 
+                      h.id, a.art_id, a.subject, a.text, user_id, vote_positive, vote_negative 
                     FROM historical_learning AS h 
                     INNER JOIN articles AS a ON h.article_number = a.art_id
                     WHERE h.id = ${claimId}`;
@@ -231,6 +231,7 @@ exports.selectClaimById = function(req, res) {
         obj = {
           id: results[0].id,
           artId: results[0].art_id,
+          artSubject: results[0].subject,
           artText: results[0].text,
           votePos: results[0].vote_positive,
           voteNeg: results[0].vote_negative
