@@ -57,6 +57,10 @@ router.get('/', function (req, res){
   res.render('index');
 });
 
+router.get('/view/', function (req, res){
+  res.redirect('../');
+});
+
 router.post('/signin', user.signin);
 router.post('/signup', user.signup);
 router.get('/signout', user.signout);
