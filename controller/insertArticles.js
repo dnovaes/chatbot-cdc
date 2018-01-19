@@ -499,6 +499,63 @@ Art. 54. Contrato de adesão é aquele cujas cláusulas tenham sido aprovadas pe
 § 5° (Vetado)`
 };
 
+var subjects = {
+  "1":`Papéis do Consumidor e Fornecedor`,
+  "2":`Papéis do Consumidor e Fornecedor`,
+  "3":`Papéis do Consumidor e Fornecedor`,
+  "4":`Princípios das Relações de Consumo`,
+  "5":`Princípios das Relações de Consumo`,
+  "6":`Direitos Básicos do Consumidor`,
+  "7":`Direitos Básicos do Consumidor`,
+  "8":`Periculosidade e Riscos ligado a Produtos e Serviços`,
+  "9":`Periculosidade e Riscos ligado a Produtos e Serviços`,
+  "10":`Periculosidade e Riscos ligado a Produtos e Serviços`,
+  "11":`--`,
+  "12":`Responsabilidade do Fato do Produto ou Serviço`,
+  "13":`Responsabilidade do Fato do Produto ou Serviço`,
+  "14":`Responsabilidade do Fato do Produto ou Serviço`,
+  "15":`Responsabilidade do Fato do Produto ou Serviço`,
+  "16":`Responsabilidade do Fato do Produto ou Serviço`,
+  "17":`Responsabilidade do Fato do Produto ou Serviço`,
+  "18":`Responsabilidade do Vício do Produto ou Serviço`,
+  "19":`Responsabilidade do Vício do Produto ou Serviço`,
+  "20":`Responsabilidade do Vício do Produto ou Serviço`,
+  "21":`Responsabilidade do Vício do Produto ou Serviço`,
+  "22":`Responsabilidade do Vício do Produto ou Serviço`,
+  "23":`Responsabilidade do Vício do Produto ou Serviço`,
+  "24":`Responsabilidade do Vício do Produto ou Serviço`,
+  "25":`Responsabilidade do Vício do Produto ou Serviço`,
+  "26":`Decadência de Produtos e Serviços e Da Preescrição`,
+  "27":`Decadência de Produtos e Serviços e Da Preescrição`,
+  "28":`Desconsideração da Responsabilidade Jurídica`,
+  "29":`Equidade dos Consumidores às Pessoas Determináveis`,
+  "30":`Recusa a Cumprimento da Oferta`,
+  "31":`Informação Insuficiente ou Incorreta do Produto ou Serviço`,
+  "32":`Garantia do Fornecimento de Peças`,
+  "33":`Publicidade via Telefone`,
+  "34":`Responsabildiade de Serviço da Fornecedora`,
+  "35":`Recusa a Cumprimento da Oferta`,
+  "36":`Visualização Indevida ou Ineficiente da Oferta, Propaganda Enganosa ou Abusiva`,
+  "37":`Visualização Indevida ou Ineficiente da Oferta, Propaganda Enganosa ou Abusiva`,
+  "38":`Visualização Indevida ou Ineficiente da Oferta, Propaganda Enganosa ou Abusiva`,
+  "39":`Práticas Abusivas de Publicidade`,
+  "40":`Obrigação de Orçamento no Fornecimento de Serviços`,
+  "41":`Extravio de Tabelamento de Preço`,
+  "42":`Exposição ao ridículo e ameaça por Inadimplência`,
+  "43":`Garantia de Informações pessoais no banco de dados do fornecedor`,
+  "44":`Cadastro de reclamações de Orgãos Públicos`,
+  "45":`-`,
+  "46":`Das Clausulas Contratuais e Desistência`,
+  "47":`Das Clausulas Contratuais e Desistência`,
+  "48":`Das Clausulas Contratuais e Desistência`,
+  "49":`Das Clausulas Contratuais e Desistência`,
+  "50":`Das Clausulas Contratuais e Desistência`,
+  "51":`Das Clausulas Abusivas`,
+  "52":`Informação Prévia de Montante e Taxas associada a produtos ou serviços`,
+  "53":`Das Clausulas sobre Prestações e Consórcios`,
+  "54":`Dos Contratos de Adesão`,
+};
+
 var sqlInsert = ``;
 //console.log(articles);
 insertArticle(1);
@@ -515,10 +572,12 @@ function insertArticle(art_id){
     console.log(`adding article number ${art_id} `);
 
     sqlInsert = `INSERT INTO articles (
-      art_id, 
+      art_id,
+      subject,
       text
     )VALUES (
-    ${art_id}, 
+    ${art_id},
+    '${subjects[art_id]}',
     '${articles[art_id]}'
     )`;
 
