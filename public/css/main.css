@@ -558,6 +558,42 @@
   display: none;
 }
 
+.div-report-header{
+  position: absolute;
+  top: -40px;
+  right: 0px;
+  font-weight: bold;
+}
+
+.div-pdf, .div-newclaim{
+  cursor: pointer;
+  color: white;
+}
+
+.div-pdf{
+  float: left;
+}
+
+.div-newclaim{
+  float: right;
+}
+
+.icon-pdf, .icon-newclaim{
+  width: 40px;
+  height: 40px;
+  float: left;
+}
+
+.text-pdf{
+  width: 130px;
+  padding: 5px;
+}
+
+.text-newclaim{
+  width: 150px;
+  padding: 5px;
+}
+
 .div-report-title{
   font-size: 23px;
   padding: 5px;
