@@ -260,6 +260,15 @@
   cursor:pointer;
 }
 
+.div-similar-claims{
+  text-align: center;
+}
+
+.claimUnit:hover{
+  background-color: #d1d1ea;
+  cursor:pointer;
+}
+
 #search-options{
   margin-bottom: 10px;
 }
@@ -514,7 +523,7 @@
   color: #c3a6ab;
 }
 
-.div-report{
+.div-view-report{
   position: absolute;
   top: 0;
   left: 0;
@@ -523,10 +532,6 @@
   display: none;
   padding: 2%;
   border: 2px solid #1c227c;
-}
-
-.div-report h3{
-  text-align: center;
 }
 
 .div-report-content{
@@ -539,6 +544,7 @@
   height: 40px;
   line-height: 40px;
   color: #2f2f2f;
+  margin-top:10px;
 }
 
 .overlay{
@@ -552,11 +558,34 @@
   display: none;
 }
 
-.div-report-divide{
+.div-report-title{
+  font-size: 23px;
+  padding: 5px;
   font-weight: bold;
-  padding: 16px;
+  text-align: center;
+  color: white;
+  background-color: #1c227c;
+}
+
+.div-report-subject{
+  padding: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.div-report-suggestion{
+  font-weight: bold;
+  margin: 10px 0px;
+  padding: 5px;
   font-size: 18px;
   text-align: center;
+  color: white;
+  background-color: #1c227c;
+}
+
+.div-report-divide{
+  padding: 2px;
+  background-color: #1c227c;
 }
 
 .div-report-voting{
@@ -574,6 +603,11 @@
   animation: pulse 2s infinite;
   animation-direction: alternate;
   animation-name: pulse;
+}
+
+.similar-claim-loading{
+  height: 70px;
+  background: url("../imgs/Rolling.gif") center no-repeat;
 }
 
 @keyframes pulse{

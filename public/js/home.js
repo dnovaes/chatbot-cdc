@@ -167,6 +167,17 @@ function getSynonyms(keywords){
   //return synonyms keywords
 }
 
+/*
+Vue.component('comp-similar-claim-units',{
+  template: '\
+    <div :id="divId" class="simclaimUnit" @click="showCaseToUser">\
+      <span :id="span1Id" class="ruIcons" v-html="value">{{ value }}</span>\
+      <span class="simclaimText" v-html="data">{{ data }}</span>\
+    </div>\
+  '
+});
+*/
+
 Vue.component('comp-result-units',{
   template: '\
     <div :id="divId" class="resultUnit" @click="showRU">\
@@ -662,13 +673,15 @@ var app = new Vue({
         }, 200);
     },
     showCaseToUser: function(caseClaim){
+
       console.log("caseClaim");
       console.log(caseClaim);
 
       /* Exemplo do obj da queixa similar encontrada:
        *
         artId: 51
-        artText:"↵Art. 51. São nulas de pleno direito, entre outras, as cláusulas contratuais relativas ao fornecimento de produtos e serviços que:↵↵I - impossibilitem, exonerem ou atenuem a responsabilidade do fornecedor por vícios de qualquer natureza dos produtos e serviços ou impliquem renúncia ou disposição de direitos. Nas relações de consumo entre o fornecedor e o consumidor pessoa jurídica, a indenização poderá ser limitada, em situações justificáveis;↵↵II - subtraiam ao consumidor a opção de reembolso da quantia já paga, nos casos previstos neste código;↵↵III - transfiram responsabilidades a terceiros;↵↵IV - estabeleçam obrigações consideradas iníquas, abusivas, que coloquem o consumidor em desvantagem exagerada, ou sejam incompatíveis com a boa-fé ou a eqüidade;↵↵V - (Vetado);↵↵VI - estabeleçam inversão do ônus da prova em prejuízo do consumidor;↵↵VII - determinem a utilização compulsória de arbitragem;↵↵VIII - imponham representante para concluir ou realizar outro negócio jurídico pelo consumidor;↵↵IX - deixem ao fornecedor a opção de concluir ou não o contrato, embora obrigando o consumidor;↵↵X - permitam ao fornecedor, direta ou indiretamente, variação do preço de maneira unilateral;↵↵XI - autorizem o fornecedor a cancelar o contrato unilateralmente, sem que igual direito seja conferido ao consumidor;↵↵XII - obriguem o consumidor a ressarcir os custos de cobrança de sua obrigação, sem que igual direito lhe seja conferido contra o fornecedor;↵↵XIII - autorizem o fornecedor a modificar unilateralmente o conteúdo ou a qualidade do contrato, após sua celebração;↵↵XIV - infrinjam ou possibilitem a violação de normas ambientais;↵↵XV - estejam em desacordo com o sistema de proteção ao consumidor;↵↵XVI - possibilitem a renúncia do direito de indenização por benfeitorias necessárias.↵↵§ 1º Presume-se exagerada, entre outros casos, a vantagem que:↵↵I - ofende os princípios fundamentais do sistema jurídico a que pertence;↵↵II - restringe direitos ou obrigações fundamentais inerentes à natureza do contrato, de tal modo a ameaçar seu objeto ou equilíbrio contratual;↵↵III - se mostra excessivamente onerosa para o consumidor, considerando-se a natureza e conteúdo do contrato, o interesse das partes e outras circunstâncias peculiares ao caso.↵↵§ 2° A nulidade de uma cláusula contratual abusiva não invalida o contrato, exceto quando de sua ausência, apesar dos esforços de integração, decorrer ônus excessivo a qualquer das partes.↵↵§ 3° (Vetado).↵↵§ 4° É facultado a qualquer consumidor ou entidade que o represente requerer ao Ministério Público que ajuíze a competente ação para ser declarada a nulidade de cláusula contratual que contrarie o disposto neste código ou de qualquer forma não assegure o justo equilíbrio entre direitos e obrigações das partes.↵"
+        artSubject: test 
+        artText:"iaksdjlasds"
         id:311
         voteNeg:0
         votePos:1
@@ -680,21 +693,36 @@ var app = new Vue({
       let overlayEl = document.querySelector(".overlay");
       overlayEl.style.display = "block";
 
-      let divReportEl = document.querySelector(".div-report");
-      divReportEl.style.display = "block";
+      let divViewReportEl = document.querySelector(".div-view-report");
+      divViewReportEl.style.display = "block";
 
       document.getElementById("header-claim").scrollIntoView();
 
+      //Salvar antiga url da pagina
+      let oldUrl = window.location.pathname;
+      let newUrl = "";
+
       if(caseClaim.id != undefined){
         alert("Foi encontrado uma queixa muito similar ao seu caso!");
+        console.log(caseClaim);
 
         let divReportContentEl = document.querySelector(".div-report-content");
         divReportContentEl.innerHTML = caseClaim.artText;
 
+        let divReportSubjectEl = document.querySelector(".div-report-subject"); 
+        divReportSubjectEl.innerHTML = caseClaim.artSubject;
+
+        newUrl = `/view/?claimId=${caseClaim.id}`
+
       }else{
+        alert("Queixa nova identificada");
+
+        newUrl = `/view/?claimId=${req.session.currclaimid}`
 
         let divReportContentEl = document.querySelector(".div-report-content");
         divReportContentEl.innerHTML = app.resultUnits[0]["data"];
+
+        //TODO: shows here also the subject of the article related
 
         //register claim at the history
         console.log("Segue abaixo informações para historico_aprendizado");
@@ -711,6 +739,9 @@ var app = new Vue({
         }));
 
       }
+
+      //let stateObj = { foo: "claim" }
+      window.history.pushState("", "claim", newUrl);
     },
     //recursive request to questions
     generateQuestionsToUser: function(){
@@ -784,6 +815,9 @@ var app = new Vue({
                       
                     });
                   }else{
+                    //call function to show claim to user passing blank obj as parameter. meaning that the claim info
+                    //is at the app.resultUnits[0]["artId"], app.resultUnits[0]["data"] (content of the article).
+                    //new claim
                     app.showCaseToUser({});
                   }
                 })
@@ -819,10 +853,8 @@ var app = new Vue({
       while(div_voting.firstChild) {
           div_voting.removeChild(div_voting.firstChild);
       }
-      let div_divide = document.querySelector(".div-report-divide");
-      while(div_divide.firstChild) {
-          div_divide.removeChild(div_divide.firstChild);
-      }
+      let div_suggestion = document.querySelector(".div-report-suggestion");
+      div_suggestion.parentNode.removeChild(div_suggestion);
 
       //added div with message of Thanks.
       let thanksVoting= document.createElement("div");
