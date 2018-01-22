@@ -166,69 +166,44 @@ function getSynonyms(keywords){
   //return synonyms keywords
 }
 
-/*
+//'#table-similar-claims',
 Vue.component('comp-similar-claim-units',{
-  template: '\
-    <div :id="divId" class="simclaimUnit" @click="showCaseToUser">\
-      <span :id="span1Id" class="ruIcons" v-html="value">{{ value }}</span>\
-      <span class="simclaimText" v-html="data">{{ data }}</span>\
-    </div>\
-  '
-});
-*/
+  template: `
+      <table class="div-similar-claims" id="table-similar-claims" v-if="columns && data">
+        <tr>
+          <th v-for="column in columns">{{ column }}</th>
+        </tr>
+        <tr v-for="claim in data" class="similar-claim-row">
+          <td v-for="key in claimProps">
 
-Vue.component('comp-result-units',{
-  template: '\
-    <div :id="divId" class="resultUnit" @click="showRU">\
-      <span :id="span1Id" class="ruIcons" v-html="value">{{ value }}</span>\
-      <span class="ruText" v-html="data">{{ data }}</span>\
-    </div>\
-  ',
-  props: ['divId', 'span1Id', 'data'],
-  methods: {
-    showRU: function(){
-      var $el =  this.$el;
-      var $spanIcon = this.$el.children[0];
-      var $spanText = this.$el.children[1];
+            <!-- if valor relacionado a queixa -->
+            <div v-if="key == 'claimText'" class="claim-text" :title="claim[key]">{{ claim[key] }}</div>
 
-      if(!this.active){
+            <!-- if valor é relacionado com similaridade -->
+            <div v-else-if="key == 'similarity' && claim[key] >= 80" class="similarity similar-high">{{ claim[key] }}</div>
+            <div v-else-if="key == 'similarity' && claim[key] >= 60 && claim[key] < 80" class="similarity similar-good">{{ claim[key] }}</div>
+            <div v-else-if="key == 'similarity' && claim[key] >= 40 && claim[key] < 60" class="similarity similar-low">{{ claim[key] }}</div>
+            <div v-else>{{claim[key]}}</div>
 
-        Object.assign($el.style, {
-          height: "400px", 
-          borderColor: "yellowgreen"
-        });
-        $spanIcon.style.fontSize = "23px";
-        Object.assign( $spanText.style, {
-          height: $el.style.height,
-          overflowY: "scroll"
-        });
-        this.value = "&#8628";
-        this.active = true
-
-      }else{
-        
-        Object.assign($el.style, {
-          height: "45px", 
-          borderColor: "black"
-        });
-        $spanIcon.style.fontSize = "18px";
-        Object.assign( $spanText.style, {
-          height: $el.style.height,
-          overflowY: "hidden"
-        });
-        this.value = "&#8627";
-        this.active = false
-        $spanText.scrollTop = 0;
-      }
+          </td>
+        </tr>
+      </table>
+  `,
+  props: { 
+    data: Array,
+    columns: {
+      default: false,
+      type: Array
     }
   },
-  data: function(){ //this.active and this.value acess here
+  data: function(){
     return {
-      active: false,
-      value: "&#8627;"
+      //columns= ["Categoria", "Artigo", "Queixa", "Similaridade"]
+      claimProps: ["subject", "artId", "claimText", "similarity"]
     }
   }
-}); 
+});
+
 
 Vue.component('comp-chat-msgs',{
   template: '\
@@ -349,6 +324,10 @@ var app = new Vue({
       nMsgsBot: -1,
       nMsgsUser: -1,
       inputChatbot: "",
+      gridSimilarClaims: {
+        "columns": null,
+        "data": null
+      },
       viewCase: {},
       //zero based array corresponding to i+1 article number. When i is the array index and (i+1) is the number of the article
       questions: [
@@ -534,9 +513,6 @@ var app = new Vue({
         }
       };
 
-
-      console.log("app.claimData: ", app.claimData);
-
       axios.get('/elastic/?q='+app.keywords, config).then(function (res){
         app.hits = res.data.hits
 
@@ -546,8 +522,6 @@ var app = new Vue({
         //app.hits.hits.length = tell how many results were found.
         if(app.hits.hits.length> 0){
           
-
-
           //always clear this variable before pushing new results to the page
           app.resultUnits = []
 
@@ -575,7 +549,6 @@ var app = new Vue({
           }else{ //split Document in articles
 
             var j=0;
-            console.log(app.keywords);
 
             app.hits.hits.forEach(function(val, i){
               tempContent = val._source.content
@@ -673,9 +646,6 @@ var app = new Vue({
     },
     showCaseToUser: function(caseClaim){
 
-      console.log("caseClaim");
-      console.log(caseClaim);
-
       /* Exemplo do obj da queixa similar encontrada:
        *
         artId: 51
@@ -703,7 +673,6 @@ var app = new Vue({
 
       if(caseClaim.id != undefined){
         alert("Foi encontrado uma queixa muito similar ao seu caso!");
-        console.log(caseClaim);
 
         let divReportContentEl = document.querySelector(".div-report-content");
         divReportContentEl.innerHTML = caseClaim.artText;
@@ -712,35 +681,68 @@ var app = new Vue({
         divReportSubjectEl.innerHTML = caseClaim.artSubject;
 
         newUrl = `/view/?claimId=${caseClaim.id}`
+        //atualiza url do navegador
+        window.history.pushState("", "claim", newUrl);
 
       }else{
         alert("Queixa nova identificada");
 
-        newUrl = `/view/?claimId=${req.session.currclaimid}`
-
         let divReportContentEl = document.querySelector(".div-report-content");
         divReportContentEl.innerHTML = app.resultUnits[0]["data"];
 
-        //TODO: shows here also the subject of the article related
-
         //register claim at the history
-        console.log("Segue abaixo informações para historico_aprendizado");
-        console.log("Keywords: "+app.keywords);
-        console.log("Artigo relacionado: "+app.resultUnits[0]["artId"]); 
+        //console.log("Segue abaixo informações para cadastro na tabela 'historical_learning'");
+        //console.log("Keywords: "+app.keywords);
+        //console.log("Artigo relacionado: "+app.resultUnits[0]["artId"]); 
 
         //Envia requisição ajax para registrar queixa no servidor.
+        axios.post('/historical_learning/create', {
+          claim_text: app.claimData,
+          keywords: app.keywords,
+          article_number: app.resultUnits[0]["artId"]
+        })
+        .then(function (res){
+          newUrl = `/view/?claimId=${res.data.currclaimid}`
+          //atualiza url do navegador
+          window.history.pushState("", "claim", newUrl);
+        });
+/*
         var request = new XMLHttpRequest();
         request.open('POST', '/historical_learning/create', true);
         request.setRequestHeader('Content-Type', 'application/json');
         request.send(JSON.stringify({
+          claim_text: app.claimData,
           keywords: app.keywords,
           article_number: app.resultUnits[0]["artId"]
         }));
+*/
+
 
       }
 
-      //let stateObj = { foo: "claim" }
-      window.history.pushState("", "claim", newUrl);
+      //When report is iniciated, shows links to similar claims
+      //:TEST searchSimilarClaims
+      axios.post('/historical_learning/searchSimilarClaims', {
+        myKeywords: app.keywords
+      })
+      .then(function (res){
+
+        app.gridSimilarClaims.data = [];
+        res.data.claims.forEach(function(val, i){
+
+          let obj = {};
+
+          obj.subject = val.subject;
+          obj.claimId = val.id;
+          obj.artId = val.art_id;
+          obj.claimText = val.claim_text;
+          obj.artText = val.text;
+          obj.similarity = val.similarity;
+
+          app.gridSimilarClaims.data.push(obj);
+        });
+        app.gridSimilarClaims.columns = ["Categoria", "Artigo", "Queixa", "Similaridade (%)"];
+      });
     },
     //recursive request to questions
     generateQuestionsToUser: function(){
@@ -749,10 +751,8 @@ var app = new Vue({
 
       if(app.resultUnits.length>0){
        
-        console.log("Queston related to Article Number: "+app.resultUnits[0]["artId"]);
+        console.log("Question related to Article Number: "+app.resultUnits[0]["artId"]);
         questionIndex = parseInt(app.resultUnits[0]["artId"])-1; 
-
-        //console.log(typeof(app.questions[questionIndex]));
 
         //send question to the user
         if(typeof(app.questions[questionIndex]) == "object"){
@@ -801,6 +801,7 @@ var app = new Vue({
                 })
                 .then(function (res){
                   //if(claim returned is higher than 90, select claim and article from the database
+
                   if(res.data.ratio > 90){
                     
                     axios.post('/historical_learning/selectClaimById', {
@@ -808,8 +809,7 @@ var app = new Vue({
                     })
                     .then(function (res){
 
-                      console.log("This is the similar claim found");
-                      console.log(res.data);
+                      //console.log("This is the similar claim found");
                       app.showCaseToUser(res.data);
                       
                     });
@@ -878,6 +878,9 @@ var app = new Vue({
         console.log("Voto não foi registrado. Segue erro abaixo:");
         console.log(err);
       });
+    },
+    clearReportDiv: function(){
+      window.location = "/";
     }
   }
 });
