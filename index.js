@@ -6,11 +6,11 @@ const client   = require('./controller/connection.js');
 var app        = express()
 var path       = require('path');
 var bodyparser = require('body-parser');
-var functions  = require(__dirname+"/public/js/ext_functions.js");
+const functions  = require(__dirname+"/public/js/ext_functions.js");
 var port       = process.env.PORT || 3000;
 var nlp        = require(__dirname+"/public/js/natural.js");
 var user       = require('./routes/user');
-var historical_learning = require('./routes/historical_learning');
+const historical_learning = require('./routes/historical_learning');
 
 // There is a special routing method which is not derived from any HTTP method. 
 // This method is used for loading middleware functions at a path for all request methods.
@@ -74,6 +74,8 @@ router.post('/historical_learning/create', historical_learning.create);
 router.post('/historical_learning/voteclaim', historical_learning.voteClaim);
 router.post('/historical_learning/searchMostSimilarClaim', historical_learning.searchMostSimilarClaim);
 router.post('/historical_learning/selectClaimById', historical_learning.selectClaimById);
+router.post('/historical_learning/searchSimilarClaims', historical_learning.searchSimilarClaims);
+
 
 //route that handle ajax requests
 //in case of post request, all "variable" are passed in req.body
