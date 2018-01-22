@@ -260,13 +260,49 @@
   cursor:pointer;
 }
 
+#table-similar-claims td{
+  min-width: 200px;
+}
+
 .div-similar-claims{
   text-align: center;
 }
 
-.claimUnit:hover{
+.similar-claim-row{
+  height: 40px;
+  line-height: 40px;
+}
+
+.similar-claim-row:hover{
   background-color: #d1d1ea;
   cursor:pointer;
+}
+
+.similarity{
+  width: 40px;
+  border-radius: 20px;
+  margin: auto;
+}
+
+.claim-text{
+  text-overflow: clip;
+  overflow: hidden;
+  max-width: 80%;
+  max-height: 45px;
+  line-height: 20px;
+  margin: auto;
+}
+
+.similar-high{
+  background-color: #7aff60;
+}
+
+.similar-good{
+  background-color: orange;
+}
+
+.similar-low{
+  background-color: red;
 }
 
 #search-options{
