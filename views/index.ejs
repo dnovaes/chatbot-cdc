@@ -59,7 +59,7 @@
     </div>
     <div class="row">
       <div class="large-offset-5 large-2 columns">
-       <button class="default-bt fluid" @click="ajaxSearchSW" >ABRIR QUEIXA</button>
+       <button class="default-bt fluid" @click="ajaxSearchSW" >BUSCAR QUEIXA</button>
       </div>
     </div>
   </div>
@@ -146,16 +146,23 @@
 
   <!--position absolute -->
   <div class="div-view-report">
+
     <div class="div-report-header"> <!--position absolute -->
+
+      <% if (user && user.email) { %>
       <div class="div-pdf">
         <div class="icon-pdf"></div>
         <div class="text-pdf"> Gerar PDF </div>
       </div>
-      <div class="div-newclaim">
+      <% } %>
+
+      <div class="div-newclaim" @click="clearReportDiv()">
         <div class="icon-newclaim"></div>
         <div class="text-newclaim"> Nova Queixa </div>
       </div>
+
     </div>
+
     <div class="div-report">
       <div class="div-report-title">O Artigo que endossa seu caso é descrito abaixo:</div>
       <div class="div-report-subject"></div>
@@ -165,64 +172,53 @@
         <button id="vote-pos" class="vote-button" @click="voteClaim('+')"></button>
         <button id="vote-neg" class="vote-button" @click="voteClaim('-')"></button>
       </div>
-      <div class="div-report-suggestion"><center>Lista de Casos Similares</center></div>
-      <table class="div-similar-claims">
-        <tr>
-          <th>Categoria</th>
-          <th>Artigo</th>
-          <th>Queixa</th>
-          <th>Similaridade</th>
-        </tr>
-        <tr class="claim-unit-1">
-          <td>Propaganda Enganosa</td>
-          <td>22</td>
-          <td>
-            <div style="height:45px; overflow:hidden">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ultricies feugiat vulputate. Quisque eu magna elementum, volutpat ex ut, euismod felis. Donec efficitur eros sit amet velit pellentesque tristique. Vestibulum sagittis molestie elit id interdum. Nam vitae ullamcorper arcu, eu blandit leo. Curabitur semper quis augue vitae placerat. Aliquam semper eget purus id mattis. Ut sit amet commodo neque. Aliquam erat volutpat. Duis et sem consequat, volutpat erat in, maximus eros. Nullam a tincidunt justo. Vivamus pellentesque nibh ante, vitae fermentum libero pulvinar et. Donec feugiat dictum ligula ac posuere.
-            </div>
-          </td>
-          <td>90%</td>
-        </tr>
-        <tr class="claim-unit-2">
-          <td>Informação Insuficiente</td>
-          <td>53</td>
-          <td>
-            <div style="height:45px; overflow:hidden">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ultricies feugiat vulputate. Quisque eu magna elementum, volutpat ex ut, euismod felis. Donec efficitur eros sit amet velit pellentesque tristique. Vestibulum sagittis molestie elit id interdum. Nam vitae ullamcorper arcu, eu blandit leo. Curabitur semper quis augue vitae placerat. Aliquam semper eget purus id mattis. Ut sit amet commodo neque. Aliquam erat volutpat. Duis et sem consequat, volutpat erat in, maximus eros. Nullam a tincidunt justo. Vivamus pellentesque nibh ante, vitae fermentum libero pulvinar et. Donec feugiat dictum ligula ac posuere.
-            </div>
-          </td>
-          <td>44%</td>
-        </tr>
-        <tr class="claim-unit-2">
-          <td>Abuso de Desinformação</td>
-          <td>8</td>
-          <td>
-            <div style="height:45px; overflow:hidden">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ultricies feugiat vulputate. Quisque eu magna elementum, volutpat ex ut, euismod felis. Donec efficitur eros sit amet velit pellentesque tristique. Vestibulum sagittis molestie elit id interdum. Nam vitae ullamcorper arcu, eu blandit leo. Curabitur semper quis augue vitae placerat. Aliquam semper eget purus id mattis. Ut sit amet commodo neque. Aliquam erat volutpat. Duis et sem consequat, volutpat erat in, maximus eros. Nullam a tincidunt justo. Vivamus pellentesque nibh ante, vitae fermentum libero pulvinar et. Donec feugiat dictum ligula ac posuere.
-            </div>
-          </td>
-          <td>22%</td>
-        </tr>
-      </table>
+      <div class="div-report-suggestion"><center>Casos Similares</center></div>
+      <div class="similar-claim-loading" v-if="!gridSimilarClaims.data || !gridSimilarClaims.columns"></div>
+
+      <!-- :filter-key="searchQueryClaims" -->
+      <comp-similar-claim-units
+        :data="gridSimilarClaims.data"
+        :columns="gridSimilarClaims.columns">
+      </comp-similar-claim-units>
+
     </div>
   </div>
 
-<!--Exemplo do obj da queixa similar encontrada:
-    *
-    artId: 51
-    artText:"↵Art. 51. São nulas de pleno direito, entre outras, as cláusulas contratuais relativas ao fornecimento de produtos e serviços que:↵↵I - impossibilitem, exonerem ou atenuem a responsabilidade do fornecedor por vícios de qualquer natureza dos produtos e serviços ou impliquem renúncia ou disposição de direitos. Nas relações de consumo entre o fornecedor e o consumidor pessoa jurídica, a indenização poderá ser limitada, em situações justificáveis;↵↵II - subtraiam ao consumidor a opção de reembolso da quantia já paga, nos casos previstos neste código;↵↵III - transfiram responsabilidades a terceiros;↵↵IV - estabeleçam obrigações consideradas iníquas, abusivas, que coloquem o consumidor em desvantagem exagerada, ou sejam incompatíveis com a boa-fé ou a eqüidade;↵↵V - (Vetado);↵↵VI - estabeleçam inversão do ônus da prova em prejuízo do consumidor;↵↵VII - determinem a utilização compulsória de arbitragem;↵↵VIII - imponham representante para concluir ou realizar outro negócio jurídico pelo consumidor;↵↵IX - deixem ao fornecedor a opção de concluir ou não o contrato, embora obrigando o consumidor;↵↵X - permitam ao fornecedor, direta ou indiretamente, variação do preço de maneira unilateral;↵↵XI - autorizem o fornecedor a cancelar o contrato unilateralmente, sem que igual direito seja conferido ao consumidor;↵↵XII - obriguem o consumidor a ressarcir os custos de cobrança de sua obrigação, sem que igual direito lhe seja conferido contra o fornecedor;↵↵XIII - autorizem o fornecedor a modificar unilateralmente o conteúdo ou a qualidade do contrato, após sua celebração;↵↵XIV - infrinjam ou possibilitem a violação de normas ambientais;↵↵XV - estejam em desacordo com o sistema de proteção ao consumidor;↵↵XVI - possibilitem a renúncia do direito de indenização por benfeitorias necessárias.↵↵§ 1º Presume-se exagerada, entre outros casos, a vantagem que:↵↵I - ofende os princípios fundamentais do sistema jurídico a que pertence;↵↵II - restringe direitos ou obrigações fundamentais inerentes à natureza do contrato, de tal modo a ameaçar seu objeto ou equilíbrio contratual;↵↵III - se mostra excessivamente onerosa para o consumidor, considerando-se a natureza e conteúdo do contrato, o interesse das partes e outras circunstâncias peculiares ao caso.↵↵§ 2° A nulidade de uma cláusula contratual abusiva não invalida o contrato, exceto quando de sua ausência, apesar dos esforços de integração, decorrer ônus excessivo a qualquer das partes.↵↵§ 3° (Vetado).↵↵§ 4° É facultado a qualquer consumidor ou entidade que o represente requerer ao Ministério Público que ajuíze a competente ação para ser declarada a nulidade de cláusula contratual que contrarie o disposto neste código ou de qualquer forma não assegure o justo equilíbrio entre direitos e obrigações das partes.↵"
-    id:311
-    voteNeg:0
-    votePos:1
-    *
-    <div class="div-similar-claims">
-      <div class="similar-claim-loading">
-      </div> 
-      <comp-similar-claim-units v-for="el in simClaimUnits" :claim-id="el.id" :claim-text="el.claimText" :artiid="el.artId" :art-text="el.artText" :key="el.id"></comp-chatmsgs-el>
-    </div>
--->
+  <!--
+  <table>
+    <tr class="claim-unit-1">
+      <td>Propaganda Enganosa</td>
+      <td>22</td>
+      <td>
+        <div style="height:45px; overflow:hidden">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ultricies feugiat vulputate. Quisque eu magna elementum, volutpat ex ut, euismod felis. Donec efficitur eros sit amet velit pellentesque tristique. Vestibulum sagittis molestie elit id interdum. Nam vitae ullamcorper arcu, eu blandit leo. Curabitur semper quis augue vitae placerat. Aliquam semper eget purus id mattis. Ut sit amet commodo neque. Aliquam erat volutpat. Duis et sem consequat, volutpat erat in, maximus eros. Nullam a tincidunt justo. Vivamus pellentesque nibh ante, vitae fermentum libero pulvinar et. Donec feugiat dictum ligula ac posuere.
+        </div>
+      </td>
+      <td>90%</td>
+    </tr>
+    <tr class="claim-unit-2">
+      <td>Informação Insuficiente</td>
+      <td>53</td>
+      <td>
+        <div style="height:45px; overflow:hidden">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ultricies feugiat vulputate. Quisque eu magna elementum, volutpat ex ut, euismod felis. Donec efficitur eros sit amet velit pellentesque tristique. Vestibulum sagittis molestie elit id interdum. Nam vitae ullamcorper arcu, eu blandit leo. Curabitur semper quis augue vitae placerat. Aliquam semper eget purus id mattis. Ut sit amet commodo neque. Aliquam erat volutpat. Duis et sem consequat, volutpat erat in, maximus eros. Nullam a tincidunt justo. Vivamus pellentesque nibh ante, vitae fermentum libero pulvinar et. Donec feugiat dictum ligula ac posuere.
+        </div>
+      </td>
+      <td>44%</td>
+    </tr>
+    <tr class="claim-unit-2">
+      <td>Abuso de Desinformação</td>
+      <td>8</td>
+      <td>
+        <div style="height:45px; overflow:hidden">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ultricies feugiat vulputate. Quisque eu magna elementum, volutpat ex ut, euismod felis. Donec efficitur eros sit amet velit pellentesque tristique. Vestibulum sagittis molestie elit id interdum. Nam vitae ullamcorper arcu, eu blandit leo. Curabitur semper quis augue vitae placerat. Aliquam semper eget purus id mattis. Ut sit amet commodo neque. Aliquam erat volutpat. Duis et sem consequat, volutpat erat in, maximus eros. Nullam a tincidunt justo. Vivamus pellentesque nibh ante, vitae fermentum libero pulvinar et. Donec feugiat dictum ligula ac posuere.
+        </div>
+      </td>
+      <td>22%</td>
+    </tr>
+  </table>
+  -->
 
-  </div>
 </div>
 
 <script src="js/home.js"></script>
