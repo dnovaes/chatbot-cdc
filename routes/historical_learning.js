@@ -1,34 +1,42 @@
 var db = require('../config/db.js');
+const functions  = require(__dirname+"/../public/js/ext_functions.js");
 
 //constant of voting to be considerated a potencial valid claim
 const CONST_VOTES_TOTAL = 3;
 
 exports.create = function(req, res) {
+  console.log("registering");
+
   let keywords = req.body.keywords;
   let article_number = req.body.article_number;
+  let claim_text = req.body.claim_text;
 
   let sqlInsert = "";
   
-  if(req.session.user.id){
-    sqlInsert = "INSERT INTO historical_learning (keywords, article_number, user_id) VALUES ('" + keywords + "', '" + article_number + "', '" +req.session.user.id+ "')";
+  if(req.session.user){
+    sqlInsert = `INSERT INTO historical_learning (keywords, article_number, claim_text, user_id) VALUES ('${keywords}', '${article_number}', '${claim_text}', '${req.session.user.id}')`;
   }else{
-    sqlInsert = "INSERT INTO historical_learning (keywords, article_number) VALUES ('" + keywords + "', '" + article_number + "')";
+    sqlInsert = `INSERT INTO historical_learning (keywords, article_number, claim_text) VALUES ('${keywords}', '${article_number}', '${claim_text}')`;
   }
+  console.log(sqlInsert);
 
   db.getConnection(function(err, connection) {
     connection.query(sqlInsert, function(err, results) {
       connection.release();
 
-      req.session.currclaimid = results.insertId;
+      let obj = {}
+      if(err){
+        console.log(err);
+      }else{
+        req.session.currclaimid = results.insertId;
+        req.session.save();
 
-      console.log("session before");
-      console.log(req.session);
-
-      req.session.save();
+        obj.currclaimid = results.insertId;
+      }
+      res.send(obj);
     });
   });
 
-  res.sendStatus(200);
 }
 
 exports.voteClaim = function(req, res) {
@@ -118,7 +126,7 @@ exports.voteClaim = function(req, res) {
   delete req.session.currclaimid;
 }
 
-exports.searchMostSimilarClaim= function(req, res) {
+exports.searchMostSimilarClaim = function(req, res) {
 
   //console.log("this is my currently keywords:");
   //console.log(req.body.myKeywords);
@@ -152,7 +160,7 @@ exports.searchMostSimilarClaim= function(req, res) {
         results.forEach(function(rowdp, i, arr){
           let cnt = 0;
           // val =  object containing id and keywords for each claims registered
-          console.log(i+" id: "+rowdp.id+", keywords: "+rowdp.keywords);
+          //console.log(i+" id: "+rowdp.id+", keywords: "+rowdp.keywords);
           let arrkeywords = rowdp.keywords.split(",");
 
           //console.log("arrkeywords");
@@ -171,7 +179,6 @@ exports.searchMostSimilarClaim= function(req, res) {
           console.log("grau de similaridade desta queixa é de:");
           console.log("cnt: "+cnt+" arrkeywords.length: "+arrkeywords.length);
           let ratio = cnt/arrkeywords.length*100;
-          console.log(ratio);
          
           if(ratio > objMostSimilar.ratio){
             objMostSimilar.claimId = rowdp.id;
@@ -190,7 +197,7 @@ exports.searchMostSimilarClaim= function(req, res) {
           objMostSimilar.ratio = 0;
         }
 
-        console.log(objMostSimilar);
+        objMostSimilar.ratio.toFixed(1);
         obj = JSON.stringify(objMostSimilar);
         res.send(obj); 
       }
@@ -218,8 +225,7 @@ exports.selectClaimById = function(req, res) {
     let sqlSelect = `SELECT 
                       h.id, a.art_id, a.subject, a.text, user_id, vote_positive, vote_negative 
                     FROM historical_learning AS h 
-                    INNER JOIN articles AS a ON h.article_number = a.art_id
-                    WHERE h.id = ${claimId}`;
+                    INNER JOIN articles AS a ON h.article_number = a.art_id`;
 
     connection.query(sqlSelect, function(err, results) {
 
@@ -238,6 +244,91 @@ exports.selectClaimById = function(req, res) {
         }
       }
       res.send(obj);
+    });
+  });
+}
+
+exports.searchSimilarClaims = function(req, res){
+
+  var myKeywords = req.body.myKeywords;
+  
+  let obj = {}
+
+  db.getConnection(function(err, connection) {
+
+    let sqlSelect = `SELECT 
+                      h.id, h.keywords, h.claim_text, a.art_id, a.subject, a.text, user_id, vote_positive, vote_negative 
+                    FROM historical_learning AS h 
+                    INNER JOIN articles AS a ON h.article_number = a.art_id`
+
+    connection.query(sqlSelect, function(err, results) {
+
+      connection.release();
+
+      if(err){
+        throw err;
+      }else{
+
+        let objSimilarity = {
+          "claims": []
+        }
+
+        results.forEach(function(rowdp, i, arr){
+          let cnt = 0;
+          // val =  object containing id and keywords for each claims registered
+          //console.log(i+" id: "+rowdp.id+", keywords: "+rowdp.keywords);
+          let arrkeywords = rowdp.keywords.split(",");
+
+          //#refactor forEach to some
+          myKeywords.forEach(function(val, ind){
+
+            if(arrkeywords.indexOf(val) > -1){
+              cnt++;
+            }
+          });
+
+          console.log("grau de similaridade desta queixa é de:");
+          console.log("cnt: "+cnt+" arrkeywords.length: "+arrkeywords.length);
+          rowdp.similarity = cnt/arrkeywords.length*100;
+
+          //prepare object containing only the data that will appear in the table (MAX_COUNT = 5) /number of similar claims that will appear
+          let numOfClaims = 0;
+
+          if(rowdp.similarity>=40){
+            //>=40
+            rowdp.similarity = rowdp.similarity.toFixed(1);
+            objSimilarity.claims.push(rowdp);
+
+          }
+        });
+
+
+        res.send(JSON.stringify(objSimilarity));
+
+        /*
+         * MergeSort
+         *
+        var arr = [0,2,9,23,8,34,7];
+        var arrC = [320, 449, 8232, 9238, 22, 11, 32];
+
+        arrObj = {arr: arr, arrC: arrC}
+        let resultSort = functions.mergeSort(arrObj);
+        console.log(resultSort);
+
+        leftObj = {
+          arr: [0,2,9],
+          arrC: [20,40,60]
+        }
+        rightObj = {
+          arr: [20,7,5],
+          arrC: [300,400,500]
+        }
+
+        let resultMerge = functions.merge(leftObj, rightObj);
+        console.log(resultMerge);
+        */
+      }
+      //res.send(obj);
     });
   });
 }
