@@ -263,6 +263,9 @@
 #table-similar-claims td{
   min-width: 200px;
 }
+#table-similar-claims tr:nth-child(even){ 
+  background-color: #f1f1f1;
+}
 
 .div-similar-claims{
   text-align: center;
@@ -273,7 +276,7 @@
   line-height: 40px;
 }
 
-.similar-claim-row:hover{
+#table-similar-claims tr:hover{
   background-color: #d1d1ea;
   cursor:pointer;
 }
