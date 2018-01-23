@@ -1,3 +1,17 @@
+//In case users click to back to previous claim:
+window.onpopstate = function(event) {
+  //alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
+  if(event.state && event.state.claimId){
+    axios.post('/historical_learning/selectClaimById', {
+      claimId: event.state.claimId
+    })
+    .then(function (res){
+      app.showCaseToUserFromClick(res.data, true);
+    });
+  }else{
+    window.location = "/";
+  }
+};
 
 function checkforSynonyms(){
     
@@ -167,17 +181,25 @@ function getSynonyms(keywords){
 }
 
 //'#table-similar-claims',
+/*
+  obj.subject = val.subject;
+  obj.claimId = val.id;
+  obj.artId = val.art_id;
+  obj.claimText = val.claim_text;
+  obj.artText = val.text;
+  obj.similarity = val.similarity;
+*/
 Vue.component('comp-similar-claim-units',{
   template: `
       <table class="div-similar-claims" id="table-similar-claims" v-if="columns && data">
         <tr>
           <th v-for="column in columns">{{ column }}</th>
         </tr>
-        <tr v-for="claim in data" class="similar-claim-row">
+        <tr v-for="claim in data" class="similar-claim-row" @click="showCaseToUser(claim)">
           <td v-for="key in claimProps">
 
             <!-- if valor relacionado a queixa -->
-            <div v-if="key == 'claimText'" class="claim-text" :title="claim[key]">{{ claim[key] }}</div>
+            <div v-if="key == 'claimText'" class="claim-text" :title="claim[key]" >{{ claim[key] }}</div>
 
             <!-- if valor é relacionado com similaridade -->
             <div v-else-if="key == 'similarity' && claim[key] >= 80" class="similarity similar-high">{{ claim[key] }}</div>
@@ -200,6 +222,11 @@ Vue.component('comp-similar-claim-units',{
     return {
       //columns= ["Categoria", "Artigo", "Queixa", "Similaridade"]
       claimProps: ["subject", "artId", "claimText", "similarity"]
+    }
+  },
+  methods: {
+    showCaseToUser: function(caseClaim){
+      app.showCaseToUserFromClick(caseClaim);
     }
   }
 });
@@ -306,6 +333,9 @@ var app = new Vue({
         ["pagamento", "cobrança"],
         ["anuncio", "anunciando", "publicidade"]
       ],
+      //Div elements
+      suggestionTitleBool: true,
+      thanksVotingBool: false,
       outputBool: false,
       posBool: false, //indicate to system if it should apply the POS Tagger on the claim or not
       posResult: "", // var the has the contents of pos
@@ -314,6 +344,7 @@ var app = new Vue({
       configDivBool: false, //bool that sinalizes the systems if it the configDiv should be visible or not
       resultsBool: false, //bool that sinalize the systems to show the div of results
       resultsTitle: "Documentos: ",
+      voteButtons: [],
       results: "",
       hits: "",
       resultUnits: [],
@@ -646,21 +677,36 @@ var app = new Vue({
     },
     showCaseToUser: function(caseClaim){
 
-      /* Exemplo do obj da queixa similar encontrada:
-       *
-        artId: 51
-        artSubject: test 
-        artText:"iaksdjlasds"
-        id:311
-        voteNeg:0
-        votePos:1
+      /*
+      caseClaim.subject
+      caseClaim.claimId
+      caseClaim.artId
+      caseClaim.claimText
+      caseClaim.artText
+      caseClaim.votePos
+      caseClaim.voteNeg
       */
-
       app.viewCase = caseClaim;
       
       //show the article found by the system the endorces the claim of the user
-      let overlayEl = document.querySelector(".overlay");
-      overlayEl.style.display = "block";
+      let overlayDiv = document.querySelector(".overlay");
+      if(!overlayDiv){
+        //add overlay
+        let chatbotDiv = document.querySelector("#div-chatbot");
+        overlayDiv = document.createElement("div");
+        overlayDiv.className = "overlay";
+        chatbotDiv.appendChild(overlayDiv);
+      }
+
+      //reload div-report-voting if necessary (go and back events of browser)
+      app.suggestionTitleBool = true;
+      if(app.voteButtons.length == 0){
+        app.voteButtons.push({id: "vote-pos"});
+        app.voteButtons.push({id: "vote-neg"});
+      }
+
+      //remove message of thanks if necessary (user previously already voted on the last claim
+      app.thanksVotingBool=false; 
 
       let divReportEl = document.querySelector(".div-view-report");
       divReportEl.style.display = "block";
@@ -671,53 +717,21 @@ var app = new Vue({
       let oldUrl = window.location.pathname;
       let newUrl = "";
 
-      if(caseClaim.id != undefined){
+      if(caseClaim.claimId != undefined){
         alert("Foi encontrado uma queixa muito similar ao seu caso!");
 
         let divReportContentEl = document.querySelector(".div-report-content");
         divReportContentEl.innerHTML = caseClaim.artText;
 
         let divReportSubjectEl = document.querySelector(".div-report-subject"); 
-        divReportSubjectEl.innerHTML = caseClaim.artSubject;
+        divReportSubjectEl.innerHTML = caseClaim.subject;
 
-        newUrl = `/view/?claimId=${caseClaim.id}`
         //atualiza url do navegador
-        window.history.pushState("", "claim", newUrl);
+        newUrl = `/view/?claimId=${caseClaim.claimId}`
+        window.history.pushState({claimId: caseClaim.claimId}, "claim", newUrl);
 
       }else{
-        alert("Queixa nova identificada");
-
-        let divReportContentEl = document.querySelector(".div-report-content");
-        divReportContentEl.innerHTML = app.resultUnits[0]["data"];
-
-        //register claim at the history
-        //console.log("Segue abaixo informações para cadastro na tabela 'historical_learning'");
-        //console.log("Keywords: "+app.keywords);
-        //console.log("Artigo relacionado: "+app.resultUnits[0]["artId"]); 
-
-        //Envia requisição ajax para registrar queixa no servidor.
-        axios.post('/historical_learning/create', {
-          claim_text: app.claimData,
-          keywords: app.keywords,
-          article_number: app.resultUnits[0]["artId"]
-        })
-        .then(function (res){
-          newUrl = `/view/?claimId=${res.data.currclaimid}`
-          //atualiza url do navegador
-          window.history.pushState("", "claim", newUrl);
-        });
-/*
-        var request = new XMLHttpRequest();
-        request.open('POST', '/historical_learning/create', true);
-        request.setRequestHeader('Content-Type', 'application/json');
-        request.send(JSON.stringify({
-          claim_text: app.claimData,
-          keywords: app.keywords,
-          article_number: app.resultUnits[0]["artId"]
-        }));
-*/
-
-
+        alert("Erro grave com caseClaim (home.js). Contacte o admnistrador do sistema");
       }
 
       //When report is iniciated, shows links to similar claims
@@ -738,11 +752,76 @@ var app = new Vue({
           obj.claimText = val.claim_text;
           obj.artText = val.text;
           obj.similarity = val.similarity;
+          obj.votePos = val.votePos;
+          obj.voteNeg = val.voteNeg;
 
           app.gridSimilarClaims.data.push(obj);
         });
         app.gridSimilarClaims.columns = ["Categoria", "Artigo", "Queixa", "Similaridade (%)"];
       });
+    },
+    showCaseToUserFromClick: function(caseClaim, flagPrevious){
+      /*
+      caseClaim.subject
+      caseClaim.claimId
+      caseClaim.artId
+      caseClaim.claimText
+      caseClaim.artText
+      caseClaim.votePos
+      caseClaim.voteNeg
+      */
+      if(flagPrevious === undefined)
+        flagPrevious = false;
+
+      let overlayDiv = document.querySelector(".overlay");
+      if(!overlayDiv){
+        //add overlay
+        let chatbotDiv = document.querySelector("#div-chatbot");
+        overlayDiv = document.createElement("div");
+        overlayDiv.className = "overlay";
+        chatbotDiv.appendChild(overlayDiv);
+      }
+
+      //reload div-report-voting if necessary (go and back events of browser)
+      app.suggestionTitleBool = true;
+      if(app.voteButtons.length == 0){
+        app.voteButtons.push({id: "vote-pos"});
+        app.voteButtons.push({id: "vote-neg"});
+      }
+
+      //remove message of thanks if necessary (user previously already voted on the last claim
+      app.thanksVotingBool=false; 
+
+      /*
+      let div_voting = document.querySelector(".div-report-voting");
+      while(div_voting.firstChild) {
+          div_voting.removeChild(div_voting.firstChild);
+      }
+      */
+
+      let viewReportDiv = document.querySelector(".div-view-report");
+      if(viewReportDiv){
+
+        let reportSubjectDiv = document.querySelector(".div-report-subject");
+        reportSubjectDiv.innerHTML = caseClaim.subject;
+
+        let reportArtContentDiv= document.querySelector(".div-report-content");
+        reportArtContentDiv.innerHTML = caseClaim.artText;
+      
+        let divReportEl = document.querySelector(".div-view-report");
+        divReportEl.style.display = "block";
+
+        app.viewCase = caseClaim;
+      
+        document.getElementById("header-claim").scrollIntoView();
+
+        //atualiza url do navegador
+        if(flagPrevious == false){
+          newUrl = `/view/?claimId=${caseClaim.claimId}`
+          window.history.pushState({claimId: caseClaim.claimId}, "claim", newUrl);
+        }
+      }
+
     },
     //recursive request to questions
     generateQuestionsToUser: function(){
@@ -805,7 +884,7 @@ var app = new Vue({
                   if(res.data.ratio > 90){
                     
                     axios.post('/historical_learning/selectClaimById', {
-                      id: res.data.claimId 
+                      claimId: res.data.claimId 
                     })
                     .then(function (res){
 
@@ -816,8 +895,30 @@ var app = new Vue({
                   }else{
                     //call function to show claim to user passing blank obj as parameter. meaning that the claim info
                     //is at the app.resultUnits[0]["artId"], app.resultUnits[0]["data"] (content of the article).
+                   
                     //new claim
-                    app.showCaseToUser({});
+                    alert("Queixa nova identificada");
+
+                    let divReportContentEl = document.querySelector(".div-report-content");
+                    divReportContentEl.innerHTML = app.resultUnits[0]["data"];
+
+                    //Envia requisição ajax para registrar queixa no servidor.
+                    axios.post('/historical_learning/create', {
+                      claim_text: app.claimData,
+                      keywords: app.keywords,
+                      article_number: app.resultUnits[0]["artId"]
+                    })
+                    .then(function (res){
+
+                      axios.post('/historical_learning/selectClaimById', {
+                        claimId: res.data.claimId 
+                      })
+                      .then(function (res){
+                        app.showCaseToUser(res.data);
+                        
+                      });
+
+                    });
                   }
                 })
                 .catch(function(err){
@@ -841,30 +942,28 @@ var app = new Vue({
       }
     },
     voteClaim: function(voting_char){
-      /*
-      console.log("Keywords: "+app.keywords);
-      console.log("Artigo relacionado: "+app.resultUnits[0]["artId"]);
-      */
+      //All the info about the case is inside of ViewCase : app.viewCase
 
       //removes informative info for voting
-      //remove div of voting
       let div_voting = document.querySelector(".div-report-voting");
-      while(div_voting.firstChild) {
-          div_voting.removeChild(div_voting.firstChild);
-      }
-      let div_suggestion = document.querySelector(".div-report-suggestion");
-      div_suggestion.parentNode.removeChild(div_suggestion);
+      app.voteButtons = []
+
+      //div_suggestion.parentNode.removeChild(div_suggestion);
+      app.suggestionTitleBool = false;
 
       //added div with message of Thanks.
+      /*
       let thanksVoting= document.createElement("div");
       let content = document.createTextNode("Seu voto foi computado com sucesso. Obrigado por participar");
       thanksVoting.appendChild(content);
       thanksVoting.className = "thanks-voting";
       div_voting.appendChild(thanksVoting);
+      */
+      app.thanksVotingBool = true;
 
       let claimId = 0;
       if(app.viewCase){
-        claimId = app.viewCase.id; 
+        claimId = app.viewCase.claimId; 
       }
 
       axios.post('/historical_learning/voteclaim', {
