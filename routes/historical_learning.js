@@ -28,10 +28,7 @@ exports.create = function(req, res) {
       if(err){
         console.log(err);
       }else{
-        req.session.currclaimid = results.insertId;
-        req.session.save();
-
-        obj.currclaimid = results.insertId;
+        obj.claimId = results.insertId;
       }
       res.send(obj);
     });
@@ -205,27 +202,20 @@ exports.searchMostSimilarClaim = function(req, res) {
     });
   });
 
-/*
-  claim = { "claim" : claim, "keywords": keywords, "claimTagged": claimTagged}
-  obj = JSON.stringify(claim);
-  res.send(obj); 
-  //or
-  res.sendStatus(200);
-*/
-
 }
 
 exports.selectClaimById = function(req, res) {
 
-  let claimId = req.body.id
+  let claimId = req.body.claimId
   
   let obj = {}
   db.getConnection(function(err, connection) {
 
     let sqlSelect = `SELECT 
-                      h.id, a.art_id, a.subject, a.text, user_id, vote_positive, vote_negative 
+                      h.id, h.claim_text, a.art_id, a.subject, a.text, user_id, vote_positive, vote_negative 
                     FROM historical_learning AS h 
-                    INNER JOIN articles AS a ON h.article_number = a.art_id`;
+                    INNER JOIN articles AS a ON h.article_number = a.art_id
+                    WHERE h.id = ${claimId}`;
 
     connection.query(sqlSelect, function(err, results) {
 
@@ -235,9 +225,10 @@ exports.selectClaimById = function(req, res) {
         throw err;
       }else{
         obj = {
-          id: results[0].id,
+          subject: results[0].subject,
+          claimId: results[0].id,
           artId: results[0].art_id,
-          artSubject: results[0].subject,
+          claimText: results[0].claim_text,
           artText: results[0].text,
           votePos: results[0].vote_positive,
           voteNeg: results[0].vote_negative
