@@ -141,10 +141,6 @@
   </div>
 
   <!--position absolute -->
-  <div class="overlay">
-  </div>
-
-  <!--position absolute -->
   <div class="div-view-report">
 
     <div class="div-report-header"> <!--position absolute -->
@@ -167,12 +163,12 @@
       <div class="div-report-title">O Artigo que endossa seu caso é descrito abaixo:</div>
       <div class="div-report-subject"></div>
       <div class="div-report-content"></div>
-      <div class="div-report-suggestion"><center>Essa sugestão te ajudou a encontrar o que procurava?</center></div>
+      <div class="div-suggestion-title" v-if="suggestionTitleBool"><center>Essa sugestão te ajudou a encontrar o que procurava?</center></div>
       <div class="div-report-voting">
-        <button id="vote-pos" class="vote-button" @click="voteClaim('+')"></button>
-        <button id="vote-neg" class="vote-button" @click="voteClaim('-')"></button>
-      </div>
-      <div class="div-report-suggestion"><center>Casos Similares</center></div>
+        <button v-for="bt in voteButtons" :id="bt.id" class="vote-button" @click="voteClaim('+')"></button>
+     </div>
+      <div class="thanks-voting" v-if="thanksVotingBool">Seu voto foi computado com sucesso. Obrigado por participar</div>
+      <div class="div-title-similar-cases"><center>Casos Similares</center></div>
       <div class="similar-claim-loading" v-if="!gridSimilarClaims.data || !gridSimilarClaims.columns"></div>
 
       <!-- :filter-key="searchQueryClaims" -->
