@@ -4,6 +4,8 @@
 
   <script src="js/vue@2.3.3"></script>
   <script src="js/axios.min.js"></script>
+  <script src='js/build/pdfmake.min.js'></script>
+ 	<script src='js/build/vfs_fonts.js'></script>
 
   <!--<link rel="shortcut icon" href="/public/imgs/favicon.ico" type="image/x-icon">-->
   <link rel="stylesheet" href="css/main.css">
@@ -145,12 +147,12 @@
 
     <div class="div-report-header"> <!--position absolute -->
 
-      <% if (user && user.email) { %>
-      <div class="div-pdf">
+      <% //if (user && user.email) { %>
+      <div class="div-pdf" @click="generatePDF()">
         <div class="icon-pdf"></div>
         <div class="text-pdf"> Gerar PDF </div>
       </div>
-      <% } %>
+      <% //} %>
 
       <div class="div-newclaim" @click="clearReportDiv()">
         <div class="icon-newclaim"></div>
