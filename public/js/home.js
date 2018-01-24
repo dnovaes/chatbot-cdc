@@ -991,10 +991,6 @@ var app = new Vue({
       viewCase.voteNeg
       */
 
-      if(req.session.user){
-        console.log(req.session.user);
-      }
-
       let docDefinition = {
         content : [
           { text: app.viewCase.claimText },
