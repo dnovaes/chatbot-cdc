@@ -1,3 +1,4 @@
+
 //In case users click to back to previous claim:
 window.onpopstate = function(event) {
   //alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
@@ -978,6 +979,32 @@ var app = new Vue({
     },
     clearReportDiv: function(){
       window.location = "/";
+    },
+    generatePDF: function(){
+      /*
+      viewCase.subject
+      viewCase.claimId
+      viewCase.artId
+      viewCase.claimText
+      viewCase.artText
+      viewCase.votePos
+      viewCase.voteNeg
+      */
+
+      if(req.session.user){
+        console.log(req.session.user);
+      }
+
+      let docDefinition = {
+        content : [
+          { text: app.viewCase.claimText },
+          { text: app.viewCase.subject },
+          { text: app.viewCase.artText }
+        ]
+      }
+
+      // download the PDF
+       pdfMake.createPdf(docDefinition).download(`claim${app.viewCase.claimId}.pdf`);
     }
   }
 });
