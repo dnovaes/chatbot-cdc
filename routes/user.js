@@ -206,11 +206,35 @@ exports.update = function(req, res){
 exports.complaints = function(req, res) {
   var user = req.session.user;
   var userEmail = req.session.userEmail;
+  var complaints;
+  var sqlSelect
 
   if (userEmail == null) {
     res.redirect('/login');
     return;
   } else {
-    res.render('users/complaints');
+    if (req.query.owner == "true") {
+      sqlSelect = `SELECT 
+                      h.id, h.claim_text, a.art_id, a.subject, a.text, user_id, vote_positive, vote_negative 
+                      FROM historical_learning AS h 
+                      INNER JOIN articles AS a ON h.article_number = a.art_id WHERE user_id = ${user.id}`;
+    } else {
+      sqlSelect = `SELECT 
+                      h.id, h.claim_text, a.art_id, a.subject, a.text, user_id, vote_positive, vote_negative 
+                      FROM historical_learning AS h 
+                      INNER JOIN articles AS a ON h.article_number = a.art_id`;
+    }
+
+
+    db.getConnection(function(err, connection) {
+      connection.query(sqlSelect, function(err, results) {
+        if (err) throw err;
+        connection.release();
+
+        complaints = results;
+
+        res.render('users/complaints', {data: complaints});
+      });
+    });
   }
 }

@@ -25,7 +25,7 @@
                 <a href="/edit">Meus Dados</a>
               </div>
               <div class="item margin-bottom-20">
-                <a href="/complaints" class="bold">Minhas Queixas</a>
+                <a href="/mural_queixas" class="bold">Mural de Queixas</a>
               </div>
               <div class="item">
                 <a class="orange-color" href="/signout">Sair</a>
@@ -39,42 +39,23 @@
       </div>
       <div class="large-9 columns">
         <div class="row">
-          <div class="columns">
-            <ul class="large-block-grid-4">
-              <li>
-                <div class="white-bg complaint-block">
-                  <div class="complaint-title bold text-center margin-bottom-10">Título</div>
-                  <div class="description">
-                    Lorem ipsum dolor sit amet, ad magna phaedrum qui. Pri ipsum detracto dissentiunt ne, ignota erroribus ad duo, cum aliquip deseruisse at. Ne ferri sanctus adipiscing mei. Quo at quod noluisse, vim eu amet nihil sadipscing, eum verear invidunt omittantur eu.
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="white-bg complaint-block">
-                  <div class="complaint-title bold text-center margin-bottom-10">Título</div>
-                  <div class="description">
-                    Lorem ipsum dolor sit amet, ad magna phaedrum qui. Pri ipsum detracto dissentiunt ne, ignota erroribus ad duo, cum aliquip deseruisse at.
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="white-bg complaint-block">
-                  <div class="complaint-title bold text-center margin-bottom-10">Título</div>
-                  <div class="description">
-                    Lorem ipsum dolor sit amet, ad magna phaedrum qui. Ne ferri sanctus adipiscing mei. Quo at quod noluisse, vim eu amet nihil sadipscing, eum verear invidunt omittantur eu.
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="white-bg complaint-block">
-                  <div class="complaint-title bold text-center margin-bottom-10">Título</div>
-                  <div class="description">
-                     Pri ipsum detracto dissentiunt ne, ignota erroribus ad duo, cum aliquip deseruisse at. Ne ferri sanctus adipiscing mei. Quo at quod noluisse, vim eu amet nihil sadipscing, eum verear invidunt omittantur eu.
-                  </div>
-                </div>
-              </li>
-            </ul>
+          <div class="columns margin-bottom-20">
+            <div class="white-bg border-radius block">
+              <a class="gray-color hover-links" href="/mural_queixas?owner=true">Minhas Queixas</a>
+              <span>|</span>
+              <a class="gray-color hover-links" href="/mural_queixas">Geral</a>
+            </div>
           </div>
+        </div>
+        <div class="row">
+          <% for (var i = 0; i < data.length; i++) { %>
+            <div class="columns margin-bottom-10">
+              <div class="white-bg block complaint-block">
+                <div class="complaint-title text-center bold"><%= data[i].subject %></div>
+                <div><%= data[i].claim_text %></div>
+              </div>
+            </div>
+          <% } %>
         </div>
       </div>
     </div>

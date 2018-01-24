@@ -172,8 +172,7 @@
 
 .complaint-block {
   padding: 10px;
-  color: #707070;
-  border-bottom: 3px solid #cfd9db; }
+  color: #707070; }
   .complaint-block .complaint-title {
     font-size: 18px; }
 
@@ -192,5 +191,13 @@
 
 .text-center {
   text-align: center; }
+
+.hover-links {
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s; }
+  .hover-links:hover {
+    color: #FF6600 !important; }
 
 /*# sourceMappingURL=style.css.map */

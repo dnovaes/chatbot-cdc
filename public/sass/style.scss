@@ -254,7 +254,6 @@ $gray_bg: #ecf0f1;
 .complaint-block {
   padding: 10px;
   color: $gray;
-  border-bottom: 3px solid darken($gray_bg, 10%);
 
   .complaint-title {
     font-size: 18px;
@@ -280,4 +279,15 @@ $gray_bg: #ecf0f1;
 
 .text-center {
   text-align: center;
+}
+
+.hover-links {
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+
+  &:hover {
+    color: $orange !important;
+  }
 }
