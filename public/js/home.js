@@ -718,8 +718,6 @@ var app = new Vue({
       let newUrl = "";
 
       if(caseClaim.claimId != undefined){
-        alert("Foi encontrado uma queixa muito similar ao seu caso!");
-
         let divReportContentEl = document.querySelector(".div-report-content");
         divReportContentEl.innerHTML = caseClaim.artText;
 
