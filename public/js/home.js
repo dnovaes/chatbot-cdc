@@ -1,4 +1,7 @@
 
+//tell Vue to isntall the plugin
+window.Vue.use(VuejsDialog.default);
+
 //In case users click to back to previous claim:
 window.onpopstate = function(event) {
   //alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
@@ -324,6 +327,7 @@ var app = new Vue({
   el: '#div-chatbot',
   data: function(){
     return {
+      userId: "",
       claimData: "",
       claimDataSW: "", //contains the message of keywords of claim
       keywords: "",
@@ -981,26 +985,280 @@ var app = new Vue({
       window.location = "/";
     },
     generatePDF: function(){
-      /*
-      viewCase.subject
-      viewCase.claimId
-      viewCase.artId
-      viewCase.claimText
-      viewCase.artText
-      viewCase.votePos
-      viewCase.voteNeg
-      */
 
-      let docDefinition = {
-        content : [
-          { text: app.viewCase.claimText },
-          { text: app.viewCase.subject },
-          { text: app.viewCase.artText }
-        ]
+      let userInfo = {}
+
+      if(app.userId != ""){
+
+        axios.post('/user/getUserInfoById', {
+          userId: app.userId
+          //userId: 111
+        }).then((res)=>{
+
+          userInfo = res.data.userInfo;
+
+          let docDefinition = {
+            content : [
+              /* center table
+              {
+                columns: [
+                  { width: '*', text: '' },
+                  {
+                    width: 'auto',
+                    table: {
+                      body: [
+                        ['Column 1', 'Column 2', 'Column 3'],
+                        ['One value goes here', 'Another one here', 'OK?']
+                      ]
+                    }
+                  },
+                  { width: '*', text: '' },
+                ]
+              },
+              */
+              {
+                table: {
+                  widths: [150, '*'],
+                  body: [
+                    [
+                      {
+                        border: [true, true, false, true],
+                        width: 25,
+                        fillColor: '#1c227c',
+                        alignment: 'right',
+                        image: "data:image/png;base64,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",
+                      },
+                      {
+                        border: [false, true, true, true],
+                        fontSize: 16, 
+                        margin: [0,4,0,4],
+                        fillColor: '#1c227c',
+                        color: 'white',
+                        text: "MeusDireitosConsumidor.com",
+                        alignment: 'left',
+                        bold: true
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                table: {
+                  widths:[55, '*', 55, '*'],
+                  body:[
+                    //row one
+                    [
+                      {
+                        text: "Nome:",
+                        bold: true
+                      },
+                      {
+                        text: userInfo.name
+                      },
+                      {
+                        text: "CPF:",
+                        bold: true
+                      },
+                      {
+                        text: userInfo.cpf
+                      }
+                    ],
+                    //row two
+                    [
+                      {
+                        text: "Email:",
+                        bold: true
+                      },
+                      {
+                        text: userInfo.email
+                      },
+                      {
+                        text: "Telefone:",
+                        bold: true
+                      },
+                      {
+                        text: userInfo.phone
+                      }
+                    ]
+                 ]
+                }
+              },
+              {
+                table: {
+                  widths:[55, 100, 100, '*'],
+                  body:[
+                    //row one
+                    [
+                      {
+                        border: [true, false, true, true],
+                        text: "CEP:",
+                        bold: true
+                      },
+                      {
+                        border: [true, false, true, true],
+                        text: userInfo.address_cep
+                      },
+                      {
+                        border: [true, false, true, true],
+                        text: "Logradouro:",
+                        bold: true
+                      },
+                      {
+                        border: [true, false, true, true],
+                        text: userInfo.address_street
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                table: {
+                  widths:[55, 100, 100, '*'],
+                  body:[
+                    //row one
+                    [
+                      {
+                        border: [true, false, true, true],
+                        text: "Numero:",
+                        bold: true
+                      },
+                      {
+                        border: [true, false, true, true],
+                        text: userInfo.address_number
+                      },
+                      {
+                        border: [true, false, true, true],
+                        text: "Complemento:",
+                        bold: true
+                      },
+                      {
+                        border: [true, false, true, true],
+                        text: userInfo.address_complement
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                table: {
+                  widths:[55, 130, 70, '*'],
+                  body:[
+                    //row one
+                    [
+                      {
+                        border: [true, false, true, true],
+                        text: "Bairro:",
+                        bold: true
+                      },
+                      {
+                        border: [true, false, true, true],
+                        text: userInfo.address_district
+                      },
+                      {
+                        border: [true, false, true, true],
+                        text: "Cidade-UF:",
+                        bold: true
+                      },
+                      {
+                        border: [true, false, true, true],
+                        text: `${userInfo.address_city}-${userInfo.address_state}`
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                table: {
+                  widths: ['*'],
+                  body: [
+                    [
+                      {
+                        fontSize: 14, 
+                        margin: [0,4,0,4],
+                        fillColor: '#1c227c',
+                        color: 'white',
+                        border: [true, false, true, true],
+                        text: "Queixa descrita pelo cidadão:",
+                        alignment: 'center',
+                        bold: true
+                      }
+                    ],
+                    [
+                      {
+                        border: [true, false, true, true],
+                        text: app.viewCase.claimText,
+                      }
+                    ]
+                  ]
+                },
+                layout: {
+                  defaultBorder: false,
+                }
+              },
+              {
+                table: {
+                  widths: ['*'],
+                  body: [
+                    [
+                      {
+                        fontSize: 14, 
+                        margin: [0,4,0,4],
+                        fillColor: '#1c227c',
+                        color: 'white',
+                        text: "O Artigo que endossa seu caso é descrito abaixo:",
+                        alignment: 'center',
+                        bold: true
+                      }
+                    ],
+                    [
+                      {
+                        text: `${app.viewCase.subject}\n${app.viewCase.artText}`,
+                      }
+                    ],
+                    [
+                      {
+                        fontSize: 14, 
+                        margin: [0,4,0,4],
+                        fillColor: '#1c227c',
+                        color: 'white',
+                        text: "Informações Adicionais:",
+                        alignment: 'center',
+                        bold: true
+                      }
+                    ],
+                    [
+                      {
+                        text: `Esse sistema te auxilia a encontrar informações legais baseado na queixa digitada porém não tem caráter decisório.\n
+                        Para ajuizar a queixa ou iniciar um processo para solucionar seu problema entre em contato com o Procom responsável do seu município através do link abaixo:\n
+                        http://www.portaldoconsumidor.gov.br/procon.asp?acao=buscar \n
+                        Ou ainda entre em contato com o Serviço de Atendimento ao Consumidor (SAC) do seu munícipio.\n
+                        No exemplo abaixo temos o link para agendamento de queixas em Salvador-Ba:\n
+                        http://www.sac.ba.gov.br/index.php/Servicos-de-parceiros/Servicos-do-TJ-BA-%E2%80%93-Tribunal-de-Justica-da-Bahia/SAJ-%E2%80%93-Servico-de-Atendimento-Judiciario.html`,
+                      }
+                    ]
+                  ]
+                }
+              }
+            ]
+          }
+
+          // download the PDF
+           pdfMake.createPdf(docDefinition).open();
+           //pdfMake.createPdf(docDefinition).download(`claim${app.viewCase.claimId}.pdf`);
+        }).catch((err)=>{
+          console.dir(err);
+        });
+
+      }else{
+        //vuejs-dialog
+        this.$dialog.confirm("Para gerar PDF é preciso cadastrar-se no sistema. Gostaria de se cadastrar?", {
+          okText: "Sim",
+          cancelText: "Não"
+        }).then(function(dialog){
+          window.location = "/login";
+        }).catch(function(dialog){});
+        
       }
-
-      // download the PDF
-       pdfMake.createPdf(docDefinition).download(`claim${app.viewCase.claimId}.pdf`);
     }
   }
 });
