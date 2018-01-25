@@ -69,6 +69,8 @@ router.get('/login', user.login);
 router.get('/edit', user.edit);
 router.post('/update', user.update);
 router.get('/mural_queixas', user.complaints)
+router.post('/user/getUserInfoById', user.getUserInfoById)
+
 
 router.post('/historical_learning/create', historical_learning.create);
 router.post('/historical_learning/voteclaim', historical_learning.voteClaim);
