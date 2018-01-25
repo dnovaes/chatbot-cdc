@@ -5,7 +5,6 @@ const functions  = require(__dirname+"/../public/js/ext_functions.js");
 const CONST_VOTES_TOTAL = 3;
 
 exports.create = function(req, res) {
-  console.log("registering");
 
   let keywords = req.body.keywords;
   let article_number = req.body.article_number;
