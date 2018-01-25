@@ -6,12 +6,14 @@
   <script src="js/axios.min.js"></script>
   <script src='js/build/pdfmake.min.js'></script>
  	<script src='js/build/vfs_fonts.js'></script>
+ 	<script src='js/build/vuejs-dialog.min.js'></script>
 
   <!--<link rel="shortcut icon" href="/public/imgs/favicon.ico" type="image/x-icon">-->
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/foundation.min.css">
   <link rel="stylesheet" href="css/style.css">
   <title>Meus Direitos Consumidor</title>
+
 </head>
 <body>
 
@@ -147,12 +149,10 @@
 
     <div class="div-report-header"> <!--position absolute -->
 
-      <% //if (user && user.email) { %>
       <div class="div-pdf" @click="generatePDF()">
         <div class="icon-pdf"></div>
         <div class="text-pdf"> Gerar PDF </div>
       </div>
-      <% //} %>
 
       <div class="div-newclaim" @click="clearReportDiv()">
         <div class="icon-newclaim"></div>
@@ -182,43 +182,13 @@
     </div>
   </div>
 
-  <!--
-  <table>
-    <tr class="claim-unit-1">
-      <td>Propaganda Enganosa</td>
-      <td>22</td>
-      <td>
-        <div style="height:45px; overflow:hidden">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ultricies feugiat vulputate. Quisque eu magna elementum, volutpat ex ut, euismod felis. Donec efficitur eros sit amet velit pellentesque tristique. Vestibulum sagittis molestie elit id interdum. Nam vitae ullamcorper arcu, eu blandit leo. Curabitur semper quis augue vitae placerat. Aliquam semper eget purus id mattis. Ut sit amet commodo neque. Aliquam erat volutpat. Duis et sem consequat, volutpat erat in, maximus eros. Nullam a tincidunt justo. Vivamus pellentesque nibh ante, vitae fermentum libero pulvinar et. Donec feugiat dictum ligula ac posuere.
-        </div>
-      </td>
-      <td>90%</td>
-    </tr>
-    <tr class="claim-unit-2">
-      <td>Informação Insuficiente</td>
-      <td>53</td>
-      <td>
-        <div style="height:45px; overflow:hidden">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ultricies feugiat vulputate. Quisque eu magna elementum, volutpat ex ut, euismod felis. Donec efficitur eros sit amet velit pellentesque tristique. Vestibulum sagittis molestie elit id interdum. Nam vitae ullamcorper arcu, eu blandit leo. Curabitur semper quis augue vitae placerat. Aliquam semper eget purus id mattis. Ut sit amet commodo neque. Aliquam erat volutpat. Duis et sem consequat, volutpat erat in, maximus eros. Nullam a tincidunt justo. Vivamus pellentesque nibh ante, vitae fermentum libero pulvinar et. Donec feugiat dictum ligula ac posuere.
-        </div>
-      </td>
-      <td>44%</td>
-    </tr>
-    <tr class="claim-unit-2">
-      <td>Abuso de Desinformação</td>
-      <td>8</td>
-      <td>
-        <div style="height:45px; overflow:hidden">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ultricies feugiat vulputate. Quisque eu magna elementum, volutpat ex ut, euismod felis. Donec efficitur eros sit amet velit pellentesque tristique. Vestibulum sagittis molestie elit id interdum. Nam vitae ullamcorper arcu, eu blandit leo. Curabitur semper quis augue vitae placerat. Aliquam semper eget purus id mattis. Ut sit amet commodo neque. Aliquam erat volutpat. Duis et sem consequat, volutpat erat in, maximus eros. Nullam a tincidunt justo. Vivamus pellentesque nibh ante, vitae fermentum libero pulvinar et. Donec feugiat dictum ligula ac posuere.
-        </div>
-      </td>
-      <td>22%</td>
-    </tr>
-  </table>
-  -->
-
 </div>
 
 <script src="js/home.js"></script>
+<script>
+  <% if(user){ -%>
+      app.userId = "<%-user.id%>";
+  <%}%>
+</script>
 </body>
 </html>
