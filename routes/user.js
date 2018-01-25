@@ -57,13 +57,13 @@ exports.signup = function(req, res) {
 exports.signin = function(req, res) {
 
   var email = req.body.email;
-  var name = req.body.name;
   var password = req.body.password;
 
   var sql = "SELECT id, email, name, phone, cpf, address_cep, address_street, address_number, address_complement, address_district, address_city, address_state, password from users where email = '" + email + "'"; 
 
   db.getConnection(function(err, connection) {
     connection.query(sql, function(err, results) {
+      connection.release();
 
       if (results.length && bcrypt.compareSync(password, results[0].password)) {
         req.session.userEmail = results[0].email;
@@ -74,17 +74,20 @@ exports.signin = function(req, res) {
           message: 'Login efetuado com sucesso'
         }
 
-        res.redirect('/dashboard');
+        res.send({
+          url: "/dashboard"
+        });
 
-        } else {
-          req.session.sessionFlash = {
+      }else{
+        req.session.sessionFlash = {
           type: "danger",
           message: 'Credenciais inválidas. Tente novamente.'
         }
-
-        res.redirect('/login');
+        
+        res.send({
+          url: "/login"
+        });
       }
-      connection.release();
     });
   });
 }
@@ -236,5 +239,31 @@ exports.complaints = function(req, res) {
         res.render('users/complaints', {data: complaints});
       });
     });
+  }
+}
+
+//es6
+exports.getUserInfoById = (req, res)=>{
+  let userId = req.body.userId;
+
+  if(userId){
+  
+    let sql = `SELECT 
+                email, name, phone, cpf, address_cep, address_street, address_number, address_complement, 
+                address_district, address_city, address_state
+              FROM users WHERE id = '${userId}';`; 
+
+    db.getConnection(function(err, connection) {
+      connection.query(sql, function(err, results) {
+        connection.release();
+
+        //if(err) throw err;
+        res.send({
+          userInfo: results[0]
+        });
+      });
+    });
+  }else{
+    //res.status(404).render('404', { url: req.originalUrl });
   }
 }
