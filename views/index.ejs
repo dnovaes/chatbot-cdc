@@ -188,7 +188,9 @@
 <script>
   <% if(user){ -%>
       app.userId = "<%-user.id%>";
-  <%}%>
+    <%}else{%>
+      app.userId = "";
+    <%}%>
 </script>
 </body>
 </html>
