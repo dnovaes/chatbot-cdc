@@ -172,9 +172,13 @@ exports.searchMostSimilarClaim = function(req, res) {
             }
           });
 
-          console.log("grau de similaridade desta queixa é de:");
           console.log("cnt: "+cnt+" arrkeywords.length: "+arrkeywords.length);
+          console.log("grau de similaridade desta queixa é de:");
           let ratio = cnt/arrkeywords.length*100;
+          console.log(ratio);
+          if(ratio > 100){
+            console.log(arrkeywords);
+          }
          
           if(ratio > objMostSimilar.ratio){
             objMostSimilar.claimId = rowdp.id;
@@ -211,7 +215,7 @@ exports.selectClaimById = function(req, res) {
   db.getConnection(function(err, connection) {
 
     let sqlSelect = `SELECT 
-                      h.id, h.claim_text, a.art_id, a.subject, a.text, user_id, vote_positive, vote_negative 
+                      h.id, h.claim_text, h.keywords, a.art_id, a.subject, a.text, user_id, vote_positive, vote_negative 
                     FROM historical_learning AS h 
                     INNER JOIN articles AS a ON h.article_number = a.art_id
                     WHERE h.id = ${claimId}`;
@@ -230,7 +234,8 @@ exports.selectClaimById = function(req, res) {
           claimText: results[0].claim_text,
           artText: results[0].text,
           votePos: results[0].vote_positive,
-          voteNeg: results[0].vote_negative
+          voteNeg: results[0].vote_negative,
+          keywords: results[0].keywords
         }
       }
       res.send(obj);
@@ -277,9 +282,15 @@ exports.searchSimilarClaims = function(req, res){
             }
           });
 
-          console.log("grau de similaridade desta queixa é de:");
           console.log("cnt: "+cnt+" arrkeywords.length: "+arrkeywords.length);
           rowdp.similarity = cnt/arrkeywords.length*100;
+          console.log("grau de similaridade desta queixa é de:");
+          console.log(rowdp.similarity);
+
+          if(rowdp.similarity > 100){
+            console.log(arrkeywords);
+            console.log(myKeywords);
+          }
 
           //prepare object containing only the data that will appear in the table (MAX_COUNT = 5) /number of similar claims that will appear
           let numOfClaims = 0;
