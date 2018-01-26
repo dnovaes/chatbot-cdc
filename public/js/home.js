@@ -1,5 +1,5 @@
 
-//tell Vue to isntall the plugin
+//tell Vue to install the plugin
 window.Vue.use(VuejsDialog.default);
 
 //In case users click to back to previous claim:
@@ -10,7 +10,7 @@ window.onpopstate = function(event) {
       claimId: event.state.claimId
     })
     .then(function (res){
-      app.showCaseToUserFromClick(res.data, true);
+      app.showCaseToUser(res.data, true);
     });
   }else{
     window.location = "/";
@@ -230,7 +230,7 @@ Vue.component('comp-similar-claim-units',{
   },
   methods: {
     showCaseToUser: function(caseClaim){
-      app.showCaseToUserFromClick(caseClaim);
+      app.showCaseToUser(caseClaim);
     }
   }
 });
@@ -680,7 +680,12 @@ var app = new Vue({
           elContentMsgs.scrollTop = elContentMsgs.scrollHeight;
         }, 200);
     },
-    showCaseToUser: function(caseClaim){
+    showCaseToUser: function(caseClaim, flagPrevious){
+      
+      app.viewCase = caseClaim;
+
+      if(flagPrevious === undefined)
+        flagPrevious = false;
 
       /*
       caseClaim.subject
@@ -691,16 +696,15 @@ var app = new Vue({
       caseClaim.votePos
       caseClaim.voteNeg
       */
-      app.viewCase = caseClaim;
       
       //show the article found by the system the endorces the claim of the user
       let overlayDiv = document.querySelector(".overlay");
       if(!overlayDiv){
         //add overlay
-        let chatbotDiv = document.querySelector("#div-chatbot");
+        let bodyEl = document.querySelector("body");
         overlayDiv = document.createElement("div");
         overlayDiv.className = "overlay";
-        chatbotDiv.appendChild(overlayDiv);
+        bodyEl.appendChild(overlayDiv);
       }
 
       //reload div-report-voting if necessary (go and back events of browser)
@@ -730,8 +734,11 @@ var app = new Vue({
         divReportSubjectEl.innerHTML = caseClaim.subject;
 
         //atualiza url do navegador
-        newUrl = `/view/?claimId=${caseClaim.claimId}`
-        window.history.pushState({claimId: caseClaim.claimId}, "claim", newUrl);
+        if(flagPrevious == false){
+          //caso flagPrevious tenha sido ativada (usuario clicou em voltar no navegador)
+          newUrl = `/view/?claimId=${caseClaim.claimId}`
+          window.history.pushState({claimId: caseClaim.claimId}, "claim", newUrl);
+        }
 
       }else{
         alert("Erro grave com caseClaim (home.js). Contacte o admnistrador do sistema");
@@ -739,8 +746,11 @@ var app = new Vue({
 
       //When report is iniciated, shows links to similar claims
       //:TEST searchSimilarClaims
+      if(!Array.isArray(caseClaim.keywords)){
+        caseClaim.keywords = caseClaim.keywords.split(",");
+      }
       axios.post('/historical_learning/searchSimilarClaims', {
-        myKeywords: app.keywords
+        myKeywords: caseClaim.keywords
       })
       .then(function (res){
 
@@ -757,22 +767,14 @@ var app = new Vue({
           obj.similarity = val.similarity;
           obj.votePos = val.votePos;
           obj.voteNeg = val.voteNeg;
+          obj.keywords = val.keywords;
 
           app.gridSimilarClaims.data.push(obj);
         });
         app.gridSimilarClaims.columns = ["Categoria", "Artigo", "Queixa", "Similaridade (%)"];
       });
     },
-    showCaseToUserFromClick: function(caseClaim, flagPrevious){
-      /*
-      caseClaim.subject
-      caseClaim.claimId
-      caseClaim.artId
-      caseClaim.claimText
-      caseClaim.artText
-      caseClaim.votePos
-      caseClaim.voteNeg
-      */
+    /*showCaseToUserFromClick: function(caseClaim, flagPrevious){
       if(flagPrevious === undefined)
         flagPrevious = false;
 
@@ -795,13 +797,6 @@ var app = new Vue({
       //remove message of thanks if necessary (user previously already voted on the last claim
       app.thanksVotingBool=false; 
 
-      /*
-      let div_voting = document.querySelector(".div-report-voting");
-      while(div_voting.firstChild) {
-          div_voting.removeChild(div_voting.firstChild);
-      }
-      */
-
       let viewReportDiv = document.querySelector(".div-view-report");
       if(viewReportDiv){
 
@@ -820,12 +815,13 @@ var app = new Vue({
 
         //atualiza url do navegador
         if(flagPrevious == false){
+          //caso flagPrevious tenha sido ativada (usuario clicou em voltar no navegador)
           newUrl = `/view/?claimId=${caseClaim.claimId}`
           window.history.pushState({claimId: caseClaim.claimId}, "claim", newUrl);
         }
       }
 
-    },
+    },*/
     //recursive request to questions
     generateQuestionsToUser: function(){
       //flag that indicates that the system could identify the claim typed from the user
@@ -891,7 +887,6 @@ var app = new Vue({
                     })
                     .then(function (res){
 
-                      //console.log("This is the similar claim found");
                       app.showCaseToUser(res.data);
                       
                     });
@@ -967,19 +962,19 @@ var app = new Vue({
       let claimId = 0;
       if(app.viewCase){
         claimId = app.viewCase.claimId; 
+        axios.post('/historical_learning/voteclaim', {
+          voting: voting_char,
+          claimId: claimId 
+        })
+        .then(function (res){
+          //console.log("Voto registrado com sucesso");
+        })
+        .catch(function(err){
+          console.log("Voto não foi registrado. Segue erro abaixo:");
+          console.log(err);
+        });
       }
 
-      axios.post('/historical_learning/voteclaim', {
-        voting: voting_char,
-        claimId: claimId 
-      })
-      .then(function (res){
-        //console.log("Voto registrado com sucesso");
-      })
-      .catch(function(err){
-        console.log("Voto não foi registrado. Segue erro abaixo:");
-        console.log(err);
-      });
     },
     clearReportDiv: function(){
       window.location = "/";
