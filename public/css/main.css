@@ -707,3 +707,8 @@
 #vote-neg{
   background-image: url("../imgs/vote_neg.png");
 }
+
+.complaint-block:hover{
+  cursor: pointer;
+  border: 2px solid orange;
+}
