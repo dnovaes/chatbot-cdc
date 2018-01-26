@@ -207,10 +207,10 @@ exports.update = function(req, res){
 }
 
 exports.complaints = function(req, res) {
-  var user = req.session.user;
-  var userEmail = req.session.userEmail;
-  var complaints;
-  var sqlSelect
+  let user = req.session.user;
+  let userEmail = req.session.userEmail;
+  let obj;
+  let sqlSelect;
 
   if (userEmail == null) {
     res.redirect('/login');
@@ -218,12 +218,12 @@ exports.complaints = function(req, res) {
   } else {
     if (req.query.owner == "true") {
       sqlSelect = `SELECT 
-                      h.id, h.claim_text, a.art_id, a.subject, a.text, user_id, vote_positive, vote_negative 
+                      h.id AS claimId, h.claim_text AS claimText, h.keywords, a.art_id AS artId, a.subject, a.text AS artText, vote_positive as votePos, vote_negative as voteNeg 
                       FROM historical_learning AS h 
                       INNER JOIN articles AS a ON h.article_number = a.art_id WHERE user_id = ${user.id}`;
     } else {
       sqlSelect = `SELECT 
-                      h.id, h.claim_text, a.art_id, a.subject, a.text, user_id, vote_positive, vote_negative 
+                      h.id AS claimId, h.claim_text AS claimText, h.keywords, a.art_id AS artId, a.subject, a.text AS artText, vote_positive as votePos, vote_negative as voteNeg 
                       FROM historical_learning AS h 
                       INNER JOIN articles AS a ON h.article_number = a.art_id`;
     }
@@ -234,9 +234,9 @@ exports.complaints = function(req, res) {
         if (err) throw err;
         connection.release();
 
-        complaints = results;
+        obj = results;
 
-        res.render('users/complaints', {data: complaints});
+        res.render('users/complaints', {data: obj});
       });
     });
   }
