@@ -1,4 +1,44 @@
 var lib = {
+  removeRepeatedWords: function (keywords){
+    //keywords = array of keywords
+    let firstEl;
+    
+    let flagRemoved = false;
+
+    if(keywords.length>0){
+      //first element of the array if removed and the current array passed as parameter is changed
+      firstEl = keywords.shift();
+      //console.log(`Checking if '${firstEl}' is repeated`);
+
+      //check for repeated element in the rest of array left
+      let iK = keywords.indexOf(firstEl);
+
+      if(iK > -1){
+        //keywords changs with splice
+        keywords.splice(iK, 1);
+
+        //flag is necessary here. if i put the return here it would removed only one repteated match
+        flagRemoved = true;
+      }
+
+      //console.log(flagRemoved);
+      if(flagRemoved){
+        //put it back to check if there is another keywords like that repeated to remove.
+        //insert into the beggining the element removed
+        keywords.unshift(firstEl);
+        keywords = this.removeRepeatedWords(keywords);
+      }else{
+        //first option: algorithm didnt find a repetead word. so time to check next keyword in the array.
+        ///since i already removed the first element, i just have pass the rest of keywords to function recursively
+        keywords = this.removeRepeatedWords(keywords);
+        keywords.unshift(firstEl);
+
+        //if function didnt find a repetead keywords. it will return the keywords arr back as result. 
+        //return keywords after this curly bracket
+      }
+    }
+    return keywords;
+  },
   // function remove keywords that are equal to a emptyspace and reestructure the array with the
   // rest of keywords
   rmEmptySpace: function (keywords){
@@ -131,19 +171,95 @@ var lib = {
       console.log("--");
 */
 
-      var keywords = claim.split(" ");
-
+      let arrKeywords = claim.split(" ");
 
       //some cases, the regExp left a '' as a word, this do the trick to remove them just in case.
-      for(var i=0; i < keywords.length; i++){
-        if (keywords[i] == '' || keywords[i] == '.'){
-          keywords.splice(i, 1);
+      for(var i=0; i < arrKeywords.length; i++){
+        if (arrKeywords[i] == '' || arrKeywords[i] == '.'){
+          arrKeywords.splice(i, 1);
         }
       }
 
-      return {claim: claim, keywords: keywords}
+      return {claim: claim, keywords: arrKeywords}
       //keywords = functions.rmEmptySpace(keywords);
-  }
+  },
+  merge : function(leftObj, rightObj){
+    let left = leftObj.arr,
+        leftC = leftObj.arrC;
+
+    let right = rightObj.arr,
+        rightC = rightObj.arrC;
+
+    /*
+    console.log("Conquistando");
+    console.log(left, leftC);
+    console.log(right, rightC);
+    */
+
+    var result = [],
+        resultC = [],
+        lLen = left.length,
+        rLen = right.length,
+        l = 0,
+        r = 0;
+
+    while(l < lLen && r < rLen){
+       if(left[l] < right[r]){
+         resultC.push(leftC[l]);
+         result.push(left[l++]);
+       }else{
+         resultC.push(rightC[r]);
+         result.push(right[r++]);
+      }
+    }  
+
+    //remaining part needs to be addred to the result
+    return {
+      arr: result.concat(left.slice(l)).concat(right.slice(r)),
+      arrC: resultC.concat(leftC.slice(l)).concat(rightC.slice(r))
+    }
+  },
+  mergeSort : function(arrObj){
+    //parameter requires an object that contains arr and arrC properties.
+
+    //console.log("Dividindo para Conquistar");
+    let arr = arrObj.arr;
+    let arrC = arrObj.arrC; //Content
+
+    /*
+    console.log(arr);
+    console.log(arrC);
+    console.log("--");
+    */
+
+    var len = arr.length;
+
+    if(len <2)
+        return {
+          arr: arr, 
+          arrC: arrC
+        }
+
+    var mid = Math.floor(len/2),
+         left = arr.slice(0,mid),
+         right = arr.slice(mid),
+         leftC = arrC.slice(0,mid),
+         rightC = arrC.slice(mid);
+
+    let leftObj = {
+      arr: left,
+      arrC: leftC
+    }
+    
+    let rightObj = {
+      arr: right,
+      arrC: rightC
+    }
+    
+    //send left and right to the mergeSort to broke it down into pieces
+    //then merge those
+    return this.merge(this.mergeSort(leftObj), this.mergeSort(rightObj));
+  },
 };
 
 module.exports = lib;

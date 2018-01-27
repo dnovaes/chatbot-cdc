@@ -83,17 +83,23 @@ router.post('/historical_learning/searchSimilarClaims', historical_learning.sear
 //in case of post request, all "variable" are passed in req.body
 router.post('/ajax/:function', function(req, res){
     if(req.params.function === "stopwordsremovalPT"){
+      //pos = part of speech flag/boolean 
       var posBool = req.body.posBool;
       var claimTagged = "";
+
+      let keywords = [];
 
       if(!posBool){
 
         //apply stopword removal to the raw claim. return a object with the claim processed and keywords extracted
-        var result = functions.stopWordsRemovalPT(req.body.claim);
 
+        let result = functions.stopWordsRemovalPT(req.body.claim);
+
+        //must be 'var' here instead of 'let'
         var claim = result.claim;
-        var keywords = result.keywords;
+        keywords = result.keywords; //array containing keywords
 
+        keywords = functions.removeRepeatedWords(keywords);
       }else{
 
         var words = req.body.claim.split(" ");
@@ -115,7 +121,7 @@ router.post('/ajax/:function', function(req, res){
         }
 
         //separate the keywords based on the new claim
-        var keywords = claim.split(" ");
+        keywords = claim.split(" ");
 
         //detecting and removing empty ''
         for(var i=0; i < keywords.length; i++){
@@ -131,7 +137,7 @@ router.post('/ajax/:function', function(req, res){
       }
 
       //claim is the var that will be sent to the elasticsearch.
-      console.log("searching for keywords: "+claim);
+      console.log("searching for keywords: "+keywords);
       claim = { "claim" : claim, "keywords": keywords, "claimTagged": claimTagged}
       obj = JSON.stringify(claim);
       res.send(obj); 
