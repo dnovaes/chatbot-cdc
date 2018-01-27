@@ -138,7 +138,7 @@
 
       <div id="typingbox">
         <input type="text" name="chat-input" placeholder="Digite sua mensagem" @keyup="sendMessage" v-model="inputChatbot" ref="chatbot-input">
-        <button id="btn-send-msg">Enviar</button> 
+        <button id="btn-send-msg" @click="sendMessage" >Enviar</button> 
         <div id="divide"></div>
       </div>
     </div>
