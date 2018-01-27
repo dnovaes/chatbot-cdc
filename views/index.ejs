@@ -168,10 +168,12 @@
       <div class="div-suggestion-title" v-if="suggestionTitleBool"><center>Essa sugestão te ajudou a encontrar o que procurava?</center></div>
       <div class="div-report-voting">
         <button v-for="bt in voteButtons" :id="bt.id" class="vote-button" @click="voteClaim('+')"></button>
-     </div>
+      </div>
       <div class="thanks-voting" v-if="thanksVotingBool">Seu voto foi computado com sucesso. Obrigado por participar</div>
       <div class="div-title-similar-cases"><center>Casos Similares</center></div>
-      <div class="similar-claim-loading" v-if="!gridSimilarClaims.data || !gridSimilarClaims.columns"></div>
+      <div class="similar-claim-loading" v-if="(gridSimilarClaims.data.length <= 0)&&(!emptySimilarCasesMessage)"></div>
+      <div class="thanks-voting" v-if="emptySimilarCasesMessage"> Não foi encontrado nenhuma queixa similar a este caso</div>
+
 
       <!-- :filter-key="searchQueryClaims" -->
       <comp-similar-claim-units

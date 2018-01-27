@@ -341,6 +341,7 @@ var app = new Vue({
       //Div elements
       suggestionTitleBool: true,
       thanksVotingBool: false,
+      emptySimilarCasesMessage: false,
       outputBool: false,
       posBool: false, //indicate to system if it should apply the POS Tagger on the claim or not
       posResult: "", // var the has the contents of pos
@@ -361,8 +362,8 @@ var app = new Vue({
       nMsgsUser: -1,
       inputChatbot: "",
       gridSimilarClaims: {
-        "columns": null,
-        "data": null
+        "data": [],
+        "columns": []
       },
       viewCase: {},
       //zero based array corresponding to i+1 article number. When i is the array index and (i+1) is the number of the article
@@ -715,7 +716,11 @@ var app = new Vue({
       }
 
       //remove message of thanks if necessary (user previously already voted on the last claim
-      app.thanksVotingBool=false; 
+      //reset other message from previous claims accessed
+      app.thanksVotingBool = false; 
+      app.emptySimilarCasesMessage = false;
+      app.gridSimilarClaims.data = [];
+      app.gridSimilarClaims.columns = [];
 
       let divReportEl = document.querySelector(".div-view-report");
       divReportEl.style.display = "block";
@@ -754,74 +759,32 @@ var app = new Vue({
       })
       .then(function (res){
 
-        app.gridSimilarClaims.data = [];
-        res.data.claims.forEach(function(val, i){
+        if(res.data.claims.length >0){
+          app.gridSimilarClaims.data = [];
+          app.gridSimilarClaims.columns = ["Categoria", "Artigo", "Queixa", "Similaridade (%)"];
+          res.data.claims.forEach(function(val, i){
 
-          let obj = {};
+            let obj = {};
 
-          obj.subject = val.subject;
-          obj.claimId = val.id;
-          obj.artId = val.art_id;
-          obj.claimText = val.claim_text;
-          obj.artText = val.text;
-          obj.similarity = val.similarity;
-          obj.votePos = val.votePos;
-          obj.voteNeg = val.voteNeg;
-          obj.keywords = val.keywords;
+            obj.subject = val.subject;
+            obj.claimId = val.id;
+            obj.artId = val.art_id;
+            obj.claimText = val.claim_text;
+            obj.artText = val.text;
+            obj.similarity = val.similarity;
+            obj.votePos = val.votePos;
+            obj.voteNeg = val.voteNeg;
+            obj.keywords = val.keywords;
 
-          app.gridSimilarClaims.data.push(obj);
-        });
-        app.gridSimilarClaims.columns = ["Categoria", "Artigo", "Queixa", "Similaridade (%)"];
+            app.gridSimilarClaims.data.push(obj);
+          });
+        }else{
+          //put message to user
+          app.emptySimilarCasesMessage = true;
+          
+        }
       });
     },
-    /*showCaseToUserFromClick: function(caseClaim, flagPrevious){
-      if(flagPrevious === undefined)
-        flagPrevious = false;
-
-      let overlayDiv = document.querySelector(".overlay");
-      if(!overlayDiv){
-        //add overlay
-        let chatbotDiv = document.querySelector("#div-chatbot");
-        overlayDiv = document.createElement("div");
-        overlayDiv.className = "overlay";
-        chatbotDiv.appendChild(overlayDiv);
-      }
-
-      //reload div-report-voting if necessary (go and back events of browser)
-      app.suggestionTitleBool = true;
-      if(app.voteButtons.length == 0){
-        app.voteButtons.push({id: "vote-pos"});
-        app.voteButtons.push({id: "vote-neg"});
-      }
-
-      //remove message of thanks if necessary (user previously already voted on the last claim
-      app.thanksVotingBool=false; 
-
-      let viewReportDiv = document.querySelector(".div-view-report");
-      if(viewReportDiv){
-
-        let reportSubjectDiv = document.querySelector(".div-report-subject");
-        reportSubjectDiv.innerHTML = caseClaim.subject;
-
-        let reportArtContentDiv= document.querySelector(".div-report-content");
-        reportArtContentDiv.innerHTML = caseClaim.artText;
-      
-        let divReportEl = document.querySelector(".div-view-report");
-        divReportEl.style.display = "block";
-
-        app.viewCase = caseClaim;
-      
-        document.getElementById("header-claim").scrollIntoView();
-
-        //atualiza url do navegador
-        if(flagPrevious == false){
-          //caso flagPrevious tenha sido ativada (usuario clicou em voltar no navegador)
-          newUrl = `/view/?claimId=${caseClaim.claimId}`
-          window.history.pushState({claimId: caseClaim.claimId}, "claim", newUrl);
-        }
-      }
-
-    },*/
     //recursive request to questions
     generateQuestionsToUser: function(){
       //flag that indicates that the system could identify the claim typed from the user

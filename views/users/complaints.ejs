@@ -87,7 +87,8 @@
             </div>
             <div class="thanks-voting" v-if="thanksVotingBool">Seu voto foi computado com sucesso. Obrigado por participar</div>
             <div class="div-title-similar-cases"><center>Casos Similares</center></div>
-            <div class="similar-claim-loading" v-if="!gridSimilarClaims.data || !gridSimilarClaims.columns"></div>
+            <div class="similar-claim-loading" v-if="(gridSimilarClaims.data.length <= 0)&&(!emptySimilarCasesMessage)"></div>
+            <div class="thanks-voting" v-if="emptySimilarCasesMessage"> Não foi encontrado nenhuma queixa similar a este caso</div>
 
             <!-- :filter-key="searchQueryClaims" -->
             <comp-similar-claim-units
@@ -171,6 +172,7 @@
         voteButtons: [],
         suggestionTitleBool: false,
         thanksVotingBool: false,
+        emptySimilarCasesMessage: false,
         gridSimilarClaims: {
           data: [],
           columns: []
@@ -203,7 +205,11 @@
         }
 
         //remove message of thanks if necessary (user previously already voted on the last claim
+        //reset other message from previous claims accessed
         boardClaimsApp.thanksVotingBool = false; 
+        boardClaimsApp.emptySimilarCasesMessage = false;
+        boardClaimsApp.gridSimilarClaims.data = [];
+        boardClaimsApp.gridSimilarClaims.columns = [];
 
         let divReportEl = document.querySelector(".div-view-report");
         divReportEl.style.display = "block";
@@ -241,8 +247,9 @@
         })
         .then(function (res){
 
-          boardClaimsApp.gridSimilarClaims.data = [];
-          if(res.data){
+          if(res.data.claims.length >0){
+            boardClaimsApp.gridSimilarClaims.data = [];
+            boardClaimsApp.gridSimilarClaims.columns = ["Categoria", "Artigo", "Queixa", "Similaridade (%)"];
             res.data.claims.forEach(function(val, i){
 
               let obj = {};
@@ -259,8 +266,11 @@
 
               boardClaimsApp.gridSimilarClaims.data.push(obj);
             });
+          }else{
+            //put message to user
+            boardClaimsApp.emptySimilarCasesMessage = true;
+            
           }
-          boardClaimsApp.gridSimilarClaims.columns = ["Categoria", "Artigo", "Queixa", "Similaridade (%)"];
         });
       },
       voteClaim: function(voting_char){
