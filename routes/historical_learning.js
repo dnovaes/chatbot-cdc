@@ -124,8 +124,6 @@ exports.voteClaim = function(req, res) {
 
 exports.searchMostSimilarClaim = function(req, res) {
 
-  //console.log("this is my currently keywords:");
-  //console.log(req.body.myKeywords);
   let myKeywords = req.body.myKeywords;
 
   db.getConnection(function(err, connection) {
@@ -176,7 +174,8 @@ exports.searchMostSimilarClaim = function(req, res) {
           console.log("grau de similaridade desta queixa é de:");
           let ratio = cnt/arrkeywords.length*100;
           console.log(ratio);
-          if(ratio > 100){
+
+          if(ratio >= 100){
             console.log(arrkeywords);
           }
          
@@ -287,15 +286,17 @@ exports.searchSimilarClaims = function(req, res){
           console.log("grau de similaridade desta queixa é de:");
           console.log(rowdp.similarity);
 
+          /*
           if(rowdp.similarity > 100){
             console.log(arrkeywords);
             console.log(myKeywords);
           }
+          */
 
           //prepare object containing only the data that will appear in the table (MAX_COUNT = 5) /number of similar claims that will appear
           let numOfClaims = 0;
 
-          if(rowdp.similarity>=40){
+          if(rowdp.similarity>=40 && rowdp.similarity<100){
             //>=40
             rowdp.similarity = rowdp.similarity.toFixed(1);
             objSimilarity.claims.push(rowdp);
