@@ -262,62 +262,85 @@ var vueHeader = new Vue({
   methods: {
     ajaxSearchSW: function(e){
       //ajaxSearchSW triggered on keyup due to checking e.target.value.length which is update after a content is updated
-      if(((e.key == "Enter")||(e.type == "click")) && (vueHeader.claimData != "")){
-        
-        app.claimData = vueHeader.claimData;
-
-        axios.post('/ajax/stopwordsremovalPT', {
-          claim: app.claimData,
-          posBool: app.posBool
-        })
-        .then(function (res){
-          app.keywords = res.data.keywords;
-
-          //check if keywords has synonyms and add then to app.keywords
-          checkforSynonyms();
-
-          app.claimDataSW = "Keywords: "+app.keywords;
-
-          //var synonyms = getSynonyms(res.data.keywords);
-
-          app.posResult = (res.data.claimTagged != "") ? res.data.claimTagged : "";
-
-          // update the app.claimData with the claim content processed by the backend. 
-          // app.claimData will always contain the input for the elasticsearch to search 
-          // for matchs in the documents
-          //app.claimData = res.data.claim;
-
-          app.ajaxSearch(e);
-        })
-        .catch(function(err){
-          console.log(err);
-        });
-      }else{
-        if(e.target.tagName === "INPUT" && e.target.value.length > 25){
-          let textareaComponent = Vue.extend({
-            template: '\
-              <textarea id="textarea-claim" autofocus>{{ this.claimData }} </textarea>\
-            ',
-            data: function(){
-              return {
-                claimData: vueHeader.claimData
-              }
-            },
-            mounted: function(){
-              this.$nextTick(function(){
-                //code that will run only after the
-                //entire view has been rendered
-              })
-            }
-          });
-
-          //this will replace #textarea-claim
-          new textareaComponent().$mount('#textarea-claim');
-
-          let elClaim = document.getElementById("textarea-claim");
-          elClaim.focus();
+      if(!app.chatbotStartedBool){
+        if(((e.key == "Enter")||(e.type == "click")) && (vueHeader.claimData != "")){
+          app.chatbotStartedBool = true;
           
+          app.claimData = vueHeader.claimData;
+
+          axios.post('/ajax/stopwordsremovalPT', {
+            claim: app.claimData,
+            posBool: app.posBool
+          })
+          .then(function (res){
+            app.keywords = res.data.keywords;
+
+            //check if keywords has synonyms and add then to app.keywords
+            checkforSynonyms();
+
+            app.claimDataSW = "Keywords: "+app.keywords;
+            //var synonyms = getSynonyms(res.data.keywords);
+
+            app.posResult = (res.data.claimTagged != "") ? res.data.claimTagged : "";
+
+            // update the app.claimData with the claim content processed by the backend. 
+            // app.claimData will always contain the input for the elasticsearch to search 
+            // for matchs in the documents
+            //app.claimData = res.data.claim;
+
+            app.ajaxSearch(e);
+          })
+          .catch(function(err){
+            app.chatbotStartedBool = false;
+            console.log(err);
+          });
+        }else{
+          if(e.target.tagName === "INPUT" && e.target.value.length > 25){
+            let textareaComponent = Vue.extend({
+              template: '\
+                <textarea id="textarea-claim" autofocus>{{ this.claimData }} </textarea>\
+              ',
+              data: function(){
+                return {
+                  claimData: vueHeader.claimData
+                }
+              },
+              mounted: function(){
+                this.$nextTick(function(){
+                  //code that will run only after the
+                  //entire view has been rendered
+                })
+              }
+            });
+
+            //this will replace #textarea-claim
+            new textareaComponent().$mount('#textarea-claim');
+
+            let elClaim = document.getElementById("textarea-claim");
+            elClaim.focus();
+            
+          }
         }
+      }else{
+        alert("A busca da queixa já foi iniciada. Respondam as perguntas ou para iniciar nova queixa, atualize a página.");
+        document.getElementById('div-chatbot').scrollIntoView();
+
+        //focus on the input of typing message to the chatbot
+        app.$refs["chatbot-input"].focus();
+
+        //make the input field to flash for +- 9 seconds
+        let cnt = 0;
+        let timer = setInterval(function(){
+          if (cnt==9){
+            elTypingBox.style.border = "none";
+            elTypingBox.style["border-bottom"] = "1px solid darkblue";
+            clearInterval(timer);
+          }else{
+            //cnt % 2 == 1 ? app.$refs["chatbot-input"].style.border = "1px solid gray" : app.$refs["chatbot-input"].style.border = "none";
+            cnt % 2 == 1 ? elTypingBox.style.border = "none" : elTypingBox.style.border = "2px solid darkblue";
+          }
+          cnt++;
+        }, 800);
       }
     }
   }
@@ -339,6 +362,7 @@ var app = new Vue({
         ["anuncio", "anunciando", "publicidade"]
       ],
       //Div elements
+      chatbotStartedBool: false,
       suggestionTitleBool: true,
       thanksVotingBool: false,
       emptySimilarCasesMessage: false,
@@ -632,6 +656,7 @@ var app = new Vue({
         }
       }).catch(function (error){
           console.log(error);
+          app.chatbotStartedBool = false;
           alert("Erro ao tentar conectar ao elastic search.");
       });
     },
@@ -648,7 +673,7 @@ var app = new Vue({
     sendMessage: function(e){
       //if user pressed enter and inputChat bot is different from empty AND there is 
       //already at least one message from bot then insert message from user
-      if((e.key == "Enter") && (this.inputChatbot != "") && (this.nMsgsBot > -1)){
+      if((e.key == "Enter" || e.type == "click") && (this.inputChatbot != "") && (this.nMsgsBot > -1)){
        
         app.msgUnits.push({
           id: 'user-msg-div-'+this.nMsgsBot,
