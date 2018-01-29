@@ -4,10 +4,11 @@
     <script src="js/vue@2.3.3"></script>
     <script src="js/axios.min.js"></script>
 
+    <link rel="shortcut icon" href="/public/imgs/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/foundation.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <title>Siri Law BR</title>
+    <title>Meus Direitos Consumidor</title>
   </head>
   <body class="gray-bg">
     <div class="row">
@@ -23,12 +24,18 @@
     <% }%>
     <div class="row" id="div-login-form">
       <div class="large-offset-2 large-8 columns white-bg login-container">
+        <div class="header-login-form" @click="goTo('../')">
+          <div class="header-content">
+            <div class="img"></div>
+            <div class="text">MeusDireitosConsumidor.com</div>
+          </div>
+        </div>
         <div class="large-6 columns content-form">
           <div class="title">JÁ TENHO CADASTRO</div>
           <form action="/signin" method="post" @submit.prevent="login">
             <input type="text" v-model="email" name="email" class="fluid margin-top-20" placeholder="E-mail" required>
             <input type="password" v-model="password" name="password" class="fluid" placeholder="Sua senha" required>
-            <button class="fluid login-bt">ENTRAR</button>  
+            <button class="fluid login-bt">Entrar</button>  
           </form>
         </div>
         <div class="large-6 columns content-form border-left">
@@ -37,7 +44,7 @@
             <input type="text" name="name" class="fluid margin-top-20" placeholder="Nome" required>
             <input type="text" name="email" class="fluid margin-top-20" placeholder="E-mail" required>
             <input type="password" name="password" class="fluid" placeholder="Sua senha" required>
-            <button class="fluid new-bt">CRIAR</button>  
+            <button class="fluid new-bt">Registrar</button>  
           </form>
         </div>
       </div>
@@ -62,6 +69,9 @@
           }).catch((e) =>{
             console.dir(e);
           });
+        },
+        goTo: (str) =>{
+          location.href=str;
         }
       }
     });
