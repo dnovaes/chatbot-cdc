@@ -342,6 +342,9 @@ var vueHeader = new Vue({
           cnt++;
         }, 800);
       }
+    },
+    jumpToId: (elId)=>{
+      document.getElementById(elId).scrollIntoView();
     }
   }
 }); 
@@ -562,6 +565,7 @@ var app = new Vue({
     }
   },
   methods: {
+    //chatbot methods
     isEnterKey: function(e){
       if(e.keyCode == "13"){
         e.preventDefault();
@@ -669,7 +673,6 @@ var app = new Vue({
     toggleConfigDiv: function(bool){
       app.configDivBool = bool;
     },
-    //chatbot methods
     sendMessage: function(e){
       //if user pressed enter and inputChat bot is different from empty AND there is 
       //already at least one message from bot then insert message from user
