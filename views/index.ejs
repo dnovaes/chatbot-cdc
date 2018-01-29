@@ -8,7 +8,6 @@
  	<script src='js/build/vfs_fonts.js'></script>
  	<script src='js/build/vuejs-dialog.min.js'></script>
 
-  <!--<link rel="shortcut icon" href="/public/imgs/favicon.ico" type="image/x-icon">-->
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/foundation.min.css">
   <link rel="stylesheet" href="css/style.css">
@@ -38,7 +37,7 @@
               </li>
               -->
               <li>
-                <a class="header-link" href="#">Funcionalidades</a>
+                <a class="header-link" href="#features" @click.prevent="jumpToId('features')">Funcionalidades</a>
               </li>
               <li>
                 <a class="header-link" href="#">Início</a>
@@ -69,7 +68,7 @@
   </div>
 </div>
 
-<div class="features-content">
+<div id="features" class="features-content">
  <div class="row">
    <div class="large-offset-1 large-10 columns">
      <ul class="large-block-grid-3">
