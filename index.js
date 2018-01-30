@@ -54,7 +54,16 @@ app.use(function(req, res, next){
 var router = express.Router();
 
 router.get('/', function (req, res){
-  res.render('index');
+  if(req.query){
+    if(req.query.adm){
+      res.render('index', {adm: true});
+    }else{
+      res.render('index', {adm: false});
+    }
+  }else{
+    res.render('index', {adm: false});
+  }
+    
 });
 
 router.get('/view/', function (req, res){
