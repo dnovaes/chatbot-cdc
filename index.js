@@ -93,7 +93,7 @@ router.post('/ajax/:function', function(req, res){
 
         //apply stopword removal to the raw claim. return a object with the claim processed and keywords extracted
 
-        let result = functions.stopWordsRemovalPT(req.body.claim);
+        let result = functions.stopWordsRemovalPT((req.body.claim).toLowerCase());
 
         //must be 'var' here instead of 'let'
         var claim = result.claim;
