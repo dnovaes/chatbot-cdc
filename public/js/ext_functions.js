@@ -120,11 +120,11 @@ var lib = {
       claim = " "+claim+" ";
 
       //remove comma, point, exclamation, interrogation marks
-      regCharMarks = new RegExp("(\\,)|(\\.)|(\\?)|(\\!)|(\\/)|(\\&)|(\\$)|(\\%)|(\\#)|(\\*)", "g");
+      regCharMarks = new RegExp("(\\))|(\\()|(\\,)|(\\.)|(\\?)|(\\!)|(\\/)|(\\&)|(\\$)|(\\%)|(\\#)|(\\*)", "g");
       claim = claim.replace(regCharMarks, "");
 
-  
-      var stopwords = "eu meu poderia gostaria disto isso deste esse desta esta dessa essa menos mais assim como ele ela eles elas dela dele nosso nossa até apenas era eram sou uma um para ou ao de da do das dos que em no na nos nas ter com sem nao não mas porem porém entretanto todavia ainda se os as pelo pela pelos pelas";
+      //também contém palavras ou expressões aglutinadas de uma stopword: você = vc. 
+      var stopwords = "vc eu meu poderia gostaria disto isso deste esse desta esta dessa essa menos mais assim como ele ela eles elas dela dele nosso nossa até apenas era eram sou uma um para ou ao de da do das dos que em no na nos nas ter com sem nao não mas porem porém entretanto todavia ainda se os as pelo pela pelos pelas";
 
       //var filter_romanianNumerals = "I II III IV V VI VII VIII IX X XI XII XIII XIV";
       filter_romanianNumerals = "";
