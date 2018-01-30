@@ -235,10 +235,11 @@
 }
 
 .ruText{
+
   width: 98%;
-  height: 45px;
+  height: 30px;
+  line-height: 30px;
   overflow: hidden;
-  white-space: pre-line;
   text-overflow: ellipsis;
   position: relative;
   float: left;
