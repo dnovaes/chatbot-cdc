@@ -15,7 +15,6 @@
 
 </head>
 <body>
-
 <div class="header" id="header-claim">
   <div class="banner">
     <div class="row">
@@ -57,7 +56,7 @@
     </div>
     <div class="row">
       <div class="large-offset-3 large-6 columns" id="claim-field" @keyup="ajaxSearchSW">
-        <input class="fluid border-radius" v-model="claimData" id="textarea-claim" type="text" name="claim-field" :placeholder="phValue" autofocus>
+        <input class="fluid border-radius" v-model="claimData" id="textarea-claim" type="text" name="claim-field" :claim="claimData" :placeholder="phValue" autofocus>
       </div>
     </div>
     <div class="row">
@@ -108,6 +107,12 @@
   <header id="title-bar">
     <p>Seus direitos de consumidor mais claros para você</p>
   </header>
+  <% if(adm){ %>
+  <div id="results-search" v-if="resultsBool">
+    <span class="title">{{ resultsTitle }}</span>
+      <comp-result-units v-for="ru in resultUnits" :div-id="ru.divId" :span1-id="ru.span1Id" :data="ru.data" :key="ru.divId"></comp-result-units>
+  </div>
+  <% } %>
   <!--
   <div id="icons-bar">
     <div id="gear-icon" class="icon" @click="toggleConfigDiv(true)"></div>
