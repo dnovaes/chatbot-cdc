@@ -24,6 +24,8 @@ function checkforSynonyms(){
   let kw = app.keywords;
   flag = false;
 
+  let arrSynIndex = [];
+
   for(var i=0; i < kw.length; i++){
     app.synonyms.forEach(function(ele, eli){
       //ele = element value,
@@ -32,22 +34,32 @@ function checkforSynonyms(){
       //compares if element in array of synonyms is equal to keyword.
       //if it is indeed, it is removed from keywords array right away
       ele.forEach(function(val, vali){
-        if( kw[i] == val){
+        //console.log(`checking if ${kw[i]} == ${val}`);
+        if(kw[i] == val){
+          console.log(`found keyword synonym ${val}`);
           flag = true;
-          kw.splice(i, 1);
+          app.keywords.splice(i, 1);
+          i--;
+          console.log(`Synonyms to add:\n ${app.synonyms[eli]}`);
+          arrSynIndex.push(eli);
         }
       });
-
-      if(flag){
-        var length = app.synonyms[eli].length;
-        for(var j=0; j<app.synonyms[eli].length; j++){
-          kw.unshift(app.synonyms[eli][j]);
-        }
-        flag = false;
-        //force break of the loop
-        i = kw.length;
-      }
     });
+  }
+
+  if(flag){
+    arrSynIndex.forEach(function(val, i){
+      app.synonyms[val].forEach(function(word, iWord){
+        app.keywords.unshift(word);
+      });
+    });
+    /*
+    var length = app.synonyms[eli].length;
+    for(var j=0; j<app.synonyms[eli].length; j++){
+      //puts the element in the first pos of array
+      app.keywords.unshift(app.synonyms[eli][j]);
+    }
+    */
   }
 }
 
@@ -59,7 +71,9 @@ function highlight(content, dataStruct){
   var kw = app.keywords;
 
   let kwords = "";
+
   for(var i in kw){
+    // ?????
     if(kw[i]=="?"){
       kw[i]="\\?";
     }
@@ -68,6 +82,7 @@ function highlight(content, dataStruct){
       kwords += "|";
     }
   }
+
   regExp = new RegExp(kwords, "ig");
 
   if(dataStruct == "article"){
@@ -260,6 +275,7 @@ var vueHeader = new Vue({
     }
   },
   methods: {
+    //ajaxsearch stop words
     ajaxSearchSW: function(e){
       //ajaxSearchSW triggered on keyup due to checking e.target.value.length which is update after a content is updated
       if(!app.chatbotStartedBool){
@@ -279,6 +295,7 @@ var vueHeader = new Vue({
             checkforSynonyms();
 
             app.claimDataSW = "Keywords: "+app.keywords;
+            //altervist
             //var synonyms = getSynonyms(res.data.keywords);
 
             app.posResult = (res.data.claimTagged != "") ? res.data.claimTagged : "";
@@ -288,6 +305,7 @@ var vueHeader = new Vue({
             // for matchs in the documents
             //app.claimData = res.data.claim;
 
+            //Realiza requisição de matchs nos documentos pelo elasticsearch
             app.ajaxSearch(e);
           })
           .catch(function(err){
@@ -296,13 +314,17 @@ var vueHeader = new Vue({
           });
         }else{
           if(e.target.tagName === "INPUT" && e.target.value.length > 25){
-            let textareaComponent = Vue.extend({
-              template: '\
-                <textarea id="textarea-claim" autofocus>{{ this.claimData }} </textarea>\
-              ',
+            //extend do vueHeader
+            var textareaComponent = Vue.extend({
+              template: `
+                <textarea v-model="claimData" id="textarea-claim" @keyup="changeClaimData" autofocus></textarea>
+              `,
+              props: { 
+                claim: String, required: true,
+              },
               data: function(){
                 return {
-                  claimData: vueHeader.claimData
+                  claimData: vueHeader.claimData,
                 }
               },
               mounted: function(){
@@ -310,6 +332,12 @@ var vueHeader = new Vue({
                   //code that will run only after the
                   //entire view has been rendered
                 })
+              },
+              methods: {
+                changeClaimData: ()=>{
+                  let elClaim = document.getElementById("textarea-claim");
+                  this.claimData = elClaim.value;
+                }
               }
             });
 
@@ -319,6 +347,8 @@ var vueHeader = new Vue({
             let elClaim = document.getElementById("textarea-claim");
             elClaim.focus();
             
+          }else if(e.target.tagName === "TEXTAREA"){
+            //console.log(vueHeader.claimData);
           }
         }
       }else{
@@ -349,6 +379,60 @@ var vueHeader = new Vue({
   }
 }); 
 
+Vue.component('comp-result-units',{
+  template: '\
+    <div :id="divId" class="resultUnit" @click="showRU">\
+      <span :id="span1Id" class="ruIcons" v-html="value">{{ value }}</span>\
+      <span class="ruText" v-html="data">{{ data }}</span>\
+    </div>\
+  ',
+  props: ['divId', 'span1Id', 'data'],
+  methods: {
+    showRU: function(){
+      var $el =  this.$el;
+      var $spanIcon = this.$el.children[0];
+      var $spanText = this.$el.children[1];
+
+      if(!this.active){
+
+        Object.assign($el.style, {
+          height: "400px", 
+          borderColor: "yellowgreen"
+        });
+        $spanIcon.style.fontSize = "23px";
+        Object.assign( $spanText.style, {
+          height: $el.style.height,
+          overflowY: "scroll"
+        });
+        this.value = "&#8628";
+        this.active = true
+
+      }else{
+        
+        Object.assign($el.style, {
+          height: "40px", 
+          lineHeight: "40px",
+          borderColor: "black"
+        });
+        $spanIcon.style.fontSize = "18px";
+        Object.assign( $spanText.style, {
+          height: "30px",
+          overflowY: "hidden"
+        });
+        this.value = "&#8627";
+        this.active = false
+        $spanText.scrollTop = 0;
+      }
+    }
+  },
+  data: function(){ //this.active and this.value acess here
+    return {
+      active: false,
+      value: "&#8627;"
+    }
+  }
+}); 
+
 var app = new Vue({
   el: '#div-chatbot',
   data: function(){
@@ -358,10 +442,10 @@ var app = new Vue({
       claimDataSW: "", //contains the message of keywords of claim
       keywords: "",
       synonyms: [
-        ["volta", "reembolso", "devolução"],
+        ["volta", "reembolso", "devolução", "restituição", "indébito", "quantia"],
         ["tempo", "dias"],
         ["uso", "vícios", "defeito", "falha"],
-        ["pagamento", "cobrança"],
+        ["pagamento", "cobrança", "cobrado", "quantia", "indebito", "indébito"],
         ["anuncio", "anunciando", "publicidade"]
       ],
       //Div elements
@@ -436,7 +520,7 @@ var app = new Vue({
           "Ao substituir por um novo produto ou serviço, o mesmo apresentou outro problema e a empresa se negou a resolve-lo?",
           "A empresa ou fornecedor diz que não tem o produto e por isso não pode efetuar troca?"
         ],
-        "Lhe foi vendido um produto com quantidade de medidas abaixo da informada na especificação e gostaria de ter abatimento do preço, complementação do peso / medida, substituição do produto ou restituição da quantia paga ?",
+        "Lhe foi vendido um produto com quantidade ou medidas abaixo da informada na especificação e gostaria de ter abatimento do preço, complementação do peso / medida, substituição do produto ou restituição da quantia paga ?",
         //Art 20
         "O fornecedor prestou serviço de má qualidade ou impróprio para consumo ou ainda e se nega a assumir pelo dano que o serviço tenha causado ou disparidade da informação contida na oferta / propaganda?",
         "O serviço prestado pela empresa utilizou de peças usadas ou inadequadas para reparação de seu produto, isto é, fora das especificações técnicas do fabricante sem sua autorização?",
@@ -455,7 +539,7 @@ var app = new Vue({
         "Está dificil identificar quem são os sócios da empresa ou eles alegam que não possuem recursos para pagamento de débitos?",
         "-",
         //Art 30
-        "A oferta do produto ou serviço que viu ofereceu um determinado valor e no momento do pagamento você teve que pagar por outro valor mais alto?",
+        "A oferta do produto ou serviço que você viu, ofereceu um determinado valor e no momento do pagamento você teve que pagar por um valor mais alto?",
         "O produto ou Serviço que adquiriu não possuia informações claras, corretas, precisas em portugês ou suas caracteristicas, qualidades, comprosição, preço, garantia ou ainda não informava riscos que apresenta a sua saúde e segurança?",
         "O fabricantes ou importador do produto que adquiriu afirma que não possui peças de reposição para seu produto e este continua sendo fabricado e veiculado no mercado?",
         [
@@ -464,7 +548,7 @@ var app = new Vue({
         ],
         "A empresa representante do produto ou serviço que você adquiriu nega a responder pela responsabilidade do dano",
         //Art 35
-        "O fornecedor do produto ou serviço recusou a cumprir a oferta publicada pelo mesmo e não foi oferecido a você a escolha de um dos seguintes items ? (exigir cumprimento da oferta, aceitar outro produto ou serviço equivalente ou ainda rescindir o contrato com restituição)",
+        "O fornecedor do produto ou serviço recusou a cumprir a oferta publicada e não ofereceu a você a escolha de um dos seguintes items ? (exigir cumprimento da oferta, aceitar outro produto ou serviço equivalente ou ainda rescindir o contrato com restituição)",
         [
           "Você acha que a propaganda foi colocada de forma confusa e complicada para visualização?",
           "O fornecedor demonstra não conter os dados utilizados para construção da mensagem publcitária?"
@@ -495,11 +579,10 @@ var app = new Vue({
         [
           "O fornecedor estipulou um outro valor para pagamento do serviço ou produto diferente do escrito no orçamento feito em até 10 dias atrás?",
           "O fornecedor aumentou o orçamento de um produto ou serviço sem aviso ou não discutiu contigo antes de alterar e solicita que você pague esse acrescimo ?",
-          "Ant"
         ],
         "O fornecedor vendeu um produto ou serviço fora do valor estabelecido pela instituição oficial? (só responda sim se o preço seguir de um tabelamento oficial)",
         [
-          "Você foi exposto sofreu algum tipo de constrangimento ou ameaça durante a cobrança de débitos ou foi cobrado indevidamente?",
+          "Você foi sofreu algum tipo de constrangimento/ameaça durante a cobrança de débitos ou foi solicitado cobrança de taxa indevida ou desconhecida?",
           "Você foi solicitado a pagamento de um serviço ou produto através de um documento que não possui informações suficientes acerca do fornecedor (cpf, cnpf, endereço, nome) ?"
         ],
         //Art 43
