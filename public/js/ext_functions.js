@@ -122,31 +122,64 @@ var lib = {
       //remove comma, point, exclamation, interrogation marks
       regCharMarks = new RegExp("(\\))|(\\()|(\\,)|(\\.)|(\\?)|(\\!)|(\\/)|(\\&)|(\\$)|(\\%)|(\\#)|(\\*)", "g");
       claim = claim.replace(regCharMarks, "");
+      //remove double emptySpace
+      regExpWhiteSpace = new RegExp("(\\s+)", "g");
+      claim = claim.replace(regExpWhiteSpace, " ");
 
       //também contém palavras ou expressões aglutinadas de uma stopword: você = vc. 
-      var stopwords = "vc eu meu poderia gostaria disto isso deste esse desta esta dessa essa menos mais assim como ele ela eles elas dela dele nosso nossa até apenas era eram sou uma um para ou ao de da do das dos que em no na nos nas ter com sem nao não mas porem porém entretanto todavia ainda se os as pelo pela pelos pelas";
+      var stopwords = "vc eu meu poderia gostaria disto isso deste esse desta esta dessa essa menos mais assim como ele ela eles elas dela dele nosso nossa até apenas era eram sou uma um para ou ao de da do das dos que em no na nos nas ter com sem nao não mas porem porém entretanto todavia ainda se os as por pelo pela pelos pelas todo toda mesmo mesma";
+
+      //verbos de ligação (#TODO: adicionar dps conjugação verbal)
+      let conectingVerbs = "foi são sao serão serao sera será foram";
+
+      //adverbios
+      let adverbs = "sempre";
 
       //var filter_romanianNumerals = "I II III IV V VI VII VIII IX X XI XII XIII XIV";
       filter_romanianNumerals = "";
-      var numerals = "1 2 3 4 5 6 7 8 9";
-      stopwords = stopwords+" "+filter_romanianNumerals+" "+numerals;
+      stopwords = stopwords+" "+filter_romanianNumerals+" "+conectingVerbs+" "+adverbs;
       stopwords = stopwords.split(" ");
 
-      var articleVowels = "à a e é í o u";
-      articleVowels = articleVowels.split(" ");
+      //ex9: R$ 754,00 -> r 75400 -> 75400
+      var otherLetters = "r";
+      otherLetters = otherLetters.split(" ");
 
-      var regExp = new RegExp();
+      let regExp = new RegExp();
+
+      var numerals = "0123456789";
+      for(i=0;i<numerals.length; i++){
+        regExp = new RegExp(`[${numerals}]+`, "ig");
+        claim = claim.replace(regExp, "");
+        //remove double emptySpace
+        regExpWhiteSpace = new RegExp("(\\s+)", "g");
+        claim = claim.replace(regExpWhiteSpace, " ");
+      }
+
+      //regExp removes a word contain vogals as described above and also remove the spaces besides the vowel. This expression is replaced for a single space
+      for(i=0;i<otherLetters.length; i++){
+        regExp = new RegExp("\\s"+otherLetters[i]+"\\s", "ig");
+        claim = claim.replace(regExp, " ");
+        //remove double emptySpace
+        regExpWhiteSpace = new RegExp("(\\s+)", "g");
+        claim = claim.replace(regExpWhiteSpace, " ");
+      }
+
+      //vowels and diactrics
+      var articleVowels = "àaeiíouéèêëçàâäîïùûüôóö";
+      articleVowels = articleVowels.split("");
 
       //regExp removes a word contain vogals as described above and also remove the spaces besides the vowel. This expression is replaced for a single space
       for(i=0;i<articleVowels.length; i++){
         regExp = new RegExp("\\s"+articleVowels[i]+"\\s", "ig");
         claim = claim.replace(regExp, " ");
+        //remove double emptySpace
+        regExpWhiteSpace = new RegExp("(\\s+)", "g");
+        claim = claim.replace(regExpWhiteSpace, " ");
       }
-/*
+
       console.log("--");
-      console.log("after removed words-vowels-only: "+claim);
+      console.log("before remove stopwords: "+claim);
       console.log("--");
-*/
 
       for(i=0;i<stopwords.length; i++){
         // \b pattern that checks for a word that contains exactly what is between \b
@@ -154,22 +187,14 @@ var lib = {
 
         regExp = new RegExp("\\b"+stopwords[i]+"\\b", "ig");
         claim = claim.replace(regExp, "");
+        //remove double emptySpace
+        regExpWhiteSpace = new RegExp("(\\s+)", "g");
+        claim = claim.replace(regExpWhiteSpace, " ");
       }
-/*
+
       console.log("--");
       console.log("after removed stopwords: "+claim);
       console.log("--");
-*/
-
-      //remove emptySpace
-      regExpWhiteSpace = new RegExp("(\\s+)", "g");
-      claim = claim.replace(regExpWhiteSpace, " ");
-
-/*
-      console.log("--");
-      console.log("after removed empty space: "+claim);
-      console.log("--");
-*/
 
       let arrKeywords = claim.split(" ");
 
