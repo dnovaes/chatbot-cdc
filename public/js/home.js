@@ -368,6 +368,7 @@ var app = new Vue({
       chatbotStartedBool: false,
       suggestionTitleBool: true,
       thanksVotingBool: false,
+      newSuggestionAnswerBool: false,
       emptySimilarCasesMessage: false,
       outputBool: false,
       posBool: false, //indicate to system if it should apply the POS Tagger on the claim or not
@@ -393,13 +394,17 @@ var app = new Vue({
         "columns": []
       },
       viewCase: {},
-      //zero based array corresponding to i+1 article number. When i is the array index and (i+1) is the number of the article
+      positiveAnswers: ["sim", "s", "isso", "perfeito", "de acordo", "positivo", "claro"],
+      negativeAnswers: ["não", "n", "nao", "naõ", "nada a ver", "negativo"],
+      //zero based array: i: index of questions array, (i+1) article number. When i is the array index and (i+1) is the number of the article
       questions: [
         "Foi demonstrado alguma confusão pelo vendedor a respeito do papel de fornecedor ou consumidor?",
-        "Ant",
-        "Ant",
+        "Foi demonstrado alguma confusão pelo vendedor a respeito do papel de fornecedor ou consumidor?",
+        "Foi demonstrado alguma confusão pelo vendedor a respeito do papel de fornecedor ou consumidor?",
         "Tem alguma  dúvida em relação aos princípios de proteção ao consumidor ditado pela Politica Nacional das Relações de Consumo?",
-        "Existe uma referência específica sobre as a execução dos princípios estabelecidos pela Ploticia Nacional das Relações de Consumo. Deseja visualizar?",
+        //Art 5 (escolhido vetar do sistema por ora. Eleitor leigo n saberia responder se esta ligado ou nao a política nacional das relações do consumo
+        //"Existe uma referência específica sobre as a execução dos princípios estabelecidos pela Política Nacional das Relações de Consumo. Deseja visualizar?",
+        "-",
         [
           "O fornecimento deste produto indica risco a sua saúde e segurança de vida?",
           "Você sente que igualdade ou sua liberdade de escolha foi quebrada durante a contratação?",
@@ -416,10 +421,10 @@ var app = new Vue({
         "No rotulo do produto ou a empresa que prestou lhe serviço que adquiriu informou devidamente a respeito da periculosidade que o mesmo apresenta?",
         "O Fornecedor sabia do perigo que o produto ou serviço apresentava e mesmo assim lhe forneceu dizendo que era de 'ótima' qualidade?",
         "-",
-        "Você deseja  ter reparo dos danos causados pelo produto adquirido?",
-        "Ant",
-        "O fornecedor, não identificado, se nega de alguma forma a reparação do casado pelo serviço e você deseja ser indenizado pelo serviço parcialmente ou totalmente realizado?",
-        "-", //Art 15
+        "Você deseja ter reparo dos danos (causado a sua saúde ou segurança) causados pelo produto adquirido?",
+        "Você não consegue identificar o fabricante, produto ou responsável do produto e o comerciante se nega a assumir responsabilidade pelos danos do produto?",
+        "O responsável se nega de alguma forma a reparação do causado pela prestação de serviço e você deseja ser indenizado pelo serviço parcialmente ou totalmente realizado?",
+        "-", //Art 15 (vetado)
         "-",
         "-",
         //Art 18
@@ -431,14 +436,16 @@ var app = new Vue({
           "Ao substituir por um novo produto ou serviço, o mesmo apresentou outro problema e a empresa se negou a resolve-lo?",
           "A empresa ou fornecedor diz que não tem o produto e por isso não pode efetuar troca?"
         ],
-        "Lhe foi vendido um produto com medidas abaixo da informada na especificação e gostaria de ter abatimento do preço, complementação do peso / medida, substituição do produto ou restituição da quantia paga ?",
+        "Lhe foi vendido um produto com quantidade de medidas abaixo da informada na especificação e gostaria de ter abatimento do preço, complementação do peso / medida, substituição do produto ou restituição da quantia paga ?",
+        //Art 20
         "O fornecedor prestou serviço de má qualidade ou impróprio para consumo ou ainda e se nega a assumir pelo dano que o serviço tenha causado ou disparidade da informação contida na oferta / propaganda?",
         "O serviço prestado pela empresa utilizou de peças usadas ou inadequadas para reparação de seu produto, isto é, fora das especificações técnicas do fabricante sem sua autorização?",
         //Art 22
         "Você recebeu algum atendimento de um órgão público que demonstrou falta de profissionalismo para solucionar seu problema? Se sim, qual serviço você precisou para solucionar seu problema e qual foi o gargalo ou inadequação encontrado em seus serviços?",
         "O fornecedor responde dizendo que não sabia que o produto vendido por ele estava neste estado e se nega a solucionar seu problema?",
         "O fornecedor nega a solucionar seu problema devido a uma clausula contratual assinado entre você e ele que diminua ou anule a obrigação dele de indeniza-lo pelo defeito ou causado?",
-        "Ant",
+        //Art 25
+        "O fornecedor nega a solucionar seu problema devido a uma clausula contratual assinado entre você e ele que diminua ou anule a obrigação dele de indeniza-lo pelo defeito ou causado?",
         [
           "Fornecedor alega que a reclamação não pode ser feita porque passou do prazo do seu direito?",
           "Ant",
@@ -467,7 +474,7 @@ var app = new Vue({
           "O fornecedor deixou de informar na propaganda  / oferta uma informação essencial no produto ou serviço que você ficou interessado ou ainda, ofertou a venda um produto ou serviço não existente em seu estabelecimento? (propaganda enganosa)",
           "Você considera que a publicidade é discrimatória, te induz ao erro ou contém total ou parcialmente informações falsas?"
         ],
-        "-",
+        "Você considera que a publicidade é discrimatória, te induz ao erro ou contém total ou parcialmente informações falsas?",
         [
           "O vendedor disse que só poderia adquirir um produto ou serviço se adquirisse um outro diferente produto ou serviço?",
           "O vendedor recusou atendimento a ti mesmo em condições de prestar o serviço ou com disponibilidade de estoque ou ainda sem justificativa?",
@@ -516,7 +523,7 @@ var app = new Vue({
         [
           "Você assinou algum contrato com o fornecedor durante a compra ou pagamento pelo serviço?",
           "No regulamento ou contrato indicado pelo fornecedor, ele diminui ou anula seus direitos acerca de devolução, substituição ou reembolso em caso de falhas, defeitos ou outros vícios associados ao produto / serviço ?",
-          "Ant",
+          "No regulamento ou contrato indicado pelo fornecedor, ele diminui ou anula seus direitos acerca de devolução, substituição ou reembolso em caso de falhas, defeitos ou outros vícios associados ao produto / serviço ?",
           "O fornecedor não assume a falha do prejuízo exercido pelo serviço ou incluso no produto e transfere culpa para terceiros?",
           "O fornecedor estabeleceu obrigações no contrato que te deixou em desvantagem exagerada acerca do roduto ou serviço que adquiriu?",
           "-",
@@ -654,6 +661,7 @@ var app = new Vue({
         }else{
           app.results = "Não encontrei nada relacionado. Poderia escrever novamente com outras palavras?"
           alert(app.results);
+          app.chatbotStartedBool = false;
           app.resultsBool = false;
           app.results = "";
           app.claimData = "";
@@ -662,6 +670,7 @@ var app = new Vue({
           console.log(error);
           app.chatbotStartedBool = false;
           alert("Erro ao tentar conectar ao elastic search.");
+          location.href = "/";
       });
     },
     showPosTagger: function(){
@@ -818,11 +827,25 @@ var app = new Vue({
       //flag that indicates that the system could identify the claim typed from the user
       let questionIndex;
 
+      //eliminate questions that are vetoed
+      if(app.resultUnits.length>0){
+        questionIndex = parseInt(app.resultUnits[0]["artId"])-1; 
+        console.log("Question related to Article Number: "+app.resultUnits[0]["artId"]);
+      }
+      while((app.resultUnits.length>0)&&(app.questions[questionIndex] == "-")){
+
+        if(app.questions[questionIndex] == "-"){
+          console.log("Question skiped: 'artigo vetado'");
+          app.resultUnits.shift();
+        }
+
+        //recalculate and check next question if is 'vetado'
+        questionIndex = parseInt(app.resultUnits[0]["artId"])-1; 
+        console.log("Question related to Article Number: "+app.resultUnits[0]["artId"]);
+      }
+
       if(app.resultUnits.length>0){
        
-        console.log("Question related to Article Number: "+app.resultUnits[0]["artId"]);
-        questionIndex = parseInt(app.resultUnits[0]["artId"])-1; 
-
         //send question to the user
         if(typeof(app.questions[questionIndex]) == "object"){
           console.log(app.questions[questionIndex][0]);
@@ -842,15 +865,15 @@ var app = new Vue({
             let lastAnswer = app.msgUnits[app.msgUnits.length-1]["data"].toLowerCase();
             console.log("Answer identified: "+lastAnswer);
 
-            if(lastAnswer != "sim" && lastAnswer != "não"){
+            if((app.positiveAnswers.indexOf(lastAnswer) == -1) && (app.negativeAnswers.indexOf(lastAnswer) == -1)){
               app.sendMessageBot("Não entendi sua resposta, responda de forma clara por favor.");
               //resend question
-              app.sendMessageBot(app.questions[questionIndex][0]);
+              app.sendMessageBot(app.questions[questionIndex]);
               number = app.nMsgsUser;
             }else{
               clearInterval(intervalMsg);
 
-              if(lastAnswer == "sim"){
+              if(app.positiveAnswers.indexOf(lastAnswer) > -1){
                 let similarClaim = {};
 
                 //checks if there is already a article too similar to that one based on the keywords and questions answered
@@ -887,6 +910,7 @@ var app = new Vue({
                    
                     //new claim
                     alert("Queixa nova identificada");
+                    console.log(`artigo relacionado: ${app.resultUnits[0]["artId"]}`);
 
                     let divReportContentEl = document.querySelector(".div-report-content");
                     divReportContentEl.innerHTML = app.resultUnits[0]["data"];
@@ -904,7 +928,6 @@ var app = new Vue({
                       })
                       .then(function (res){
                         app.showCaseToUser(res.data);
-                        
                       });
 
                     });
@@ -916,9 +939,11 @@ var app = new Vue({
 
 
               }else{
+                //negative answer
                 console.log("Sending another message");
                 //since the user answered "No" as answer, the system removes the article as possiblity for the answer to the user
-                app.resultUnits.splice(0, 1);
+                let removedArt = app.resultUnits.shift();
+                console.log(app.resultUnits);
 
                 //generate next question (recursive call)
                 app.generateQuestionsToUser();
@@ -926,6 +951,29 @@ var app = new Vue({
             }
           }else{
             console.log("waiting for the user response");
+          }
+        }, 2000);
+      }else{
+        //Não há mais perguntas para serem feitas ao usuário.. :(
+        app.sendMessageBot("Não tenho mais perguntas que poderiam estar relacionadas com sua queixa. Ainda estou aprendendo... :(");
+        app.sendMessageBot("Se puder me ajudar, me diga com suas palavras qual seria a solução para sua queixa. Assim na proxima vez talvez eu possa ajudar você ou alguém com o mesmo problema!");
+        app.newSuggestionAnswerBool = true;
+
+        //wait for answer
+        let number = app.nMsgsUser;
+
+        let intervalMsg = setInterval(function(){
+          if(app.nMsgsUser > number){
+
+            clearInterval(intervalMsg);
+
+            let lastAnswer = app.msgUnits[app.msgUnits.length-1]["data"].toLowerCase();
+
+            //TODO: cadastrar sugestao digitada no banco de dados
+
+            alert("Obrigado. Espero te ajuda-lo na próxima :)");
+            //atualiza a pagina
+            location.href = "/";
           }
         }, 2000);
       }
