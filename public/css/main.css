@@ -669,6 +669,7 @@
 }
 
 .vote-button{
+  transform: scale(0.8);
   width: 110px;
   height: 77px;
   background-repeat: no-repeat;
@@ -676,6 +677,7 @@
 
 
 .vote-button:hover{
+  transform: scale(0.8);
   animation: pulse 2s infinite;
   animation-direction: alternate;
   animation-name: pulse;
