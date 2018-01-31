@@ -3,6 +3,8 @@
   <head>
     <script src="js/vue@2.3.3"></script>
     <script src="js/axios.min.js"></script>
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery.mask.js"></script>
 
     <link rel="shortcut icon" href="/public/imgs/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/main.css">
@@ -23,7 +25,7 @@
       </div>
     <% }%>
     <div class="row" id="div-login-form">
-      <div class="large-offset-2 large-8 columns white-bg login-container">
+      <div class="large-offset-1 large-10 columns white-bg login-container">
         <div class="header-login-form" @click="goTo('../')">
           <div class="header-content">
             <div class="img"></div>
@@ -43,7 +45,36 @@
           <form action="/signup" method="post">
             <input type="text" name="name" class="fluid margin-top-20" placeholder="Nome" required>
             <input type="text" name="email" class="fluid margin-top-20" placeholder="E-mail" required>
-            <input type="password" name="password" class="fluid" placeholder="Sua senha" required>
+            <input type="password" name="password" class="fluid margin-bottom-20" placeholder="Sua senha" required>
+            <span>Dados opcionais (Necessários para emissão de relatórios)</span>
+            <div class="row margin-top-20">
+              <div class="large-6 columns">
+                <input id="phone" type="text" name="phone" class="fluid" placeholder="Telefone">
+              </div>
+              <div class="large-6 columns">
+                <input id="cpf" type="text" name="cpf" class="fluid" placeholder="CPF">
+              </div>
+            </div>
+            <div class="row">
+              <div class="large-6 columns">
+                <input id="cep" class="fluid" type="text" name="cep" placeholder="CEP">
+              </div>
+              <div class="large-6 columns margin-top-10">
+                <a id="checkCep" class="orange-color" href="#">Consultar</a>
+              </div>
+            </div>
+            <input id="street" class="fluid" type="text" name="street" placeholder="Endereço">
+            <input class="input-small" type="text" name="number" placeholder="Número">
+            <input class="fluid" type="text" name="complement" placeholder="Complemento">
+            <input id="district" class="input-small" type="text" name="district" placeholder="Bairro">
+            <div class="row">
+              <div class="large-6 columns">
+                <input id="city" class="fluid" type="text" name="city" placeholder="Cidade">
+              </div>
+              <div class="large-6 columns">
+                <input id="state" class="fluid" type="text" name="state" placeholder="Estado">
+              </div>
+            </div>
             <button class="fluid new-bt">Registrar</button>  
           </form>
         </div>
@@ -75,6 +106,22 @@
         }
       }
     });
+
+    $("#phone").mask("(00) 000000000");
+    $('#cpf').mask('000.000.000-00', {reverse: true});
+
+    $("#checkCep").click(function(){
+      var cep = $("#cep").val();
+
+      $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+        if (!("erro" in dados)) {
+          $("#street").val(dados.logradouro);
+          $("#district").val(dados.bairro);
+          $("#city").val(dados.localidade);
+          $("#state").val(dados.uf);
+        }
+      });
+    })
     </script>
 
   </body>

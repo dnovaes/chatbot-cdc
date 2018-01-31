@@ -8,6 +8,15 @@ exports.signup = function(req, res) {
     "name" : req.body.name,
     "email" : req.body.email,
     "password" : bcrypt.hashSync(req.body.password, 10),
+    "phone" : req.body.phone,
+    "cpf" : req.body.cpf,
+    "address_cep" : req.body.cep,
+    "address_street" : req.body.street,
+    "address_number" : req.body.number,
+    "address_complement" : req.body.complement,
+    "address_district" : req.body.district,
+    "address_city" : req.body.city,
+    "address_state" : req.body.state,
     "created" : new Date(),
     "modified" : new Date()
   }

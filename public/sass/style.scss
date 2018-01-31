@@ -166,6 +166,7 @@ $gray_bg: #ecf0f1;
 .login-container {
 
   margin-top: 50px;
+  margin-bottom: 50px;
 
   .content-form {
     padding-top: 20px;
@@ -290,4 +291,8 @@ $gray_bg: #ecf0f1;
   &:hover {
     color: $orange !important;
   }
+}
+
+.input-small {
+  width: 50%;
 }
