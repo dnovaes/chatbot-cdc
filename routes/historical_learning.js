@@ -6,20 +6,20 @@ const CONST_VOTES_TOTAL = 3;
 
 exports.create = function(req, res) {
 
-  let keywords = req.body.keywords;
-  let article_number = req.body.article_number;
-  let claim_text = req.body.claim_text;
-
-  let sqlInsert = "";
-  
-  if(req.session.user){
-    sqlInsert = `INSERT INTO historical_learning (keywords, article_number, claim_text, user_id) VALUES ('${keywords}', '${article_number}', '${claim_text}', '${req.session.user.id}')`;
-  }else{
-    sqlInsert = `INSERT INTO historical_learning (keywords, article_number, claim_text) VALUES ('${keywords}', '${article_number}', '${claim_text}')`;
-  }
-  console.log(sqlInsert);
-
   db.getConnection(function(err, connection) {
+
+    let keywords = connection.escape(req.body.keywords);
+    let article_number = connection.escape(req.body.article_number);
+    let claim_text = connection.escape(req.body.claim_text);
+
+    let sqlInsert = "";
+    
+    if(req.session.user){
+      sqlInsert = `INSERT INTO historical_learning (keywords, article_number, claim_text, user_id) VALUES (${keywords}, ${article_number}, ${claim_text}, ${req.session.user.id})`;
+    }else{
+      sqlInsert = `INSERT INTO historical_learning (keywords, article_number, claim_text) VALUES (${keywords}, ${article_number}, ${claim_text})`;
+    }
+    
     connection.query(sqlInsert, function(err, results) {
       connection.release();
 
@@ -156,9 +156,6 @@ exports.searchMostSimilarClaim = function(req, res) {
           // val =  object containing id and keywords for each claims registered
           //console.log(i+" id: "+rowdp.id+", keywords: "+rowdp.keywords);
           let arrkeywords = rowdp.keywords.split(",");
-
-          //console.log("arrkeywords");
-          //console.log(arrkeywords);
 
           //#refactor forEach to some
           myKeywords.forEach(function(val, ind){
