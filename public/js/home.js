@@ -507,12 +507,13 @@ var app = new Vue({
         "-",
         "Você deseja ter reparo dos danos (causado a sua saúde ou segurança) causados pelo produto adquirido?",
         "Você não consegue identificar o fabricante, produto ou responsável do produto e o comerciante se nega a assumir responsabilidade pelos danos do produto?",
-        "O responsável se nega de alguma forma a reparação do causado pela prestação de serviço e você deseja ser indenizado pelo serviço parcialmente ou totalmente realizado?",
+        "O responsável se nega de alguma forma a reparação do causado pela prestação de serviço e você deseja ser indenizado parcialmente ou totalmente pelo serviço realizado?",
         "-", //Art 15 (vetado)
         "-",
         "-",
         //Art 18
         [
+          "Você não está satisfeito com a inadequação do produto mostrado na propagandada, com as informações contidas no recipiciente do produto ou ainda inadequado para uso e deseja substituir, ressarcir ou trocar-lo? (prazo maximo de 30 dias)",
           "A empresa não solucionou o problema e você gostaria de substituir o seu produto?", 
           "A empresa não solucionou o problema e você gostaria de ter seu dinheiro de volta?",
           "A empresa não solucionou o problema e você gostaria que o preço do produto sofresse um abatimento ?",
@@ -522,7 +523,7 @@ var app = new Vue({
         ],
         "Lhe foi vendido um produto com quantidade ou medidas abaixo da informada na especificação e gostaria de ter abatimento do preço, complementação do peso / medida, substituição do produto ou restituição da quantia paga ?",
         //Art 20
-        "O fornecedor prestou serviço de má qualidade ou impróprio para consumo ou ainda e se nega a assumir pelo dano que o serviço tenha causado ou disparidade da informação contida na oferta / propaganda?",
+        "O fornecedor prestou serviço impróprio para consumo, se nega a assumir pelo dano que o serviço tenha causado ou o serviço prestado teve disparidade da informação contida na oferta / propaganda?",
         "O serviço prestado pela empresa utilizou de peças usadas ou inadequadas para reparação de seu produto, isto é, fora das especificações técnicas do fabricante sem sua autorização?",
         //Art 22
         "Você recebeu algum atendimento de um órgão público que demonstrou falta de profissionalismo para solucionar seu problema? Se sim, qual serviço você precisou para solucionar seu problema e qual foi o gargalo ou inadequação encontrado em seus serviços?",
@@ -540,8 +541,8 @@ var app = new Vue({
         "-",
         //Art 30
         "A oferta do produto ou serviço que você viu, ofereceu um determinado valor e no momento do pagamento você teve que pagar por um valor mais alto?",
-        "O produto ou Serviço que adquiriu não possuia informações claras, corretas, precisas em portugês ou suas caracteristicas, qualidades, comprosição, preço, garantia ou ainda não informava riscos que apresenta a sua saúde e segurança?",
-        "O fabricantes ou importador do produto que adquiriu afirma que não possui peças de reposição para seu produto e este continua sendo fabricado e veiculado no mercado?",
+        "O produto ou Serviço que adquiriu não possuia informações claras, corretas, precisas em português ou suas caracteristicas, qualidades, comprosição, preço, garantia ou ainda não informava riscos que apresenta a sua saúde e segurança?",
+        "O fabricante ou importador do produto que adquiriu afirma que não possui peças de reposição para seu produto e este continua sendo fabricado e veiculado no mercado?",
         [
           "Foi oferecido a você ou você comprou um produto via telefone em que as informações do fabricante e endereço da companhia não foi informado na embalagem?",
           "Foi cobrado de você uma taxa por aceitar uma ligação telefonica feita exclusivamente para realizar propaganda do produto?"
@@ -816,6 +817,7 @@ var app = new Vue({
       caseClaim.artText
       caseClaim.votePos
       caseClaim.voteNeg
+      caseClaim.keywords
       */
       
       //show the article found by the system the endorces the claim of the user
@@ -998,10 +1000,21 @@ var app = new Vue({
                     let divReportContentEl = document.querySelector(".div-report-content");
                     divReportContentEl.innerHTML = app.resultUnits[0]["data"];
 
+                    //convert app.keywords tipo 'object' para 'string' para inserir no banco de dados
+                    let keywords = "";
+                    app.keywords.forEach(function(val, i){
+                      //console.log(i, app.keywords.length);
+                      if(i < (app.keywords.length-1)){
+                        keywords+= val+",";
+                      }else{
+                        keywords+= val;
+                      }
+                    });
+
                     //Envia requisição ajax para registrar queixa no servidor.
                     axios.post('/historical_learning/create', {
                       claim_text: app.claimData,
-                      keywords: app.keywords,
+                      keywords: keywords,
                       article_number: app.resultUnits[0]["artId"]
                     })
                     .then(function (res){
