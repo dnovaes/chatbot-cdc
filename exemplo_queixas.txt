@@ -1,42 +1,70 @@
- Ex1: 
- Realizei uma compra e o pagamento para dois produtos na loja PurpleFire.com em Dezembro dia 9. Eles tinham 15 dias para postar o produto mas nada aconteceu. 
- Tenho esperado mais de um mês. Contactei a empresa algumas vezes e conversei com Amanda, mas eles não resolveram meu problema. Tenho todas as conversas registradas.
- PurpleFire não tem CNPJ ou endereço no site. Não recomendo que comprem na loja mencionada.
+## Queixas Criadas ou Extraídas do site https://www.reclameaqui.com.br
 
- Ex2:
- Eu gostaria de ter meu dinheiro de volta relacionado ao produto que eu comprei 25 dias atrás. O produto sofreu uma perda decadencial mas eu não estou satisfeito com o produto.
- Não cumpriu com o que prometia.
+Ex1:  34/35
+Realizei uma compra e o pagamento para dois produtos na loja PurpleFire.com em Dezembro dia 9. Eles tinham 15 dias para postar o produto mas nada aconteceu. Tenho esperado mais de um mês. Contactei a empresa algumas vezes e conversei com Amanda, mas eles não resolveram meu problema. Tenho todas as conversas registradas. PurpleFire não tem CNPJ ou endereço no site. Não recomendo que comprem na loja mencionada.
 
- Ex3:
- Eu gostaria de ter meu dinheiro de volta relacionado ao produto que eu comprei 25 dias atrás. Usei um pouco mas não estou satisfeito com o produto.
- Não cumpriu com o que prometia.
+Ex2: art 18
+Eu gostaria de ter meu dinheiro de volta relacionado ao produto que eu comprei 25 dias atrás. O produto sofreu uma perda decadencial mas eu não estou satisfeito com o produto.
+Não cumpriu com o que prometia.
 
- Ex4:
- Comprei e efetuei o pagamento de uma camisa na LojaProject. 
- Estou aguardando a 2 semanas e ainda sim o site não reconhece meu pagamento apesar de ter sido descontado no meu cartão de crédito.
- Entrei em contato e eles não respondem há 10 dias. Queria receber meu dinheiro de volta.
+Ex3: art 18
+Eu gostaria de ter meu dinheiro de volta relacionado ao produto que eu comprei 25 dias atrás. Usei um pouco mas não estou satisfeito com o produto. Não cumpriu com o que prometia.
 
- Solicito, Gostaria de, Queria ter, Posso ter meu dinheiro de volta?
+Ex4: 35 (recusa comprimento de oferta), 42
+Comprei e efetuei o pagamento de uma camisa na LojaProject. Estou aguardando a 2 semanas e ainda sim o site não reconhece meu pagamento apesar de ter sido descontado no meu cartão de crédito. Entrei em contato e eles não respondem há 10 dias. Queria receber meu dinheiro de volta.
 
- Obs: art 18 e 35
+Solicito, Gostaria de, Queria ter, Posso ter meu dinheiro de volta?
 
- Ex5:
- Caso: Informação publicada no anuncio inadequado, subtração ou limitação de opção de reembolso da quantia paga. Infração dos direitos básicos do consumidor (art 51, inciso 2)
+Ex5: art 30
+Caso: Informação publicada no anuncio inadequado, subtração ou limitação de opção de reembolso da quantia paga. Infração dos direitos básicos do consumidor (art 51, inciso 2)
 
- Comprei um cupom de cinema para assistir filme 3D nos espaços Cinemark como dizia no anuncio. Ao ir até o local, tentei trocar o cupom pelo ingresso e fui
- barrado e ainda fui acusado de estar tumultuando o local. Não pude assistir ao filme e dei viagem perdida. A funcionária só disse que 
- o cupom / bilhete só servia para filmes 2D diferente do que dizia no anuncio e no regulamento do cupom. Ao ligar para a empresa, a mesma disse
- que o cupom não tem direito a devolução ou reembolso.
-
- Comprei um cupom de cinema para assistir filme 3D nos espaços Cinemark como dizia no anuncio. Ao ir até o local, tentei trocar o cupom pelo ingresso e fui
- barrado e ainda fui acusado de estar tumultuando o local. Não pude assistir ao filme e dei viagem perdida. A funcionária só disse que 
- o cupom só servia para filmes 2D diferente do que dizia no anuncio e no regulamento do cupom. Ao ligar para a empresa, a mesma disse
- que o cupom não tem direito a devolução ou reembolso.
+Comprei um cupom de cinema para assistir filme 3D nos espaços Cinemark como dizia no anuncio. Ao ir até o local, tentei trocar o cupom pelo ingresso e fui barrado e ainda fui acusado de estar tumultuando o local. Não pude assistir ao filme e dei viagem perdida. A funcionária só disse que o cupom / bilhete só servia para filmes 2D diferente do que dizia no anuncio e no regulamento do cupom. Ao ligar para a empresa, a mesma disse que o cupom não tem direito a devolução ou reembolso.
 
  Ex6: 
- Artigo 37 Publicidade enganosa ou abusiva
+ Artigo 36 ou 37: Publicidade enganosa ou abusiva
 
- Tentei realizar compra na Pichau através de um link na pagina do facebook anunciando um ssd de 120 GB pelo valor de 99 reais. Ao clicar 
- no link, fui redirecionado para pagina do anuncio, adicionei ao carrinho e não consegui finalizar a compra. Depois de 5 tentativas, a
- pagina sempre mostrava erros. Depois de 5 minutos, ao clicar no link estava redirecionando para um anuncio em que o ssd estava custando
- 289 reais.
+Tentei realizar compra na Pichau através de um link na pagina do facebook anunciando um ssd de 120 GB pelo valor de 99 reais. Ao clicar no link, fui redirecionado para pagina do anuncio, adicionei ao carrinho e não consegui finalizar a compra. Depois de 5 tentativas, a
+pagina sempre mostrava erros. Depois de 5 minutos, ao clicar no link estava redirecionando para um anuncio em que o ssd estava custando 289 reais.
+
+Ex7: Artigo 23 (obs tratar palavras juntas e com pontuação . , … )
+
+Comprei meu celular no site durante um mês ele pegou bem,de repente do nada começou a travar do nada, mandei para assistência, foi um enorme transtorno porque a demora foi muito grande além disso o site te abandona e mal te passa informações,você tem que se virar e correr atrás pra trocar seu pedido, ao contrario ele não se esforçam, você compra o celular deles mas quem faz a assistência e outra empresas e momento nenhum vc e informado sobre isso, Minha enorme frustração e que hoje nem um ano após a compra se completou, e meu iPhone simplesmente parou de pegar,pifou de vez. JOGUEI MEU DINHEIRO NO LIXO
+
+Ex8: Art 14. caso complicado pois deve identificar como serviço primeiro a queixa para filtrar os resultados. (sistema conseguiu sugerir artigo 20 apenas porque apareceu a palavra ‘quando’)
+
+https://www.reclameaqui.com.br/hospital-da-bahia/demora-de-atendimento-em-recepcao-vazia-e-atendente-mal-educada_zdYDrj0o-wutHVGV/
+
+Fui hoje (19/01/18) às 5h da manhã, na EMERGÊNCIA do Hospital da Bahia com minha mãe que está sentindo fortes dores abdominais. Quando cheguei lá a recepção estava completamente VAZIA! O rapaz da recepção fez a ficha de atendimento e pra minha surpresa numa recepção VAZIA demorou 25 min pra chamarem minha mãe pra fazer a TRIAGEM (E SIM A SALA DE TRIAGEM ESTAVA VAZIA). Depois da triagem esperamos mais 15 minutos (no total esperamos 40 minutos pra uma recepção VAZIA!) E fui perguntar a moça que estava na recepção chamada Tatiana se ainda iria demorar. Ela respondeu na MAIOR GROSSERIA E FALTA DE EDUCAÇÃO que 'não tinha previsão de atendimento e que não era com ela, que se a enfermeira não me avisou ela não podia fazer nada, e quem avisava o médico era enfermeira e não era ela, que se eu quisesse ir embora que fosse! Depois dessa grosseria pedi a ficha da minha mãe e ela rasgou o pedaço que estava minha assinatura. 
+
+Viemos pro Hospital Português e em menos de 5 min minha mãe já estava na sala de triagem e em em 10 minutos já fomos atendidos pelo médico. Se os atendentes não querem trabalhar ou pior ainda ficar atendendo mal os clientes ( já que isso é um hospital particular que não faz nada de graça) e que inclusive estão sentindo dor, espero que reveja ao menos o treinamento da equipe!!! Péssimo! Espero nunca mais voltar a esse hospital, já que não é a primeira vez que isso acontece de ser mal atendido por recepcionista mal educados e grossos e demora na espera de atendimento na emergência.
+
+
+Ex9: Cobrança Indevida (art 42)
+https://www.reclameaqui.com.br/vivo-celular-fixo-internet-tv/creditos-sumindo_7u-y7hjdDBimnuYc/
+
+Já faz um bom tempo que meus créditos vem sumindo do meu chip pré-prago, sempre recarrego de R$ 7,00 até R$15,00 no meu celular.. e contrato pacotes avulso de internet, os que são por três reais e alguma coisa e duram por sete dias ou até consumir toda franquia. 
+Os créditos são válidos por 30 dias, certo? Errado, no meu celular.. é só recarregar, comprar o pacote avulso... usar a internet por 5 ou no máximo os 7 dias, aí eu recebo uma ligação da vivo dizendo que minha linha foi selecionada para não sei o que e bla bla. Nisso, geralmente a ligação cai.. e para minha surpresa.. depois de alguns minutos ou horas recebo SMS com protocolo e SMS falando que meu saldo é de R$ 0,07 centavos. QUERO MEUS CRÉDITOS DE VOLTA, SE POSSÍVEL DESDE O MESMO DE SETEMBRO!!!!!!!
+
+Ex10: art 18
+Comprei pelo MercadoLivre, dps de ter qualificado o usuário o produto chega em casa dentr do prazo estipulado porém meu produto foi extraviado gostaria de receber outro..
+
+Ex11: art 31, 17 ou 20 (disparidade da informação contida na oferta / propaganda)
+
+https://www.reclameaqui.com.br/microlins-brasil-s-c-ltda/cancelamento-de-matricula-e-estorno-do-valor-pago_LJUa7DX7lBGJLjmW/
+
+Olá, venho por meio deste a informar minha para está empresa acima mencionada. Bem por meio de uma ligação nos meados de janeiro de 2018 fui informado de que havia sido contemplado para uma vaga de emprego e, que mais informações deveria me encaminhar até vosso estabelecimento situado na estrada do M`BOI MIRIM, 4462- 04948030-JD ANGELA -SP, que assim fiz.
+Dia 23/01/2018 comparece com minha mãe até o estabelecimento e solicitei informações e, fui informado que na verdade não se tratava de uma vaga de emprego , mas sim, curso preparatório para processos seletivos .
+Durante a explicação do curso eu e minha mãe, ambos leigos sobre esses eventuais assuntos educacionais, foi criada atmosfera que favorecesse as inverdades sobre a contratação em detrimento do real objetivo do contrato.
+
+Ex 12:  art 35 (oferta publicava que entregaria dentro prazo esitpulado. Como não entregou, pode ser considerado RECUSA DE OFERTA)
+
+https://www.reclameaqui.com.br/surikato/meu-produto-nao-chegou_n3LIU6vKG-DjJybQ/
+
+Meu produto não chegou. Recebi um e-mail falando que vai atrasar 15 dias minha entrega isso procede??? Eu preciso desse produto urgeeente..
+
+Ex 13:  art 12 ou ?
+
+https://www.reclameaqui.com.br/igui-piscinas/pessimo-pos-venda_8fnMfqjbIS0a49-7/
+
+Mais uma vez venho através desse canal alertar a todos que pensam em comprar uma piscina da Igui. Comprei na loja Igui de Guarapari e tive várias problemas como atraso, defeitos, atendimento de má qualidade, clorador que nunca funciona e faz você gastar mais dinheiro com sal do que se fosse usar cloro e muito mais. Agora estou há várias semanas aguardando mais uma vez o atendimento do bendito clorador e nada. 
+Já gastei uns 300 reais esse mês só de produtos e mão de obra para limpeza total da piscina que toda semana a água está ficando verde e com cheiro de podre.
