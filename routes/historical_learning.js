@@ -293,8 +293,8 @@ exports.searchSimilarClaims = function(req, res){
           //prepare object containing only the data that will appear in the table (MAX_COUNT = 5) /number of similar claims that will appear
           let numOfClaims = 0;
 
-          if(rowdp.similarity>=40 && rowdp.similarity<100){
-            //>=40
+          if(rowdp.similarity>=30 && rowdp.similarity<100){
+            //>=30
             rowdp.similarity = rowdp.similarity.toFixed(1);
             objSimilarity.claims.push(rowdp);
 
