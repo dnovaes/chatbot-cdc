@@ -21,7 +21,6 @@ var lib = {
         flagRemoved = true;
       }
 
-      //console.log(flagRemoved);
       if(flagRemoved){
         //put it back to check if there is another keywords like that repeated to remove.
         //insert into the beggining the element removed
@@ -177,10 +176,6 @@ var lib = {
         claim = claim.replace(regExpWhiteSpace, " ");
       }
 
-      console.log("--");
-      console.log("before remove stopwords: "+claim);
-      console.log("--");
-
       for(i=0;i<stopwords.length; i++){
         // \b pattern that checks for a word that contains exactly what is between \b
         // i = case insensitive, g = global search
@@ -191,10 +186,6 @@ var lib = {
         regExpWhiteSpace = new RegExp("(\\s+)", "g");
         claim = claim.replace(regExpWhiteSpace, " ");
       }
-
-      console.log("--");
-      console.log("after removed stopwords: "+claim);
-      console.log("--");
 
       let arrKeywords = claim.split(" ");
 
