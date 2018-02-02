@@ -1335,7 +1335,7 @@ var app = new Vue({
                         margin: [0,4,0,4],
                         fillColor: '#1c227c',
                         color: 'white',
-                        text: "O Artigo que endossa seu caso é descrito abaixo:",
+                        text: "O Artigo que pode endossar seu caso é descrito abaixo:",
                         alignment: 'center',
                         bold: true
                       }
