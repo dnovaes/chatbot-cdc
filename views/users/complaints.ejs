@@ -259,14 +259,11 @@
               obj.claimText = val.claim_text;
               obj.artText = val.text;
               obj.similarity = val.similarity;
-
-            console.log(typeof(obj.similarity));
-
               obj.votePos = val.votePos;
               obj.voteNeg = val.voteNeg;
               obj.keywords = val.keywords;
 
-              //boardClaimsApp.gridSimilarClaims.data.push(obj);
+              boardClaimsApp.gridSimilarClaims.data.push(obj);
             });
           }else{
             //put message to user
