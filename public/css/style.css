@@ -22,12 +22,17 @@
   color: #73767c;
   padding-top: 100px; }
   .features-content .title {
+    text-align: center;
     color: darkblue;
     font-size: 24px; }
   .features-content .description {
+    text-align: center;
     margin-top: 30px; }
   .features-content .img-content {
     margin-bottom: 30px; }
+  .features-content .img-content img{
+    display: block;
+    margin: auto;}
 
 .fluid {
   width: 100%; }
@@ -107,8 +112,7 @@
   font-weight: bold; }
 
 .login-container {
-  margin-top: 50px;
-  margin-bottom: 50px; }
+  margin-top: 50px;}
   .login-container .content-form {
     padding-top: 20px;
     padding-bottom: 20px; }
