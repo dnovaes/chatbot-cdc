@@ -267,13 +267,28 @@
 }
 
 .div-similar-claims{
-  text-align: center;
-}
+  text-align: center;}
+  .div-similar-claims th{
+    opacity: 0.7;}
+  .div-similar-claims th span.arrow{
+    display: inline-block;
+    vertical-align: middle;
+    width: 0;
+    height: 0;}
+  .div-similar-claims th.active{
+    opacity: 1;}
+    .div-similar-claims th.active .arrow.asc{
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-bottom: 4px solid #1c227c;}
+    .div-similar-claims th.active .arrow.desc{
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-top: 4px solid #1c227c;}
 
 .similar-claim-row{
   height: 40px;
-  line-height: 40px;
-}
+  line-height: 40px;}
 
 #table-similar-claims tr:hover{
   background-color: #d1d1ea;
