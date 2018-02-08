@@ -34,8 +34,13 @@ app.use(bodyparser.json());
 app.use(session({
   secret: 'chatbot',
   resave: false,
-  saveUninitialized: true,
-  cookie: { expires: new Date(253402300000000) }
+  saveUninitialized: false,
+  rolling: true
+
+  //obs cookie time is set at signin and signup route.user function
+  //cookie: { expires: new Date(253402300000000) }
+  //cookie: { expires: new Date(Date.now() + 6000) }
+  //cookie: { maxAge: 5000 }
 }));
 
 app.use(function(req, res, next){
@@ -43,6 +48,7 @@ app.use(function(req, res, next){
   res.locals.sessionFlash = req.session.sessionFlash;
   res.locals.user = req.session.user;
   delete req.session.sessionFlash;
+
   next();
 });
 
@@ -54,6 +60,7 @@ app.use(function(req, res, next){
 var router = express.Router();
 
 router.get('/', function (req, res){
+
   if(req.query){
     if(req.query.adm){
       res.render('index', {adm: true});
@@ -73,13 +80,89 @@ router.get('/view/', function (req, res){
 router.post('/signin', user.signin);
 router.post('/signup', user.signup);
 router.get('/signout', user.signout);
-router.get('/dashboard', user.dashboard);
 router.get('/login', user.login);
-router.get('/edit', user.edit);
-router.post('/update', user.update);
-router.get('/mural_queixas', user.complaints)
-router.post('/user/getUserInfoById', user.getUserInfoById)
 
+router.get('/dashboard/', function(req, res){
+
+  if(!req.session.user){
+
+    req.session.sessionFlash = {
+      type: "danger",
+      message: 'Tempo de Sessão terminou. Efetue login novamente.'
+    }
+    req.session.save(function(err) {
+      res.redirect('/login');
+    })
+  }else{
+    user.dashboard(req, res);
+  }
+});
+
+router.get('/edit/', function(req, res){
+  if(!req.session.user){
+
+    req.session.sessionFlash = {
+      type: "danger",
+      message: 'Tempo de Sessão terminou. Efetue login novamente.'
+    }
+    req.session.save(function(err) {
+      res.redirect('/login');
+    })
+  }else{
+    user.edit(req, res);
+  }
+
+});
+
+router.get('/mural_queixas/', function(req, res){
+  if(!req.session.user){
+
+    req.session.sessionFlash = {
+      type: "danger",
+      message: 'Tempo de Sessão terminou. Efetue login novamente.'
+    }
+    req.session.save(function(err) {
+      res.redirect('/login');
+    })
+  }else{
+    user.complaints(req, res);
+  }
+});
+
+router.get('/user/getUserInfoById', function(req, res){
+  if(!req.session.user){
+
+    req.session.sessionFlash = {
+      type: "danger",
+      message: 'Tempo de Sessão terminou. Efetue login novamente.'
+    }
+    req.session.save(function(err) {
+      res.redirect('/login');
+    })
+  }else{
+    user.getUserInfoById(req, res);
+  }
+});
+
+router.post('/update/', function(req, res){
+
+  console.log(req.session);
+
+  if(!req.session.user){
+
+    req.session.sessionFlash = {
+      type: "danger",
+      message: 'Tempo de Sessão terminou. Efetue login novamente.'
+    }
+    req.session.save(function(err) {
+      res.redirect('/login');
+    })
+  }else{
+    user.update(req, res);
+  }
+});
+
+router.post('/user/getUserInfoById', user.getUserInfoById)
 
 router.post('/historical_learning/create', historical_learning.create);
 router.post('/historical_learning/voteclaim', historical_learning.voteClaim);
