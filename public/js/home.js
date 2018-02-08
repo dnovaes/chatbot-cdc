@@ -224,7 +224,8 @@ Vue.component('comp-similar-claim-units',{
             <!-- if valor é relacionado com similaridade -->
             <div v-else-if="key == 'similarity' && claim[key] >= 70" class="similarity similar-high">{{ claim[key] }}</div>
             <div v-else-if="key == 'similarity' && claim[key] >= 50" class="similarity similar-good">{{ claim[key] }}</div>
-            <div v-else class="similarity similar-low">{{ claim[key] }}</div>
+            <div v-else-if="key == 'similarity'"  class="similarity similar-low">{{ claim[key] }}</div>
+            <div v-else>{{ claim[key] }}</div>
           </td>
         </tr>
       </table>
