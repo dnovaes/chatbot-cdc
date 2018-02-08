@@ -60,7 +60,7 @@
                 <input id="cep" class="fluid" type="text" name="cep" placeholder="CEP">
               </div>
               <div class="large-6 columns margin-top-10">
-                <a id="checkCep" class="orange-color" href="#">Consultar</a>
+                <a id="checkCep" class="orange-color">Consultar</a>
               </div>
             </div>
             <input id="street" class="fluid" type="text" name="street" placeholder="Endereço">
@@ -119,6 +119,8 @@
           $("#district").val(dados.bairro);
           $("#city").val(dados.localidade);
           $("#state").val(dados.uf);
+        }else{
+          alert("CEP inválido");
         }
       });
     })
