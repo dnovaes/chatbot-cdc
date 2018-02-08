@@ -485,7 +485,9 @@ var app = new Vue({
         "Foi demonstrado alguma confusão pelo vendedor a respeito do papel de fornecedor ou consumidor?",
         "Foi demonstrado alguma confusão pelo vendedor a respeito do papel de fornecedor ou consumidor?",
         "Foi demonstrado alguma confusão pelo vendedor a respeito do papel de fornecedor ou consumidor?",
-        "Tem alguma  dúvida em relação aos princípios de proteção ao consumidor ditado pela Politica Nacional das Relações de Consumo?",
+        //Art 4 removido para revisão
+        //"Tem alguma  dúvida em relação aos princípios de proteção ao consumidor ditado pela Politica Nacional das Relações de Consumo?",
+        "-",
         //Art 5 (escolhido vetar do sistema por ora. Eleitor leigo n saberia responder se esta ligado ou nao a política nacional das relações do consumo
         //"Existe uma referência específica sobre as a execução dos princípios estabelecidos pela Política Nacional das Relações de Consumo. Deseja visualizar?",
         "-",
@@ -583,7 +585,7 @@ var app = new Vue({
         ],
         "O fornecedor vendeu um produto ou serviço fora do valor estabelecido pela instituição oficial? (só responda sim se o preço seguir de um tabelamento oficial)",
         [
-          "Você foi sofreu algum tipo de constrangimento/ameaça durante a cobrança de débitos ou foi solicitado cobrança de taxa indevida ou desconhecida?",
+          "Você sofreu algum tipo de constrangimento/ameaça durante a cobrança de débitos ou foi solicitado cobrança de taxa indevida ou desconhecida?",
           "Você foi solicitado a pagamento de um serviço ou produto através de um documento que não possui informações suficientes acerca do fornecedor (cpf, cnpf, endereço, nome) ?"
         ],
         //Art 43
@@ -1335,7 +1337,7 @@ var app = new Vue({
                         margin: [0,4,0,4],
                         fillColor: '#1c227c',
                         color: 'white',
-                        text: "O Artigo que pode endossar seu caso é descrito abaixo:",
+                        text: "O Artigo que pode pode endossar seu caso é descrito abaixo:",
                         alignment: 'center',
                         bold: true
                       }
