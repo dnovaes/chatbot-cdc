@@ -213,10 +213,13 @@ Vue.component('comp-similar-claim-units',{
   template: `
       <table class="div-similar-claims" id="table-similar-claims" v-if="columns && data">
         <tr>
-          <th v-for="column in columns">{{ column }}</th>
+          <th v-for="column in columns" @click="sortBy(column)" :class="{ active: sortKey == column}">
+            {{ columnsTitles[column] }}
+            <span class="arrow" :class="sortOrders[column] > 0 ? 'asc' : 'desc'"></span>
+          </th>
         </tr>
-        <tr v-for="claim in data" class="similar-claim-row" @click="showCaseToUser(claim)">
-          <td v-for="key in claimProps">
+        <tr v-for="claim in filteredData" class="similar-claim-row" @click="showCaseToUser(claim)">
+          <td v-for="key in columns">
 
             <!-- if valor relacionado a queixa -->
             <div v-if="key == 'claimText'" class="claim-text" :title="claim[key]" >{{ claim[key] }}</div>
@@ -232,20 +235,60 @@ Vue.component('comp-similar-claim-units',{
   `,
   props: { 
     data: Array,
-    columns: {
-      default: false,
-      type: Array
-    }
+    columns: Array
   },
   data: function(){
+
+    var sortOrders = {}
+
+    /*this.columns.forEach((key)=>{
+      sortOrders[key] = 1;
+    });*/
+
+    var columnsTitles = {
+      subject: "Categoria",
+      artId: "Artigo",
+      claimText: "Queixa",
+      similarity: "Similaridade (%)"
+    }
+
+    Object.keys(columnsTitles).forEach((key) => {
+      sortOrders[key] = 1;
+    });
+    sortOrders["similarity"] = -1;
+
     return {
-      //columns= ["Categoria", "Artigo", "Queixa", "Similaridade"]
-      claimProps: ["subject", "artId", "claimText", "similarity"]
+      columnsTitles: columnsTitles,
+      sortKey: 'similarity',
+      sortOrders: sortOrders
+    }
+
+  },
+  computed: {
+    filteredData: function(){
+      var data = this.data;
+      var sortKey = this.sortKey;
+      var order = this.sortOrders[sortKey] || 1;
+
+      //sorting pair to pair
+      data = data.slice().sort((a, b)=>{
+        a = a[sortKey];
+        b = b[sortKey];
+        return (a==b ? 0 : a > b ? 1: -1) * order;
+      });
+
+      return data;
     }
   },
   methods: {
     showCaseToUser: function(caseClaim){
       app.showCaseToUser(caseClaim);
+    },
+    sortBy: function(key){
+      this.sortKey = key;
+      this.sortOrders[key] = this.sortOrders[key] * -1;
+
+      console.log(key, this.sortOrders[key]);
     }
   }
 });
@@ -885,7 +928,8 @@ var app = new Vue({
 
         if(res.data.claims.length >0){
           app.gridSimilarClaims.data = [];
-          app.gridSimilarClaims.columns = ["Categoria", "Artigo", "Queixa", "Similaridade (%)"];
+          app.gridSimilarClaims.columns = ["subject", "artId", "claimText", "similarity"];
+
           res.data.claims.forEach(function(val, i){
 
             let obj = {};
