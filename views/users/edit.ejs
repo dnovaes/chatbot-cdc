@@ -71,7 +71,7 @@
                           <input id="cep" class="border-radius margin-top-10" type="text" name="cep" value="<%= user.address_cep %>" required>
                         </div>
                         <div class="large-6 columns margin-top-20">
-                          <a id="checkCep" class="orange-color" href="#">Consultar</a>
+                          <a id="checkCep" class="orange-color" href="">Consultar</a>
                         </div>
                       </div>
                       <span>Rua:</span>
@@ -79,7 +79,7 @@
                       <span>Número:</span>
                       <input class="border-radius margin-top-10" type="text" name="number" value="<%= user.address_number %>" required>
                       <span>Complemento:</span>
-                      <input class="border-radius margin-top-10" type="text" name="complement" value="<%= user.address_complement %>" required>
+                      <input class="border-radius margin-top-10" type="text" name="complement" value="<%= user.address_complement %>">
                       <span>Bairro::</span>
                       <input id="district" class="border-radius margin-top-10" type="text" name="district" value="<%= user.address_district %>" required>
                       <span>Cidade:</span>
@@ -113,6 +113,8 @@
         $("#district").val(dados.bairro);
         $("#city").val(dados.localidade);
         $("#state").val(dados.uf);
+      }else{
+        alert("CEP inválido");
       }
     });
   })
