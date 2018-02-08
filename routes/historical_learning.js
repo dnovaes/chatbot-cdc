@@ -8,6 +8,7 @@ exports.create = function(req, res) {
 
   db.getConnection(function(err, connection) {
 
+    //p.s.: connection.escape already adds single quotes closuring each variable
     let keywords = connection.escape(req.body.keywords);
     let article_number = connection.escape(req.body.article_number);
     let claim_text = connection.escape(req.body.claim_text);
