@@ -4,27 +4,29 @@ const bcrypt = require('bcrypt');
 
 exports.signup = function(req, res) {
 
-  var user = {
-    "name" : req.body.name,
-    "email" : req.body.email,
-    "password" : bcrypt.hashSync(req.body.password, 10),
-    "phone" : req.body.phone,
-    "cpf" : req.body.cpf,
-    "address_cep" : req.body.cep,
-    "address_street" : req.body.street,
-    "address_number" : req.body.number,
-    "address_complement" : req.body.complement,
-    "address_district" : req.body.district,
-    "address_city" : req.body.city,
-    "address_state" : req.body.state,
-    "created" : new Date(),
-    "modified" : new Date()
-  }
-
-  var sql = "SELECT email, name from users where email = '" + user.email + "'";
-
   db.getConnection(function(err, connection) {
-    connection.query(sql, function(err, results) {
+
+    //p.s.: connection.escape already adds single quotes closuring each variable
+    let user = {
+      "name" : req.body.name,
+      "email" : req.body.email,
+      "password" : bcrypt.hashSync(req.body.password, 10),
+      "phone" : req.body.phone,
+      "cpf" : req.body.cpf,
+      "address_cep" : req.body.cep,
+      "address_street" : req.body.street,
+      "address_number" : req.body.number,
+      "address_complement" : req.body.complement,
+      "address_district" : req.body.district,
+      "address_city" : req.body.city,
+      "address_state" : req.body.state,
+      "created" : new Date(),
+      "modified" : new Date()
+    }
+
+    let sql = `SELECT email, name FROM users WHERE email = ?`;
+
+    connection.query(sql, [user.email], function(err, results) {
       if(err) {
         req.session.sessionFlash = {
           type: "danger",
@@ -45,6 +47,11 @@ exports.signup = function(req, res) {
             if (err) {
               res.redirect('/login');
             } else {
+ 
+              //complete user info with the id registered
+              user.id = results.insertId;
+
+              //store user info into session
               req.session.userEmail = user.email;
               req.session.user = user;
 
@@ -65,13 +72,21 @@ exports.signup = function(req, res) {
 
 exports.signin = function(req, res) {
 
-  var email = req.body.email;
-  var password = req.body.password;
-
-  var sql = "SELECT id, email, name, phone, cpf, address_cep, address_street, address_number, address_complement, address_district, address_city, address_state, password from users where email = '" + email + "'"; 
 
   db.getConnection(function(err, connection) {
-    connection.query(sql, function(err, results) {
+
+    //p.s.: connection.escape already adds single quotes closuring each variable
+    var email = req.body.email;
+    var password = req.body.password;
+
+    var sql = `SELECT 
+                id, email, name, phone, cpf, address_cep, address_street,
+                address_number, address_complement, address_district,
+                address_city, address_state, password
+              FROM users
+              WHERE email = ?`;
+
+    connection.query(sql, [email], function(err, results) {
       connection.release();
 
       if (results.length && bcrypt.compareSync(password, results[0].password)) {
@@ -147,38 +162,41 @@ exports.edit = function(req, res) {
 
 exports.update = function(req, res){
 
-  let name        = req.body.name;
-  let email       = req.body.email;
-  let phone       = req.body.phone;
-  let cpf         = req.body.cpf;
-  let cep         = req.body.cep;
-  let street      = req.body.street;
-  let number      = req.body.number;
-  let complement  = req.body.complement;
-  let district    = req.body.district;
-  let city        = req.body.city;
-  let state       = req.body.state;
-  let user        = req.session.user;
 
   //Requisi o banco de dados um conexão e envia um callback
-  db.getConnection(function(err, connection) {
+  db.getConnection(function(err, connection){
+
+    //p.s.: connection.escape already adds single quotes closuring each variable
+    let name        = connection.escape(req.body.name);
+    let email       = connection.escape(req.body.email);
+    let phone       = connection.escape(req.body.phone);
+    let cpf         = connection.escape(req.body.cpf);
+    let cep         = connection.escape(req.body.cep);
+    let street      = connection.escape(req.body.street);
+    let number      = connection.escape(req.body.number);
+    let complement  = connection.escape(req.body.complement);
+    let district    = connection.escape(req.body.district);
+    let city        = connection.escape(req.body.city);
+    let state       = connection.escape(req.body.state);
+
+    let user        = req.session.user;
 
     //conexão permitida. Solicitar conexão com a conexão aberta passando também um callback quando terminar de executar. 
     //(Toda função async geralmente um callback)
     //
     let sqlUpdate = `UPDATE users SET 
-                      name = '${name}',
-                      email = '${email}',
-                      phone = '${phone}',
-                      cpf = '${cpf}',
-                      address_cep = '${cep}',
-                      address_street = '${street}',
-                      address_number = '${number}',
-                      address_complement = '${complement}',
-                      address_district = '${district}',
-                      address_city = '${city}',
-                      address_state = '${state}'
-                    WHERE id = '${user.id}'`;
+                      name = ${name},
+                      email = ${email},
+                      phone = ${phone},
+                      cpf = ${cpf},
+                      address_cep = ${cep},
+                      address_street = ${street},
+                      address_number = ${number},
+                      address_complement = ${complement},
+                      address_district = ${district},
+                      address_city = ${city},
+                      address_state = ${state}
+                    WHERE id = ${user.id}`;
 
     connection.query(sqlUpdate, function(err, results) {
       if(err) throw err;
@@ -189,7 +207,7 @@ exports.update = function(req, res){
                         address_number, address_complement, address_district, 
                         address_city, address_state, password
                       FROM users 
-                      WHERE id = '${user.id}'`;
+                      WHERE id = ${user.id}`;
 
       connection.query(sqlSelect, function(err, results) {
         if(err) throw err;
