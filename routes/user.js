@@ -1,6 +1,7 @@
-const db = require('../config/db.js');
 
+const db = require('../config/db.js');
 const bcrypt = require('bcrypt');
+const GLOBAL_MAX_AGE = 36000; //6 min
 
 exports.signup = function(req, res) {
 
@@ -54,6 +55,7 @@ exports.signup = function(req, res) {
               //store user info into session
               req.session.userEmail = user.email;
               req.session.user = user;
+              req.session.cookie.maxAge = GLOBAL_MAX_AGE;
 
               req.session.sessionFlash = {
                 type: "success",
@@ -92,6 +94,7 @@ exports.signin = function(req, res) {
       if (results.length && bcrypt.compareSync(password, results[0].password)) {
         req.session.userEmail = results[0].email;
         req.session.user = results[0];
+        req.session.cookie.maxAge = GLOBAL_MAX_AGE;
 
         req.session.sessionFlash = {
           type: "success",
@@ -161,7 +164,6 @@ exports.edit = function(req, res) {
 }
 
 exports.update = function(req, res){
-
 
   //Requisi o banco de dados um conexão e envia um callback
   db.getConnection(function(err, connection){
