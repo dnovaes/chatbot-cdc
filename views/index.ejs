@@ -171,7 +171,9 @@
       <div class="div-report-content"></div>
       <div class="div-suggestion-title" v-if="suggestionTitleBool"><center>Essa sugestão te ajudou a encontrar o que procurava?</center></div>
       <div class="div-report-voting">
-        <button v-for="bt in voteButtons" :id="bt.id" class="vote-button" @click="voteClaim('+')"></button>
+        <button v-for="bt in voteButtons" :id="bt.id" class="vote-button" @click="voteClaim(bt.id)">
+          <span class="number-votes">{{ bt.count }}</span>  
+        </button>
       </div>
       <div class="thanks-voting" v-if="thanksVotingBool">Seu voto foi computado com sucesso. Obrigado por participar</div>
       <div class="div-title-similar-cases"><center>Casos Similares</center></div>

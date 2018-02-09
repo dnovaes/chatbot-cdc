@@ -84,7 +84,9 @@
             <div class="div-report-content"></div>
             <div class="div-suggestion-title" v-if="suggestionTitleBool"><center>Essa sugestão te ajudou a encontrar o que procurava?</center></div>
             <div class="div-report-voting">
-              <button v-for="bt in voteButtons" :id="bt.id" class="vote-button" @click="voteClaim('+')"></button>
+              <button v-for="bt in voteButtons" :id="bt.id" class="vote-button" @click="voteClaim(bt.id)">
+                <span class="number-votes">{{ bt.count }}</span>
+              </button>
             </div>
             <div class="thanks-voting" v-if="thanksVotingBool">Seu voto foi computado com sucesso. Obrigado por participar</div>
             <div class="div-title-similar-cases"><center>Casos Similares</center></div>
@@ -240,12 +242,10 @@
           bodyEl.appendChild(overlayDiv);
         }
 
-        //reload div-report-voting if necessary (go and back events of browser)
+        //reload div-report-voting (go and back events of browser)
         boardClaimsApp.suggestionTitleBool = true;
-        if(boardClaimsApp.voteButtons.length == 0){
-          boardClaimsApp.voteButtons.push({id: "vote-pos"});
-          boardClaimsApp.voteButtons.push({id: "vote-neg"});
-        }
+        boardClaimsApp.voteButtons = [];
+        boardClaimsApp.voteButtons.push({id: "vote-pos", count: boardClaimsApp.viewCase.votePos},{id: "vote-neg", count: boardClaimsApp.viewCase.voteNeg});
 
         //remove message of thanks if necessary (user previously already voted on the last claim
         //reset other message from previous claims accessed
@@ -317,7 +317,7 @@
           }
         });
       },
-      voteClaim: function(voting_char){
+      voteClaim: function(vote_id){
         //All the info about the case is inside of ViewCase : boardClaimsApp.viewCase
 
         //removes informative info for voting
@@ -334,7 +334,7 @@
         if(boardClaimsApp.viewCase){
           claimId = boardClaimsApp.viewCase.claimId; 
           axios.post('/historical_learning/voteclaim', {
-            voting: voting_char,
+            voting: vote_id,
             claimId: claimId 
           })
           .then(function (res){

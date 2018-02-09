@@ -875,12 +875,10 @@ var app = new Vue({
         bodyEl.appendChild(overlayDiv);
       }
 
-      //reload div-report-voting if necessary (go and back events of browser)
+      //reload div-report-voting (go and back events of browser)
       app.suggestionTitleBool = true;
-      if(app.voteButtons.length == 0){
-        app.voteButtons.push({id: "vote-pos"});
-        app.voteButtons.push({id: "vote-neg"});
-      }
+      app.voteButtons = [];
+      app.voteButtons.push({id: "vote-pos", count: app.viewCase.votePos},{id: "vote-neg", count: app.viewCase.voteNeg});
 
       //remove message of thanks if necessary (user previously already voted on the last claim
       //reset other message from previous claims accessed
@@ -1120,7 +1118,7 @@ var app = new Vue({
         }, 2000);
       }
     },
-    voteClaim: function(voting_char){
+    voteClaim: function(vote_id){
       //All the info about the case is inside of ViewCase : app.viewCase
 
       //removes informative info for voting
@@ -1144,7 +1142,7 @@ var app = new Vue({
       if(app.viewCase){
         claimId = app.viewCase.claimId; 
         axios.post('/historical_learning/voteclaim', {
-          voting: voting_char,
+          voting: vote_id,
           claimId: claimId 
         })
         .then(function (res){
