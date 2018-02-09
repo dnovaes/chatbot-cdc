@@ -66,7 +66,7 @@ exports.voteClaim = function(req, res) {
         let votes_positive = results[0].vote_positive;
         let votes_negative = results[0].vote_negative;
 
-        if(req.body.voting == '+'){
+        if(req.body.voting == 'vote-pos'){
           votes_positive = results[0].vote_positive + 1;
 
           let sqlUpdate = "UPDATE historical_learning SET `vote_positive`= "+ votes_positive + " WHERE `id` = "+ claimId;
@@ -117,6 +117,7 @@ exports.voteClaim = function(req, res) {
           }
         }
         console.log(`Número de votos atuais da queixa atualizada. Pos: ${votes_positive}, Neg: ${votes_negative}`);
+        res.status(200);
       }
     });
   });
@@ -249,7 +250,7 @@ exports.searchSimilarClaims = function(req, res){
   db.getConnection(function(err, connection) {
 
     let sqlSelect = `SELECT 
-                      h.id, h.keywords, h.claim_text, a.art_id, a.subject, a.text, user_id, vote_positive, vote_negative 
+                      h.id, h.keywords, h.claim_text, a.art_id, a.subject, a.text, user_id, vote_positive AS votePos, vote_negative as voteNeg
                     FROM historical_learning AS h 
                     INNER JOIN articles AS a ON h.article_number = a.art_id`
 
