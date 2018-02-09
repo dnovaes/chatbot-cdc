@@ -82,13 +82,15 @@ router.post('/signup', user.signup);
 router.get('/signout', user.signout);
 router.get('/login', user.login);
 
+const msgSessionTimeout = 'Tempo de Sessão expirou. Efetue login novamente.';
+
 router.get('/dashboard/', function(req, res){
 
   if(!req.session.user){
 
     req.session.sessionFlash = {
       type: "danger",
-      message: 'Tempo de Sessão terminou. Efetue login novamente.'
+      message: msgSessionTimeout
     }
     req.session.save(function(err) {
       res.redirect('/login');
@@ -103,7 +105,7 @@ router.get('/edit/', function(req, res){
 
     req.session.sessionFlash = {
       type: "danger",
-      message: 'Tempo de Sessão terminou. Efetue login novamente.'
+      message: msgSessionTimeout
     }
     req.session.save(function(err) {
       res.redirect('/login');
@@ -119,7 +121,7 @@ router.get('/mural_queixas/', function(req, res){
 
     req.session.sessionFlash = {
       type: "danger",
-      message: 'Tempo de Sessão terminou. Efetue login novamente.'
+      message: msgSessionTimeout
     }
     req.session.save(function(err) {
       res.redirect('/login');
@@ -134,7 +136,7 @@ router.get('/user/getUserInfoById', function(req, res){
 
     req.session.sessionFlash = {
       type: "danger",
-      message: 'Tempo de Sessão terminou. Efetue login novamente.'
+      message: msgSessionTimeout
     }
     req.session.save(function(err) {
       res.redirect('/login');
@@ -152,7 +154,7 @@ router.post('/update/', function(req, res){
 
     req.session.sessionFlash = {
       type: "danger",
-      message: 'Tempo de Sessão terminou. Efetue login novamente.'
+      message: msgSessionTimeout
     }
     req.session.save(function(err) {
       res.redirect('/login');
