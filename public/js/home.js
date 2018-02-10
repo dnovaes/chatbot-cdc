@@ -1208,7 +1208,7 @@ var app = new Vue({
                         margin: [0,4,0,4],
                         fillColor: '#1c227c',
                         color: 'white',
-                        text: "MeusDireitosConsumidor.com",
+                        text: "MeusDireitosConsumidor.com.br",
                         alignment: 'left',
                         bold: true
                       }
