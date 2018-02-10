@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/foundation.min.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/pagination.css">
   <title>Meus Direitos Consumidor</title>
 </head>
 <body class="gray-bg">
@@ -51,14 +52,16 @@
           </div>
         </div>
         <div class="row">
-          <% for (var i = 0; i < data.length; i++) { %>
-            <div class="columns margin-bottom-10" @click="showCaseToUser(<%= JSON.stringify(data[i]) %>)">
-              <div class="white-bg block complaint-block">
-                <div class="complaint-title text-center bold" ><%= data[i].subject %></div>
-                <div><%= data[i].claimText %></div>
-              </div>
+          <Pagination :total-claims="totalClaims" :cur-page="curPage" :itens-per-page="itensPerPage" @change-page="onChangePage"></Pagination>
+        </div>
+        <div class="row">
+          <div v-for="(item, index) in claims" :key="item.claimId" v-if="index>= itensPerPage*(curPage-1) && index<itensPerPage*curPage"
+            class="columns margin-bottom-10" @click="showCaseToUser(item)">
+            <div class="white-bg block complaint-block">
+              <div class="complaint-title text-center bold" >{{item.subject}}</div>
+              <div>{{item.claimText}}</div>
             </div>
-          <% } %>
+          </div>
         </div>
 
         <!--position absolute -->
@@ -107,7 +110,7 @@
   </div>
 </div>
 
-<script>
+<script> 
 
   //In case users click to back to previous claim:
   window.onpopstate = function(event) {
@@ -123,6 +126,72 @@
       window.location = "/";
     }
   };
+
+  Vue.component('Pagination',{
+    template:`
+    <ul class="pagination-pointed pagination text-center" role="navigation" v-show="totalClaims>0" aria-label="Pagination">
+
+        <li class="pagination-previous disabled" v-show="showPreviousButton(curPage)" @click="goPreviousPage()">
+          Anterior <span class="show-for-sr">{{curPage}}</span>
+        </li>
+
+        <!-- go to first page -->
+        <li><a class="pagination-pointed-button" v-show="curPage>2" @click="goPage(1)" aria-label="">{{1}}</a></li>
+
+        <li class="ellipsis" v-show="curPage>4" aria-hidden="true"></li>
+
+        <li class="pagination-pointed-button" v-show="showPreviousButton(curPage-2)" @click="goPage(curPage-2)" aria-label="">{{curPage-2}}</li>
+        <li class="pagination-pointed-button" v-show="showPreviousButton(curPage-1)" @click="goPage(curPage-1)" aria-label="">{{curPage-1}}</li>
+
+        <li class="current"><span class="show-for-sr">You're on page</span>{{curPage}}</li>
+
+        <li class="pagination-pointed-button" v-show="showNextButton(curPage+1)" @click="goPage(curPage+1)">{{curPage+1}}</li>
+        <li class="pagination-pointed-button" v-show="showNextButton(curPage+2)" @click="goPage(curPage+2)">{{curPage+2}}</li>
+
+    <li class="ellipsis" v-show="curPage+3<totalPages" aria-hidden="true"></li>
+
+        <!-- go to last page -->
+        <li><a class="pagination-pointed-button" v-show="curPage<totalPages-1" @click="goPage(totalPages)" aria-label="">{{totalPages}}</a></li>
+
+        <li class="pagination-next" v-show="showNextButton(curPage)" @click="goNextPage()">
+          <a class="pagination-pointed-button" aria-label="Next page">
+            Próximo <span class="show-for-sr">page</span>
+          </a>
+        </li>
+      </ul>`,
+    props: ["totalClaims", "curPage", "itensPerPage"],
+    data: function(){
+      return {}
+    },
+    computed: {
+      totalPages: function(){
+        return Math.ceil(this.totalClaims/this.itensPerPage) || 1;
+      }
+    },
+    methods: {
+      showNextButton: function(page){
+        return page<this.totalPages;
+      },
+      showPreviousButton: function(page){
+        return page > 1;
+      },
+      goNextPage: function(){
+        this.$emit('change-page', this.curPage+1);
+      },
+      goPreviousPage: function(){
+        this.$emit('change-page', this.curPage-1);
+      },
+      goFirstPage: function(){
+        this.$emit('change-page', 1);
+      },
+      goLastPage: function(){
+        this.$emit('change-page', this.totalPages);
+      },
+      goPage: function(page){
+        this.$emit('change-page', page);
+      }
+    }
+  });
 
   Vue.component('comp-similar-claim-units',{
     template: `
@@ -202,15 +271,17 @@
       sortBy: function(key){
         this.sortKey = key;
         this.sortOrders[key] = this.sortOrders[key] * -1;
-
-        console.log(key, this.sortOrders[key]);
       }
     }
   });
 
+
   var boardClaimsApp = new Vue({
     el: '#div-board-claims',
     data: function(){
+      var claims = <%- JSON.stringify(data) %>;
+      var itensPerPage = 10;
+
       return {
         userId: "",
         viewCase: {},
@@ -221,10 +292,17 @@
         gridSimilarClaims: {
           data: [],
           columns: []
-        }
+        },
+        claims: claims,
+        totalClaims: claims.length,
+        curPage: 1,
+        itensPerPage: itensPerPage
       }
     },
     methods: {
+      onChangePage(page){
+        this.curPage = page;
+      },
       showCaseToUser: function(caseClaim, flagPrevious){
 
         boardClaimsApp.viewCase = caseClaim;
@@ -601,7 +679,6 @@
       }
     }
   });
-
 
 </script>
 <script>
