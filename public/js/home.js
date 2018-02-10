@@ -494,6 +494,7 @@ var app = new Vue({
       //Div elements
       chatbotStartedBool: false,
       suggestionTitleBool: true,
+      reportClaimTitleBool: false,
       thanksVotingBool: false,
       newSuggestionAnswerBool: false,
       emptySimilarCasesMessage: false,
@@ -811,6 +812,9 @@ var app = new Vue({
     toggleConfigDiv: function(bool){
       app.configDivBool = bool;
     },
+    showClaimText: function(){
+      app.reportClaimTitleBool=!app.reportClaimTitleBool;
+    },
     sendMessage: function(e){
       //if user pressed enter and inputChat bot is different from empty AND there is 
       //already at least one message from bot then insert message from user
@@ -874,6 +878,7 @@ var app = new Vue({
         overlayDiv.className = "overlay";
         bodyEl.appendChild(overlayDiv);
       }
+      app.reportClaimTitleBool = true;
 
       //reload div-report-voting (go and back events of browser)
       app.suggestionTitleBool = true;
