@@ -664,7 +664,7 @@
   text-align: center;
 }
 
-.div-suggestion-title, .div-title-similar-cases{
+.div-suggestion-title, .div-title-similar-cases, .div-report-claim-title{
   font-weight: bold;
   margin: 10px 0px;
   padding: 5px;
@@ -672,6 +672,10 @@
   text-align: center;
   color: white;
   background-color: #1c227c;
+}
+
+.div-report-claim-title{
+  cursor: pointer;
 }
 
 .div-report-divide{
