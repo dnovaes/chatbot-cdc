@@ -1,7 +1,7 @@
 
 const db = require('../config/db.js');
 const bcrypt = require('bcrypt');
-const GLOBAL_MAX_AGE = 360000; //6 min (1000 = 1 min)
+const GLOBAL_MAX_AGE = 600000; //10 min (1000 = 1s, 60000 = 1 min)
 
 exports.signup = function(req, res) {
 
