@@ -87,13 +87,13 @@ function highlight(content, dataStruct){
 
   if(dataStruct == "article"){
 
-    if(typeof(content[0])=="string"){
+    if(typeof(content[0])==typeof("")){
       content = content[0].replace(regExp, function(match){
           return "<span class='b'>"+match+"</span>";
       });
       return content[0];
 
-    }else if(typeof(content[0])=="object"){
+    }else if(typeof(content[0])== typeof {}){
 
       let groupArticles = [];
       let articles = [];
@@ -226,7 +226,7 @@ Vue.component('comp-similar-claim-units',{
 
             <!-- if valor é relacionado com similaridade -->
             <div v-else-if="key == 'similarity' && claim[key] >= 70" class="similarity similar-high">{{ claim[key] }}</div>
-            <div v-else-if="key == 'similarity' && claim[key] >= 50" class="similarity similar-good">{{ claim[key] }}</div>
+            <div v-else-if="key == 'similarity' && claim[key] >= 45" class="similarity similar-good">{{ claim[key] }}</div>
             <div v-else-if="key == 'similarity'"  class="similarity similar-low">{{ claim[key] }}</div>
             <div v-else>{{ claim[key] }}</div>
           </td>
@@ -485,11 +485,13 @@ var app = new Vue({
       claimDataSW: "", //contains the message of keywords of claim
       keywords: "",
       synonyms: [
-        ["volta", "reembolso", "devolução", "restituição", "indébito", "quantia"],
+        ["volta", "reembolso", "devolução", "restituição", "indébito", "quantia", "estorno", "estornar"],
         ["tempo", "dias"],
         ["uso", "vícios", "defeito", "falha"],
-        ["pagamento", "cobrança", "cobrado", "quantia", "indebito", "indébito"],
-        ["anuncio", "anunciando", "publicidade"]
+        ["pagamento", "cobrar", "cobrando", "cobrança", "cobrado", "quantia", "indebito", "indébito", "dívida", "divida"],
+        ["anuncio", "anunciando", "publicidade"],
+        ["produto", "produtos"],
+        ["serviço", "servico", "serviços"]
       ],
       //Div elements
       chatbotStartedBool: false,
@@ -527,8 +529,8 @@ var app = new Vue({
       //zero based array: i: index of questions array, (i+1) article number. When i is the array index and (i+1) is the number of the article
       questions: [
         "Foi demonstrado alguma confusão pelo vendedor a respeito do papel de fornecedor ou consumidor?",
-        "Foi demonstrado alguma confusão pelo vendedor a respeito do papel de fornecedor ou consumidor?",
-        "Foi demonstrado alguma confusão pelo vendedor a respeito do papel de fornecedor ou consumidor?",
+        "-",//"Foi demonstrado alguma confusão pelo vendedor a respeito do papel de fornecedor ou consumidor?",
+        "-",//"Foi demonstrado alguma confusão pelo vendedor a respeito do papel de fornecedor ou consumidor?",
         //Art 4 removido para revisão
         //"Tem alguma  dúvida em relação aos princípios de proteção ao consumidor ditado pela Politica Nacional das Relações de Consumo?",
         "-",
@@ -536,7 +538,7 @@ var app = new Vue({
         //"Existe uma referência específica sobre as a execução dos princípios estabelecidos pela Política Nacional das Relações de Consumo. Deseja visualizar?",
         "-",
         [
-          "O fornecimento deste produto indica risco a sua saúde e segurança de vida?",
+          "O fornecimento deste produto ou serviço indica risco a sua saúde e segurança de vida ou ainda não respeita os consumidores com deficiência?",
           "Você sente que igualdade ou sua liberdade de escolha foi quebrada durante a contratação?",
           "A informação passada para você foi feita de forma devida? Isto é, A informação foi clara sobre o produto ou serviço adquirido?",
           "Você suspeita que passou por algum tipo de publicidade enganosa?",
@@ -547,19 +549,20 @@ var app = new Vue({
           "Durante a prestação do serviço público, seu problema foi solucionado?",
         ],
         "Um dos atores (fornecedores ou consumidores), rejeitam a responder pelo reparo de danos?",
-        "O produto ou serviço que adquiriu apresenta algum risco a sua saúde ou segurança?",
-        "No rotulo do produto ou a empresa que prestou lhe serviço que adquiriu informou devidamente a respeito da periculosidade que o mesmo apresenta?",
+        //Art 8
+        "O produto ou serviço que adquiriu apresenta algum risco a sua saúde ou segurança e não foi alertado pelo fornecedor?",
+        "O fornecedor de produto ou serviço potencialmente nocivos te informou devidamente a respeito da periculosidade que o mesmo apresenta?",
         "O Fornecedor sabia do perigo que o produto ou serviço apresentava e mesmo assim lhe forneceu dizendo que era de 'ótima' qualidade?",
         "-",
         "Você deseja ter reparo dos danos (causado a sua saúde ou segurança) causados pelo produto adquirido?",
         "Você não consegue identificar o fabricante, produto ou responsável do produto e o comerciante se nega a assumir responsabilidade pelos danos do produto?",
-        "O responsável se nega de alguma forma a reparação do causado pela prestação de serviço e você deseja ser indenizado parcialmente ou totalmente pelo serviço realizado?",
+        "O responsável se nega de alguma forma a reparação do causado pela prestação do serviço defeituoso ou pela informação insuficiente do serviço e você deseja ser indenizado parcialmente ou totalmente pelo serviço realizado?",
         "-", //Art 15 (vetado)
         "-",
         "-",
         //Art 18
         [
-          "Você não está satisfeito com a inadequação do produto mostrado na propagandada, com as informações contidas no recipiciente do produto ou ainda inadequado para uso e deseja substituir, ressarcir ou trocar-lo? (prazo maximo de 30 dias)",
+          "Você não está satisfeito com a inadequação do produto vendido seja por causa da propaganda, informações da embalagem, inadequação com validade ou inadequado para uso por outro motivo e deseja substituir, ressarcir ou trocar-lo? (prazo maximo de 30 dias)",
           "A empresa não solucionou o problema e você gostaria de substituir o seu produto?", 
           "A empresa não solucionou o problema e você gostaria de ter seu dinheiro de volta?",
           "A empresa não solucionou o problema e você gostaria que o preço do produto sofresse um abatimento ?",
@@ -569,12 +572,12 @@ var app = new Vue({
         ],
         "Lhe foi vendido um produto com quantidade ou medidas abaixo da informada na especificação e gostaria de ter abatimento do preço, complementação do peso / medida, substituição do produto ou restituição da quantia paga ?",
         //Art 20
-        "O fornecedor prestou serviço impróprio para consumo, se nega a assumir pelo dano que o serviço tenha causado ou o serviço prestado teve disparidade da informação contida na oferta / propaganda?",
+        "O fornecedor prestou serviço impróprio para consumo, abaixo da qualidade oferecida ou o serviço prestado teve disparidade da informação contida na oferta / propaganda?",
         "O serviço prestado pela empresa utilizou de peças usadas ou inadequadas para reparação de seu produto, isto é, fora das especificações técnicas do fabricante sem sua autorização?",
         //Art 22
         "Você recebeu algum atendimento de um órgão público que demonstrou falta de profissionalismo para solucionar seu problema? Se sim, qual serviço você precisou para solucionar seu problema e qual foi o gargalo ou inadequação encontrado em seus serviços?",
         "O fornecedor responde dizendo que não sabia que o produto vendido por ele estava neste estado e se nega a solucionar seu problema?",
-        "O fornecedor nega a solucionar seu problema devido a uma clausula contratual assinado entre você e ele que diminua ou anule a obrigação dele de indeniza-lo pelo defeito ou causado?",
+        "-",
         //Art 25
         "O fornecedor nega a solucionar seu problema devido a uma clausula contratual assinado entre você e ele que diminua ou anule a obrigação dele de indeniza-lo pelo defeito ou causado?",
         [
@@ -586,8 +589,9 @@ var app = new Vue({
         "Está dificil identificar quem são os sócios da empresa ou eles alegam que não possuem recursos para pagamento de débitos?",
         "-",
         //Art 30
-        "A oferta do produto ou serviço que você viu, ofereceu um determinado valor e no momento do pagamento você teve que pagar por um valor mais alto?",
-        "O produto ou Serviço que adquiriu não possuia informações claras, corretas, precisas em português ou suas caracteristicas, qualidades, comprosição, preço, garantia ou ainda não informava riscos que apresenta a sua saúde e segurança?",
+        //"A oferta do produto ou serviço que você viu, ofereceu um determinado valor e no momento do pagamento você teve que pagar por um valor mais alto?",
+        "-",
+        "O produto ou Serviço que adquiriu não possuia informações claras, corretas, precisas em português quanto suas caracteristicas, qualidades, composição, preço, garantia ou ainda não informava riscos que apresenta a sua saúde e segurança?",
         "O fabricante ou importador do produto que adquiriu afirma que não possui peças de reposição para seu produto e este continua sendo fabricado e veiculado no mercado?",
         [
           "Foi oferecido a você ou você comprou um produto via telefone em que as informações do fabricante e endereço da companhia não foi informado na embalagem?",
@@ -607,6 +611,7 @@ var app = new Vue({
         ],
         "Você considera que a publicidade é discrimatória, te induz ao erro ou contém total ou parcialmente informações falsas?",
         [
+          "O vendedor forneceu um produto atrelado a outro, recusou atendimento, aproveitou da sua falta de informação, reajustou preços ou informações da venda sem negociação?",
           "O vendedor disse que só poderia adquirir um produto ou serviço se adquirisse um outro diferente produto ou serviço?",
           "O vendedor recusou atendimento a ti mesmo em condições de prestar o serviço ou com disponibilidade de estoque ou ainda sem justificativa?",
           "Te enviaram um produto ou serviço sem solicitação feita por ti e em seguida te cobraram por isso?",
@@ -628,6 +633,7 @@ var app = new Vue({
           "O fornecedor aumentou o orçamento de um produto ou serviço sem aviso ou não discutiu contigo antes de alterar e solicita que você pague esse acrescimo ?",
         ],
         "O fornecedor vendeu um produto ou serviço fora do valor estabelecido pela instituição oficial? (só responda sim se o preço seguir de um tabelamento oficial)",
+        //Art 42
         [
           "Você sofreu algum tipo de constrangimento/ameaça durante a cobrança de débitos ou foi solicitado cobrança de taxa indevida ou desconhecida?",
           "Você foi solicitado a pagamento de um serviço ou produto através de um documento que não possui informações suficientes acerca do fornecedor (cpf, cnpf, endereço, nome) ?"
@@ -647,11 +653,11 @@ var app = new Vue({
         "O fornecedor obrigou a aceitar uma clausula contratual sem a oportunidade de ler e verificar previamente ou ainda,  o fornecedor dificultou a compreensão do contrato?",
         "Você assinou um contrato que contém clausulas contratuais duvidosas em que o fornecedor só as interpreta ao favor dele?",
         "O fornecedor antes de enviar um contrato legal a ti pelo produto ou serviço, comunicou ou preparou algum documento prometendo algumas caracteristicas acerca do serviço ou produto porém o mesmo não pode ser encontrado no contrato?",
-        "Você arrependeu-se do plano assinado, solicitou o cancelamento do plano contratual assinado em até 7 dias atrás e o pedido foi negado pelo fornecedor?",
+        "Você arrependeu-se do plano assinado fora do estabelecimento comercial, solicitou o cancelamento do plano contratual assinado em até 7 dias atrás e o pedido foi negado pelo fornecedor?",
         //Art 50
         "O produto ou serviço que realizou não foi respeitado pela garantia ou teve sua garantia invalidada pelo fornecedor afirmando que a mesma já havia sido utilizada por uma troca de defeito anterior?",
         [
-          "Você assinou algum contrato com o fornecedor durante a compra ou pagamento pelo serviço?",
+          "Você assinou algum contrato com o fornecedor durante a compra ou pagamento pelo serviço e percebeu que o contrato contém clausulas abusivas??",
           "No regulamento ou contrato indicado pelo fornecedor, ele diminui ou anula seus direitos acerca de devolução, substituição ou reembolso em caso de falhas, defeitos ou outros vícios associados ao produto / serviço ?",
           "No regulamento ou contrato indicado pelo fornecedor, ele diminui ou anula seus direitos acerca de devolução, substituição ou reembolso em caso de falhas, defeitos ou outros vícios associados ao produto / serviço ?",
           "O fornecedor não assume a falha do prejuízo exercido pelo serviço ou incluso no produto e transfere culpa para terceiros?",
@@ -771,13 +777,14 @@ var app = new Vue({
                 app.resultUnits.push({
                   divId: 'resultUnit-'+j,
                   span1Id: 'ruStatus-'+j,
-                  data: groupArticles[0][k],
-                  artId: groupArticles[1][k]
+                  data: groupArticles[0][k], //text content
+                  artId: groupArticles[1][k] //number of the article
                 });
 
                 j++;
               }
             });
+
             app.resultsTitle = "Documentos ("+j+") :";
 
           }
@@ -835,6 +842,7 @@ var app = new Vue({
         }, 200);
       }else if(this.nMsgsBot == -1){
         alert("Digite sua queixa no início da página");
+        app.inputChatbot = "";
       }
     },
     sendMessageBot: function(msg){
@@ -957,15 +965,22 @@ var app = new Vue({
       });
     },
     //recursive request to questions
-    generateQuestionsToUser: function(){
+    generateQuestionsToUser: function(previousArt){
       //flag that indicates that the system could identify the claim typed from the user
       let questionIndex;
+
+      while(app.resultUnits.length > 0 && previousArt && (previousArt.artId == app.resultUnits[0].artId)){
+        console.log(`Question repeated removed. Previous article number was:`);
+        console.log(previousArt.artId);
+        app.resultUnits.shift();
+      }
 
       //eliminate questions that are vetoed
       if(app.resultUnits.length>0){
         questionIndex = parseInt(app.resultUnits[0]["artId"])-1; 
         console.log("Question related to Article Number: "+app.resultUnits[0]["artId"]);
       }
+
       while((app.resultUnits.length>0)&&(app.questions[questionIndex] == "-")){
 
         if(app.questions[questionIndex] == "-"){
@@ -981,11 +996,11 @@ var app = new Vue({
       if(app.resultUnits.length>0){
        
         //send question to the user
-        if(typeof(app.questions[questionIndex]) == "object"){
+        if(typeof(app.questions[questionIndex]) == typeof {}){
           console.log(app.questions[questionIndex][0]);
           app.sendMessageBot(app.questions[questionIndex][0]);
         }else{
-          //question doesnt include "incisos". there is only one quest for this article co-related
+          //question doesnt include "incisos". there is only one subject for this article co-related
           //parameter contain a string including the question
           app.sendMessageBot(app.questions[questionIndex]);
         }
@@ -999,10 +1014,15 @@ var app = new Vue({
             let lastAnswer = app.msgUnits[app.msgUnits.length-1]["data"].toLowerCase();
             console.log("Answer identified: "+lastAnswer);
 
+            //check if user answered with a positive or negative response
             if((app.positiveAnswers.indexOf(lastAnswer) == -1) && (app.negativeAnswers.indexOf(lastAnswer) == -1)){
               app.sendMessageBot("Não entendi sua resposta, responda de forma clara por favor.");
               //resend question
-              app.sendMessageBot(app.questions[questionIndex]);
+              if(typeof(app.questions[questionIndex]) == typeof({})){ 
+                app.sendMessageBot(app.questions[questionIndex][0]);
+              }else{
+                app.sendMessageBot(app.questions[questionIndex]);
+              }
               number = app.nMsgsUser;
             }else{
               clearInterval(intervalMsg);
@@ -1059,7 +1079,7 @@ var app = new Vue({
                         keywords+= val;
                       }
                     });
-
+                    
                     //Envia requisição ajax para registrar queixa no servidor.
                     axios.post('/historical_learning/create', {
                       claim_text: app.claimData,
@@ -1082,16 +1102,15 @@ var app = new Vue({
                   console.log(err);
                 });
 
-
+              //negative answer
               }else{
-                //negative answer
                 console.log("Sending another message");
                 //since the user answered "No" as answer, the system removes the article as possiblity for the answer to the user
-                let removedArt = app.resultUnits.shift();
+                let previousArt = app.resultUnits.shift();
                 console.log(app.resultUnits);
 
                 //generate next question (recursive call)
-                app.generateQuestionsToUser();
+                app.generateQuestionsToUser(previousArt);
               }
             }
           }else{
@@ -1099,8 +1118,11 @@ var app = new Vue({
           }
         }, 2000);
       }else{
+        //#TODO add other questions to non cdc related claims
+        //app.generateExtraQuestions();
+
         //Não há mais perguntas para serem feitas ao usuário.. :(
-        app.sendMessageBot("Não tenho mais perguntas que poderiam estar relacionadas com sua queixa. Ainda estou aprendendo... :(");
+        app.sendMessageBot("Não tenho mais perguntas que poderiam estar relacionadas com sua queixa. Ainda estou aprendendo... ");
         app.sendMessageBot("Se puder me ajudar, me diga com suas palavras qual seria a solução para sua queixa. Assim na proxima vez talvez eu possa ajudar você ou alguém com o mesmo problema!");
         app.newSuggestionAnswerBool = true;
 
