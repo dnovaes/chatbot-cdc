@@ -119,14 +119,14 @@ var lib = {
       claim = " "+claim+" ";
 
       //remove comma, point, exclamation, interrogation marks
-      regCharMarks = new RegExp(`(\\:)|(\\;)|(\\))|(\\()|(\\,)|(\\.)|(\\?)|(\\!)|(\\/)|(\\&)|(\\$)|(\\%)|(\\#)|(\\*)|(\\-)|(\\_)|(\\")|(\\')`, "g");
+      regCharMarks = new RegExp(`(\\:)|(\\;)|(\\))|(\\()|(\\,)|(\\.)|(\\?)|(\\!)|(\\/)|(\\&)|(\\$)|(\\%)|(\\#)|(\\*)|(\\-)|(\\_)|(\\")|(\\')|(\\[)|(\\])|(\\{)|(\\})`, "g");
       claim = claim.replace(regCharMarks, " ");
       //remove double emptySpace
       regExpWhiteSpace = new RegExp("(\\s+)", "g");
       claim = claim.replace(regExpWhiteSpace, " ");
 
       //também contém palavras ou expressões aglutinadas de uma stopword: você = vc. 
-      var stopwords = "vc eu meu sua seu suas seus poderia gostaria disto isso deste esse desta esta dessa essa menos mais assim como ele ela eles elas dela dele nosso nossa até apenas era eram sou uma um para ou ao de da do das dos que em no na nos nas ter com sem nao não mas porem porém entretanto todavia ainda se os as por pelo pela pelos pelas todo toda mesmo mesma lá la ali cada sobre";
+      var stopwords = "vc eu meu sua seu suas seus poderia gostaria disto isso deste esse desta esta dessa essa menos mais assim como ele ela eles elas dela dele nosso nossa até ate apenas era eram sou uma um para ou ao de da do das dos que em no na nos nas ter com sem nao não mas porem porém entretanto todavia ainda se os as por pelo pela pelos pelas todo toda mesmo mesma lá la las lo los ali cada sobre so só somente";
 
       //verbos de ligação (#TODO: adicionar dps conjugação verbal)
       var conectingVerbs = "foi ser são sao serão serao sera será sendo foram";
