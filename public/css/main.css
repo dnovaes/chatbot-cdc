@@ -204,10 +204,6 @@
   height: 100%;
 }
 
-#div-chatbot span{
-  display:block;
-}
-
 #div-chatbot span.b{
   display: inline;
 }
