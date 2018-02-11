@@ -119,24 +119,27 @@ var lib = {
       claim = " "+claim+" ";
 
       //remove comma, point, exclamation, interrogation marks
-      regCharMarks = new RegExp("(\\))|(\\()|(\\,)|(\\.)|(\\?)|(\\!)|(\\/)|(\\&)|(\\$)|(\\%)|(\\#)|(\\*)", "g");
-      claim = claim.replace(regCharMarks, "");
+      regCharMarks = new RegExp(`(\\:)|(\\;)|(\\))|(\\()|(\\,)|(\\.)|(\\?)|(\\!)|(\\/)|(\\&)|(\\$)|(\\%)|(\\#)|(\\*)|(\\-)|(\\_)|(\\")|(\\')`, "g");
+      claim = claim.replace(regCharMarks, " ");
       //remove double emptySpace
       regExpWhiteSpace = new RegExp("(\\s+)", "g");
       claim = claim.replace(regExpWhiteSpace, " ");
 
       //também contém palavras ou expressões aglutinadas de uma stopword: você = vc. 
-      var stopwords = "vc eu meu poderia gostaria disto isso deste esse desta esta dessa essa menos mais assim como ele ela eles elas dela dele nosso nossa até apenas era eram sou uma um para ou ao de da do das dos que em no na nos nas ter com sem nao não mas porem porém entretanto todavia ainda se os as por pelo pela pelos pelas todo toda mesmo mesma";
+      var stopwords = "vc eu meu sua seu suas seus poderia gostaria disto isso deste esse desta esta dessa essa menos mais assim como ele ela eles elas dela dele nosso nossa até apenas era eram sou uma um para ou ao de da do das dos que em no na nos nas ter com sem nao não mas porem porém entretanto todavia ainda se os as por pelo pela pelos pelas todo toda mesmo mesma lá la ali cada";
 
       //verbos de ligação (#TODO: adicionar dps conjugação verbal)
-      let conectingVerbs = "foi são sao serão serao sera será foram";
+      var conectingVerbs = "foi ser são sao serão serao sera será sendo foram";
+
+      //outros verbos
+      var otherVerbs = "faz fazem fez fizeram fazendo ir iram irão indo ido vi viu viram";
 
       //adverbios
       let adverbs = "sempre";
 
       //var filter_romanianNumerals = "I II III IV V VI VII VIII IX X XI XII XIII XIV";
       filter_romanianNumerals = "";
-      stopwords = stopwords+" "+filter_romanianNumerals+" "+conectingVerbs+" "+adverbs;
+      stopwords = stopwords+" "+filter_romanianNumerals+" "+conectingVerbs+" "+otherVerbs+" "+adverbs;
       stopwords = stopwords.split(" ");
 
       //ex9: R$ 754,00 -> r 75400 -> 75400
@@ -164,7 +167,7 @@ var lib = {
       }
 
       //vowels and diactrics
-      var articleVowels = "àaeiíouéèêëçàâäîïùûüôóö";
+      var articleVowels = "àaeiíouéèêëçàâäîïùúûüôóö";
       articleVowels = articleVowels.split("");
 
       //regExp removes a word contain vogals as described above and also remove the spaces besides the vowel. This expression is replaced for a single space
