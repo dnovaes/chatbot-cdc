@@ -1,7 +1,7 @@
 var db = require('../config/db.js');
 
 var articles = {
-  "1": "Art. 1° O presente código estabelece normas de proteção e defesa do consumidor, de ordem pública e interesse social, nos termos dos arts. 5°, inciso XXXII, 170, inciso V, da Constituição Federal e art. 48 de suas Disposições Transitórias.", 
+  "1": `Art. 1° O presente código estabelece normas de proteção e defesa do consumidor, de ordem pública e interesse social, nos termos dos arts. 5°, inciso XXXII, 170, inciso V, da Constituição Federal e art. 48 de suas Disposições Transitórias.`, 
   "2": `Art. 2° Consumidor é toda pessoa física ou jurídica que adquire ou utiliza produto ou serviço como destinatário final.
   Parágrafo único. Equipara-se a consumidor a coletividade de pessoas, ainda que indetermináveis, que haja intervindo nas relações de consumo.`, 
   "3": `Art. 3° Fornecedor é toda pessoa física ou jurídica, pública ou privada, nacional ou estrangeira, bem como os entes despersonalizados, que desenvolvem atividade de produção, montagem, criação, construção, transformação, importação, exportação, distribuição ou comercialização de produtos ou prestação de serviços.
@@ -29,8 +29,8 @@ VI - coibição e repressão eficientes de todos os abusos praticados no mercado
 
 VII - racionalização e melhoria dos serviços públicos;
 
-VIII - estudo constante das modificações do mercado de consumo.",
-  "5": "Art. 5° Para a execução da Política Nacional das Relações de Consumo, contará o poder público com os seguintes instrumentos, entre outros:
+VIII - estudo constante das modificações do mercado de consumo.`,
+  "5": `Art. 5° Para a execução da Política Nacional das Relações de Consumo, contará o poder público com os seguintes instrumentos, entre outros:
 
 I - manutenção de assistência jurídica, integral e gratuita para o consumidor carente;
 
@@ -40,8 +40,8 @@ III - criação de delegacias de polícia especializadas no atendimento de consu
 
 IV - criação de Juizados Especiais de Pequenas Causas e Varas Especializadas para a solução de litígios de consumo;
 
-V - concessão de estímulos à criação e desenvolvimento das Associações de Defesa do Consumidor.",
-  "6": "Art. 6º São direitos básicos do consumidor:
+V - concessão de estímulos à criação e desenvolvimento das Associações de Defesa do Consumidor.`,
+  "6": `Art. 6º São direitos básicos do consumidor:
 
 I - a proteção da vida, saúde e segurança contra os riscos provocados por práticas no fornecimento de produtos e serviços considerados perigosos ou nocivos;
 
@@ -63,7 +63,7 @@ IX - (Vetado);
 
 X - a adequada e eficaz prestação dos serviços públicos em geral.
 
-Parágrafo único.  A informação de que trata o inciso III do caput deste artigo deve ser acessível à pessoa com deficiência, observado o disposto em regulamento.  (Incluído pela Lei nº 13.146, de 2015)    (Vigência)`,
+Parágrafo único.  A informação de que trata o inciso III do caput deste artigo deve ser acessível à pessoa com deficiência, observado o disposto em regulamento.  (Incluído pela Lei nº 13.146, de 2015)(Vigência)`,
   "7": ` 
 Art. 7° Os direitos previstos neste código não excluem outros decorrentes de tratados ou convenções internacionais de que o Brasil seja signatário, da legislação interna ordinária, de regulamentos expedidos pelas autoridades administrativas competentes, bem como dos que derivem dos princípios gerais do direito, analogia, costumes e eqüidade.
 
