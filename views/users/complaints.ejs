@@ -88,7 +88,7 @@
             <div class="div-report-claim-title" :class="{ active: reportClaimTitleBool}" @click="showClaimText" >Queixa descrita pelo usuário:</div>
             <div class="div-report-claim" v-show="reportClaimTitleBool">{{viewCase.claimText}}</div>
             <div class="div-suggestion-title" v-if="suggestionTitleBool"><center>Essa sugestão te ajudou a encontrar o que procurava?</center></div>
-            <div class="div-report-voting">
+            <div class="div-report-voting" v-if="voteButtons.length > 0">
               <button v-for="bt in voteButtons" :id="bt.id" class="vote-button" @click="voteClaim(bt.id)">
                 <span class="number-votes">{{ bt.count }}</span>
               </button>
@@ -212,7 +212,7 @@
 
               <!-- if valor é relacionado com similaridade -->
               <div v-else-if="key == 'similarity' && claim[key] >= 70" class="similarity similar-high">{{ claim[key] }}</div>
-              <div v-else-if="key == 'similarity' && claim[key] >= 50" class="similarity similar-good">{{ claim[key] }}</div>
+              <div v-else-if="key == 'similarity' && claim[key] >= 45" class="similarity similar-good">{{ claim[key] }}</div>
               <div v-else-if="key == 'similarity'"  class="similarity similar-low">{{ claim[key] }}</div>
               <div v-else>{{ claim[key] }}</div>
             </td>
