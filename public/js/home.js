@@ -494,7 +494,8 @@ var app = new Vue({
         ["serviço", "servico", "serviços"],
         ["perigoso", "perigosos", "nocivo", "nocivos", "ferir", "matar"],
         ["quantidade", "quantidades", "unidade", "unidades"],
-        ["arrependi", "arrependeu", "arrependimento"]
+        ["arrependi", "arrependeu", "arrependimento"],
+        ["plano", "consórcio", "consórcios", "consorcio", "consorcios", "prestação", "prestações"]
       ],
       //Div elements
       chatbotStartedBool: false,
@@ -679,7 +680,7 @@ var app = new Vue({
           "O fornecedor não garante o direito de indenização em casos de vícos (defeito, falhas, indevido a consumo, prejudicial) ?",
         ],
         "O fornecedor antes de gerar o financiamento ou prestações não informa previamente o preço do produto ou serviço em moeda naciona, juros e acrescimos legais, número e periodo de prestações e soma total a pagar ou ainda não dá direito a liquidação total ou parcial da prestação ou financiamento ?",
-        "Você, após pagar total ou parcialmente prestações não teve direito a retorno do valor pago após se retirar do consórcio ",
+        "Você, após pagar total ou parcialmente prestações não teve direito a retorno do valor pago após se retirar do consórcio? (Prestações pagas foram todas anuladas pela contrato.)",
         //Art 54
         [
           "O fornecedor inseriu uma nova clausula no formulario do contrato e você suspeita que isso seja infração perante ao código de defesa do consumidor?",
