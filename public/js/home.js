@@ -40,6 +40,7 @@ function checkforSynonyms(){
           flag = true;
           app.keywords.splice(i, 1);
           i--;
+
           console.log(`Synonyms to add:\n ${app.synonyms[eli]}`);
           arrSynIndex.push(eli);
         }
@@ -50,7 +51,9 @@ function checkforSynonyms(){
   if(flag){
     arrSynIndex.forEach(function(val, i){
       app.synonyms[val].forEach(function(word, iWord){
-        app.keywords.unshift(word);
+        if(app.keywords.indexOf(word) == -1){
+          app.keywords.unshift(word);
+        }
       });
     });
     /*
@@ -287,8 +290,6 @@ Vue.component('comp-similar-claim-units',{
     sortBy: function(key){
       this.sortKey = key;
       this.sortOrders[key] = this.sortOrders[key] * -1;
-
-      console.log(key, this.sortOrders[key]);
     }
   }
 });
@@ -336,7 +337,7 @@ var vueHeader = new Vue({
 
             //check if keywords has synonyms and add then to app.keywords
             checkforSynonyms();
-
+console.log(app.keywords);
             app.claimDataSW = "Keywords: "+app.keywords;
             //altervist
             //var synonyms = getSynonyms(res.data.keywords);
@@ -486,16 +487,17 @@ var app = new Vue({
       keywords: "",
       synonyms: [
         ["volta", "reembolso", "devolução", "restituição", "indébito", "quantia", "estorno", "estornar"],
-        ["tempo", "dias"],
+        ["tempo", "dias", "prazo"],
         ["uso", "vícios", "defeito", "falha"],
         ["pagamento", "cobrar", "cobrando", "cobrança", "cobrado", "quantia", "indebito", "indébito", "dívida", "divida"],
-        ["anuncio", "anunciando", "publicidade"],
+        ["anuncio", "anunciando", "publicidade", "propaganda", "enganosa", "enganado", "enganados"],
         ["produto", "produtos"],
         ["serviço", "servico", "serviços"],
         ["perigoso", "perigosos", "nocivo", "nocivos", "ferir", "matar"],
         ["quantidade", "quantidades", "unidade", "unidades"],
         ["arrependi", "arrependeu", "arrependimento"],
-        ["plano", "consórcio", "consórcios", "consorcio", "consorcios", "prestação", "prestações"]
+        ["plano", "consórcio", "consórcios", "consorcio", "consorcios", "prestação", "prestações"],
+        ["passado", "informação"]
       ],
       //Div elements
       chatbotStartedBool: false,
@@ -528,8 +530,8 @@ var app = new Vue({
         "columns": []
       },
       viewCase: {},
-      positiveAnswers: ["sim", "s", "isso", "perfeito", "de acordo", "positivo", "claro"],
-      negativeAnswers: ["não", "n", "nao", "naõ", "nada a ver", "negativo"],
+      positiveAnswers: ["sim", "s", "isso", "perfeito", "de acordo", "positivo", "claro", "ok", "exatamente", "exato", "correto"],
+      negativeAnswers: ["não", "n", "nao", "naõ", "nada a ver", "negativo", "nem pensar", "foi longe", "errado"],
       //zero based array: i: index of questions array, (i+1) article number. When i is the array index and (i+1) is the number of the article
       questions: [
         "Foi demonstrado alguma confusão pelo vendedor a respeito do papel de fornecedor ou consumidor?",
@@ -1045,7 +1047,7 @@ var app = new Vue({
                 // try #1: processing by the server and return if this is a new claim or not
 
 
-                //function will return a equivalent claim in case was found one. 
+                //function will return a equivalent claim in case was found one.
                 axios.post('/historical_learning/searchMostSimilarClaim', {
                   myKeywords: app.keywords 
                 })
@@ -1054,6 +1056,7 @@ var app = new Vue({
 
                   if(res.data.ratio > 95){
                     alert("Encontrei uma queixa muito similar ao seu caso!");
+                    console.log(`Grau de Similaridade da queixa encontrada: ${res.data.ratio}`);
                     axios.post('/historical_learning/selectClaimById', {
                       claimId: res.data.claimId 
                     })
@@ -1097,13 +1100,25 @@ var app = new Vue({
                       })
                       .then(function (res){
                         app.showCaseToUser(res.data);
+                      })
+                      .catch(function(err){
+                        console.log("Erro: selectClaimById");
+                        alert(`Erro de conexão com o servidor aconteceu. Tente novamente.`);
+                        location.href = "/";
                       });
-
+                    })
+                    .catch(function(err){
+                      console.log("Erro: create");
+                      alert(`Erro de conexão com o servidor aconteceu. Tente novamente.`);
+                      location.href = "/";
                     });
                   }
                 })
                 .catch(function(err){
                   console.log(err);
+                  console.log("Erro: searchMostSimilarClaim");
+                  alert(`Erro de conexão com o servidor aconteceu. Tente novamente.`);
+                  location.href = "/";
                 });
 
               //negative answer
