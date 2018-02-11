@@ -491,7 +491,10 @@ var app = new Vue({
         ["pagamento", "cobrar", "cobrando", "cobrança", "cobrado", "quantia", "indebito", "indébito", "dívida", "divida"],
         ["anuncio", "anunciando", "publicidade"],
         ["produto", "produtos"],
-        ["serviço", "servico", "serviços"]
+        ["serviço", "servico", "serviços"],
+        ["perigoso", "perigosos", "nocivo", "nocivos", "ferir", "matar"],
+        ["quantidade", "quantidades", "unidade", "unidades"],
+        ["arrependi", "arrependeu", "arrependimento"]
       ],
       //Div elements
       chatbotStartedBool: false,
@@ -551,7 +554,7 @@ var app = new Vue({
         "Um dos atores (fornecedores ou consumidores), rejeitam a responder pelo reparo de danos?",
         //Art 8
         "O produto ou serviço que adquiriu apresenta algum risco a sua saúde ou segurança e não foi alertado pelo fornecedor?",
-        "O fornecedor de produto ou serviço potencialmente nocivos te informou devidamente a respeito da periculosidade que o mesmo apresenta?",
+        "O fornecedor do produto ou serviço potencialmente nocivo te informou devidamente a respeito do risco e periculosidade que o mesmo apresenta?",
         "O Fornecedor sabia do perigo que o produto ou serviço apresentava e mesmo assim lhe forneceu dizendo que era de 'ótima' qualidade?",
         "-",
         "Você deseja ter reparo dos danos (causado a sua saúde ou segurança) causados pelo produto adquirido?",
@@ -611,7 +614,7 @@ var app = new Vue({
         ],
         "Você considera que a publicidade é discrimatória, te induz ao erro ou contém total ou parcialmente informações falsas?",
         [
-          "O vendedor forneceu um produto atrelado a outro, recusou atendimento, aproveitou da sua falta de informação, reajustou preços ou informações da venda sem negociação?",
+          "O vendedor forneceu um produto atrelado a outro, recusou atendimento, aproveitou da sua falta de informação, reajustou preços ou informações da venda sem negociação ou ainda, produto esta fora das normas da abnt?",
           "O vendedor disse que só poderia adquirir um produto ou serviço se adquirisse um outro diferente produto ou serviço?",
           "O vendedor recusou atendimento a ti mesmo em condições de prestar o serviço ou com disponibilidade de estoque ou ainda sem justificativa?",
           "Te enviaram um produto ou serviço sem solicitação feita por ti e em seguida te cobraram por isso?",
@@ -1046,10 +1049,10 @@ var app = new Vue({
                   myKeywords: app.keywords 
                 })
                 .then(function (res){
-                  //if(claim returned is higher than 90, select claim and article from the database
+                  //if(claim returned is higher than 95, select claim and article from the database
 
-                  if(res.data.ratio > 90){
-                    
+                  if(res.data.ratio > 95){
+                    alert("Encontrei uma queixa muito similar ao seu caso!");
                     axios.post('/historical_learning/selectClaimById', {
                       claimId: res.data.claimId 
                     })
