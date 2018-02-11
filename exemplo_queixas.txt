@@ -15,13 +15,16 @@ Comprei e efetuei o pagamento de uma camisa na LojaProject. Estou aguardando a 2
 
 Solicito, Gostaria de, Queria ter, Posso ter meu dinheiro de volta?
 
-Ex5: art 30
+Ex5: art 18, 35
 Caso: Informação publicada no anuncio inadequado, subtração ou limitação de opção de reembolso da quantia paga. Infração dos direitos básicos do consumidor (art 51, inciso 2)
 
 Comprei um cupom de cinema para assistir filme 3D nos espaços Cinemark como dizia no anuncio. Ao ir até o local, tentei trocar o cupom pelo ingresso e fui barrado e ainda fui acusado de estar tumultuando o local. Não pude assistir ao filme e dei viagem perdida. A funcionária só disse que o cupom / bilhete só servia para filmes 2D diferente do que dizia no anuncio e no regulamento do cupom. Ao ligar para a empresa, a mesma disse que o cupom não tem direito a devolução ou reembolso.
 
- Ex6: 
- Artigo 36 ou 37: Publicidade enganosa ou abusiva
+Ex5.1: art 35
+Comprei um cupom de cinema para assistir filme 3D nos espaços Cinemark como dizia no anuncio. Cheguei lá eles não aceitaram meu ingresso. Gostaria de ter meu dinheiro de volta...
+
+Ex6: 
+Artigo 36 ou 37: Publicidade enganosa ou abusiva
 
 Tentei realizar compra na Pichau através de um link na pagina do facebook anunciando um ssd de 120 GB pelo valor de 99 reais. Ao clicar no link, fui redirecionado para pagina do anuncio, adicionei ao carrinho e não consegui finalizar a compra. Depois de 5 tentativas, a
 pagina sempre mostrava erros. Depois de 5 minutos, ao clicar no link estava redirecionando para um anuncio em que o ssd estava custando 289 reais.
@@ -32,12 +35,11 @@ Comprei meu celular no site durante um mês ele pegou bem,de repente do nada com
 
 Ex8: Art 14. caso complicado pois deve identificar como serviço primeiro a queixa para filtrar os resultados. (sistema conseguiu sugerir artigo 20 apenas porque apareceu a palavra ‘quando’)
 
-https://www.reclameaqui.com.br/hospital-da-bahia/demora-de-atendimento-em-recepcao-vazia-e-atendente-mal-educada_zdYDrj0o-wutHVGV/
-
 Fui hoje (19/01/18) às 5h da manhã, na EMERGÊNCIA do Hospital da Bahia com minha mãe que está sentindo fortes dores abdominais. Quando cheguei lá a recepção estava completamente VAZIA! O rapaz da recepção fez a ficha de atendimento e pra minha surpresa numa recepção VAZIA demorou 25 min pra chamarem minha mãe pra fazer a TRIAGEM (E SIM A SALA DE TRIAGEM ESTAVA VAZIA). Depois da triagem esperamos mais 15 minutos (no total esperamos 40 minutos pra uma recepção VAZIA!) E fui perguntar a moça que estava na recepção chamada Tatiana se ainda iria demorar. Ela respondeu na MAIOR GROSSERIA E FALTA DE EDUCAÇÃO que 'não tinha previsão de atendimento e que não era com ela, que se a enfermeira não me avisou ela não podia fazer nada, e quem avisava o médico era enfermeira e não era ela, que se eu quisesse ir embora que fosse! Depois dessa grosseria pedi a ficha da minha mãe e ela rasgou o pedaço que estava minha assinatura. 
 
 Viemos pro Hospital Português e em menos de 5 min minha mãe já estava na sala de triagem e em em 10 minutos já fomos atendidos pelo médico. Se os atendentes não querem trabalhar ou pior ainda ficar atendendo mal os clientes ( já que isso é um hospital particular que não faz nada de graça) e que inclusive estão sentindo dor, espero que reveja ao menos o treinamento da equipe!!! Péssimo! Espero nunca mais voltar a esse hospital, já que não é a primeira vez que isso acontece de ser mal atendido por recepcionista mal educados e grossos e demora na espera de atendimento na emergência.
 
+https://www.reclameaqui.com.br/hospital-da-bahia/demora-de-atendimento-em-recepcao-vazia-e-atendente-mal-educada_zdYDrj0o-wutHVGV/
 
 Ex9: Cobrança Indevida (art 42)
 https://www.reclameaqui.com.br/vivo-celular-fixo-internet-tv/creditos-sumindo_7u-y7hjdDBimnuYc/
@@ -62,9 +64,115 @@ https://www.reclameaqui.com.br/surikato/meu-produto-nao-chegou_n3LIU6vKG-DjJybQ/
 
 Meu produto não chegou. Recebi um e-mail falando que vai atrasar 15 dias minha entrega isso procede??? Eu preciso desse produto urgeeente..
 
-Ex 13:  art 12 ou ?
+Ex 13: art 12 
 
 https://www.reclameaqui.com.br/igui-piscinas/pessimo-pos-venda_8fnMfqjbIS0a49-7/
 
 Mais uma vez venho através desse canal alertar a todos que pensam em comprar uma piscina da Igui. Comprei na loja Igui de Guarapari e tive várias problemas como atraso, defeitos, atendimento de má qualidade, clorador que nunca funciona e faz você gastar mais dinheiro com sal do que se fosse usar cloro e muito mais. Agora estou há várias semanas aguardando mais uma vez o atendimento do bendito clorador e nada. 
 Já gastei uns 300 reais esse mês só de produtos e mão de obra para limpeza total da piscina que toda semana a água está ficando verde e com cheiro de podre.
+
+Ex: 14: art 20 (má qualidade de serviço oferido, dissiparidade to contido na oferta) ou 35 (recusa a cumprimento de oferta)
+adquiri um serviço hoje a tarde fazendo check geral no balanceamento do carro, mas depois vi que o carro continua totalmente desbalanceado... me sinto roubado
+
+Ex 15: art 9 venda de produtos sem informação adequada da nocividade/ periculosidade
+Comprei para meu filho um hamburguer que veio como combo um brinde. Ao abrir peguei o brinquedo e dei ao meu filho de 7 anos para brincar. Porém 2 minutos depois ele volta com o dedo sangrando chorando, fui tentar descobrir o motivo e vi que o brinquedo possuia pontas cortantes. A embalagem não continha nenhum informação sobre isso. Esse brinquedo poderia matar até adulto com essas pontas. Muito perigoso 
+
+Ex 16: art 20 (dissiparidade de informação), 37 propaganda enganosa ou insuficiencia de informação ou art 39 informação inadequadas com o orgao abnt
+Fui ao supermercado bom preço, lá encontrei caixas de uvas sendo vendidas sobre caixas com o título Morangos em caixa. Porém queria compras as uvas ao invés dos morangos. Logo peguei o produto e fui ao caixa querendo pagar pelo valor das uvas porém o estabelecimento queria me cobrar pelo preço de morangas por estar na embalagem dos morangos. A embalagem estava fechada porém na embalagem o preço das duas eram diferentes... absurdo. falta informação
+
+Ex 17: art 19 (quantidade indevida do produto)  ou art 18 (inadequação da venda do produto)
+Comprei na le biscuit uns materias para inicios das aulas na faculdade: uns cadernos, caneta, grafit e lapiseira. Chegando em casa ao abrir a caixa de grafites vi que continua apenas 10 unidades ao inves de 24 como ofertava no produto. Como posso ter estorno?
+
+Ex 18: art 18
+Gostaria de saber quais são os meus direitos em relação a compra feita em um site com pagamento por cartão de credito e a entrega foi parcial ficou faltando um item cujo site estava disponível e enetrega imediata. Me fizeram a entrega 5 no dia 24 de dezembro de 2008 e até agora não recebi o restante do meu pedido um mes depois.
+
+Ex 19: artigo 13
+Comprei uma nova placa de vídeo durante o período de promoção black fraidei de um site chamado Pinau. Depois de 15 dias, o produto chegou em casa mas ela não funciona.... não consigo entrar em contato com eles para trocar a peça. estou desisperado. e agora?
+
+Ex 20: artigo 49 (desistir do contrato fora do estabelecimento local em até 7 dias)
+comprei um jogo online de uma empresa na internet mas me arrependi. já passei o cartão de crédito... se o proprietário da loja não quiser aceitar eu posso cancelar o pagamento? não tem uma semana que fiz a compra
+
+Ex 21: art 51 clausulas abusivas - subtrai a opção de reembolso do consumidor
+Boa Tarde, comprei uma passagem de avião para Belem saida em dezembro e volta em janeiro, porém logo em seguida achei uma outra passagem barata por outra companhia em questão de 2 horas de diferença. Tentei cancelar a passagem que comprei primeira e a companhia me cobrou uma taxa exorbitante... onde fica meu direito de arrependimento?
+
+Ex 22:
+//não relacionada com o cdc. não estabelece relação de consumidor e fornecedor. Direito Civil
+Há algum tempo venho recebendo ligações e mensagens dessa empresa fazendo cobrança de um acordo com tal de Helder, já disse a eles que não sou Helder e nem conheço nenhum Helder. Quero que tirem o meu número do cadastro de vocês e parem de incomodar.
+
+
+Ex 23: art 42
+Apareceram três boletos de cobrança desta empresa que eu nunca tinha ouvido falar "CRC - Central de Recuperação de Créditos". busquei informações e entrei em contato para ver do que se tratava e me informaram que era uma dívida que eu tinha no bradesco e se eu quisesse quitar seria gerando um novo boleto. Aceitei a proposta e paguei no mesmo dia direto na conta online. Para minha surpresa os boletos de cobranças antigas, aqueles três emitiram anteriormente eles não cancelaram até hoje e não consigo mais entrar em contato com a empresa. Quero que cancele os boletos antigos.
+
+https://www.reclameaqui.com.br/crc-central-de-recuperacao-de-credito/apareceu-tres-boletos-de-cobranca-em-minha-conta-indevidamente_pPRhIWBwDA9GxgJn/
+
+Ex 24: art 42 (Informações expostas a terceiros)
+trabalho o dia inteiro fora e no final do dia recebo a informação por vizinhos que compareceu um homem desta empresa me procurando dizendo se me conhecia. Entregou então um papel com o telefone, dizendo que era pra eu entrar em contato para negociar minha dívida junto ao banco Bradesco. Achei um absurdo como pode expor desta forma para meu vizinho uma questão tão pessoal. Entendo que a crise em nosso país está feia mas acho que não precisa ser tão baixo. Além disso recebo ligações todos os domingos da empresa.
+
+https://www.reclameaqui.com.br/crc-central-de-recuperacao-de-credito/informacoes-exposta-a-terceiros_TyvJE4U3u4LzqueN/
+
+Ex 25: art 51 (clausulas abusivas), 24, 42(pode ser clausulas abusivas) cobrança indevida e restituição de valor cobrado
+A Recovery entrou em contato comigo e disse que deve ter ocorrido um erro, mas que como eu paguei a mais e o acordo esta quitado já não pode fazer mais nada.
+Como assim? Se eu deixo de pagar na data eles quebram o acordo e podem aumentar o valor da negociação, mas eles podem quebrar o acordo e aumentar o valor?
+Por gentileza, leiam o contrato que você tem comigo que disponibilizam que diz que sobre ambas as partes quebrarem o contrato.
+Além disso, foi citado na ligação que eu deveria ter ligado na ouvidora se o valor estava errado, mas eu entrei em contato pela central (meio legal que eles disponibilizam para contanto conforme o site). Tenho ate a gravação ou a mensagem pelo whats da ligação.
+
+https://www.reclameaqui.com.br/grupo-recovery-renova-securitizadora-fidc-recovery-e-fidc-npl1/quebra-de-acordo-pela-recovery_xwU58J2_YU_f6FOU/
+
+
+Ex 25:  Recusa a Cumprimento de oferta (art 35) ou Propaganda enganosa (37)
+Não recebo franquia dados de internet e bônus de meu plano há 2 semanas. Desde que fiz adesão ao plano, tenho mantido o saldo suficiente para renovação semanal do plano, porém , a empresa TIM não tem cumprido com o que é previsto no plano o qual tenho contrato junto a empresa, tendo tido à minha disposição apenas da franquia de voz, e esse tempo todo apenas utilizando a internet através do WIFI. Acho extremamente desreipeitoso e outras coisas mais por parte da empresa. Como usuário, de forma direta, desde o início da adesão ao plano, estou usufruindo apenas de transtornos.
+
+https://www.reclameaqui.com.br/tim-celular/nao-recebo-franquia-dados-de-internet-e-bonus-de-meu-plano-ha-2-semanas_X_uzVyuBjHeaLsQP/
+
+
+Ex 26: art 42
+No final do ano passado fui atras das empresas que me negativaram e fiz acordo, desde então meu nome segue limpo.Queria saber o que significa essa cobrança de EMPRÉSTIMO PESSOAL, coisa que nunca fiz na vida.
+
+https://www.reclameaqui.com.br/fidc-ipanema-iii/nao-sei-de-onde-surgiu-essa-cobranca_fTVmf2FkGhNyt7nC/
+
+//art 20 serviço de má qualidade (atendimento) com direito a restituição parcial, art 23: ignorancia do fornecedor (tim) n o exime de responsabilidade, art37: propaganda enganosa
+PROMOÇÃO TIM PRÉ 150
+Fiquei contento com tal promoção me prometendo ter 100 minutos para ligar para qualquer operadora, nisso a promoção da tim correspondeu. Agora quanto a INTERNET da promoção, UMA PORCARIA! Mais o pior de tudo é a renovação da promoção quando você tem crédito. Acontece que quando acaba a promoção (os 7 dias) a TIM demora muito para renová-la, assim, os créditos que eu tinha vão sendo usados normalmente como se não houvesse a promoção cadastrada. Então o crédito que eu tinha para 4 promoções só deu pra 1, e eu tive que fazer nova recarga
+
+https://www.reclameaqui.com.br/tim-celular/promocao-tim-pre-150_15621457/
+
+
+Ex 27: artigo 18, 8: inadequação do produto ofertado para consumo
+Boa tarde, comprei um pacote de ovinhos de amendoim de 200g nesta última sexta feira (9) e hoje ao abrir o pacote e começar a comer, encontrei um com um pelo encravado no produto, isto é, fazendo parte da massa do produto. Não costumo ter nojo em relação à comida, mas acho uma falta de respeito com o consumidor em se tratando de algo que será ingerido e, portanto, tem relação com a saúde. Envio esta reclamação com o intuito de contribuir para que o produto tenha melhor qualidade, tendo em vista a reputação da marca. Me sinto ofendida como consumidora, pois se trata de uma questão de higiene, o que envolve saúde.
+
+https://www.reclameaqui.com.br/elma-chips/pelo-na-massa-de-ovinhos-de-amendoim_k7niYoZINA7rZMbH/
+
+
+Ex 28: art 35: recusa a cumprimento do serviço ofertado no plano de saúde
+O plano de saúde GAMEC de Fortaleza vem piorando cada dia o atendimento de seus usuários, principalmente os clientes que possuem o Plano Premium que atende em redes credenciadas. Quase não se encontra mais especialistas, clínicas e hospitais de emergência que atenda os planos da empresa. Os médicos alegam repasse de pagamento, suspendendo assim o atendimento. Isso é total falta de respeito ao usuário. Os atendimentos estão se resumindo a sede do plano que possui poucos médicos, e o atendimento é péssimo.
+
+https://www.reclameaqui.com.br/gamec/descredenciamento-de-medicos-clinicas-e-hospitais_rw1UIjMk-MLa2jzY/
+
+
+Ex 29: art 18: tornem impróprios ou inadequados ao consumo  (vício do produto ou serviço)
+Olá, estou acostumada a comprar o yorgut na versão saquinho 1l no entanto dessa vez o produto veio com sabor e cheiro alterados, impossibilitando o consumo. Verifiquei a data de validade e está dentro do prazo. Acredito que todo o lote esteja assim e gostaria que a empresa se posicionasse para resolver a questão, podemos ter crianças consumindo esse alimento e não sabemos se pode causar algum mal a saúde.
+
+https://www.reclameaqui.com.br/laticinios-carolina/caroluna-verygurt_kVylBzZnOHyHPQGo/
+
+
+//aplicação não extrai keywords com boa precisão neste caso. algumas palavras são cortas pela metade. investigar novamente (ex: saúde => saú de). Ainda sim conseguiu identificar casos bons relacionados.
+Ex 30: art 6 inciso i, falta de acessibilidade e risco a saúde a saude do consumidor
+
+Sou Rosemeire Santiago, portadora do RG. M2 170119, CPF 045.073.088-36, residente à Rua Barão do Bananal, 760, apto. 142, Pompeia, São Paulo.
+Venho por meio dessa mensagem manifestar minha indignação e frustração, sentindo-me preterida e tratada com discriminação, quando no embarque de Brasília à São Paulo no dia 7 de fevereiro, vôo de número JJ3527, pela empresa LATAM, saindo às 17:55 de Brasília, tendo chegado conforme instruída, DUAS HORAS ANTES PARA FAZER O CHECK-IN, sendo informada que não poderia sentar-me na primeira fileira ( contendo SEIS poltronas), pois as mesmas estavam ocupadas.
+Ocorre que tenho um problema na perna e não consigo flexioná-la para sentar nas outras fileiras, portanto, POSSO VIAJAR APENAS NA PRIMEIRA, POR QUESTÃO DE SAÚDE. 
+De acordo com as regras da ANAC, "O passageiro com necessidade de atendimento especial que dependa do uso de cadeira de rodas para se deslocar no interior da aeronave, ou que esteja acompanhado de cão-guia ou possua cão-guia de acompanhamento e aquele
+cuja articulação do joelho não permita a manutenção da perna flexionada devem ser alocados pela empresa aérea em fileiras com espaços extras ou assentos dotados de dispositivos específicos, se disponíveis, para atender às suas necessidades, em local compatível com a classe escolhida e o bilhete aéreo adquirido", o que não foi cumprido pela empresa aérea em questão.
+De acordo com a funcionária "Eliane"e sua supervisora "Pamela", no check-in da Empresa LATAM em Brasília, todos os assentos estavam tomados e não havia mais lugar. As mesmas também nos informaram que a empresa não pode "mexer" ou "relocar" passageiros que tenham os cartões "Gold", "Fidelidade", "Premium"e "Black" porém, os assentos que, segundo a lei ", não tinham NENHUM passageiro portador de necessidade especial.
+Foi um desgaste muito grande e apenas depois de UMA HORA liberaram um lugar para mim( e minha acompanhante ficou em outra fila). Qual não foi minha surpresa ao ouvir os dois passageiros que sentaram ao meu lado dizerem que "tiveram sorte, pois estavam num vôo que sairia uma hora depois do meu (cujo vôo fora cancelado), tiveram seu vôo adiantado e ainda conseguiram esses assentos"(na primeira fileira). Passei um nervoso desnecessário, senti-me discriminada por ser portadora de deficiência, inclusive tendo mostrado meu cartão e tendo sido tratada dessa forma.
+
+
+Ex 30:  art 42  cancelamento do serviço/contrato (aulas da microcamp) e cobrança indevida
+
+FIZ MINHA MATRÍCULA EM 02/02/2017 PARA CURSO DE HARDWARE. POIS BEM, APÓS 6 MESES DE CURSO, FIQUEI DESEMPREGADO E NO DIA 11/09/2017 SOLICITEI O CANCELAMENTO NA UNIDADE DA GUAJARAS, 719 CENTRO, BELO HORIZONTE, COM A FUNCIONÁRIA MARCELLE RIBEIRO, QUE POR SINAL NÃO TRABALHA LÁ MAIS.
+
+POIS BEM, AGUARDEI ATÉ A DATA INFORMADA E NENHUM CONTATO FOI REALIZADO. LIGUEI NA UNIDADE E NADA CONCRETO FOI INFORMADO. NO DIA 21/09/2017 COMPARECI NA UNIDADE E AINDA NÃO TINHAM POSIÇÃO ACERCA DA RESCISÃO. ASSIM OPTEI POR AGUARDAR O CONTATO.
+
+OCORRE ENTRETANTO, QUE EM 11 DE NOVEMBRO DE 2017, RECEBO PARA MEU ESPANTO, UMA CARTA DO SPC EM NOME DA MICROCAMP COBRANDO A MENSALIDADE DE OUTUBRO, SENDO QUE QUANDO PEDI O CANCELAMENTO EU ESTAVA EM DIA.
+
+https://www.reclameaqui.com.br/microcamp/rescisao-contratual_MrGWMflh9Fa0Lc0R/
