@@ -125,21 +125,22 @@ var lib = {
       regExpWhiteSpace = new RegExp("(\\s+)", "g");
       claim = claim.replace(regExpWhiteSpace, " ");
 
-      //também contém palavras ou expressões aglutinadas de uma stopword: você = vc. 
-      var stopwords = "vc eu meu sua seu suas seus poderia gostaria disto isso deste esse desta esta dessa essa menos mais assim como ele ela eles elas dela dele nosso nossa até ate apenas era eram sou uma um para ou ao de da do das dos que em no na nos nas ter com sem nao não mas porem porém entretanto todavia ainda se os as por pelo pela pelos pelas todo toda mesmo mesma lá la las lo los ali cada sobre so só somente";
+      //também contém palavras ou expressões aglutinadas: você = vc. 
+      var stopwords = "vc eu meu sua seu suas seus poderia gostaria disto isso deste esse desta esta dessa essa menos mais assim ele ela eles elas dela dele nosso nossa apenas era eram sou uma umas um uns ou ao de da do das dos que em no na nos nas ter com sem nao não mas porem porém entretanto todavia ainda se os as pelo pela pelos pelas todo toda mesmo mesma lá me la las lo los ali cada so só somente todos nenhum";
 
       //verbos de ligação (#TODO: adicionar dps conjugação verbal)
-      var conectingVerbs = "foi ser são sao serão serao sera será sendo foram";
+      var conectingVerbs = "foi ser são sao serão serao sera será sido sendo foram";
 
       //outros verbos
       var otherVerbs = "faz fazem fez fizeram fazendo ir iram irão indo ido vi viu viram";
 
       //adverbios
-      let adverbs = "sempre";
+      let adverbs = "como sempre";
+      let pronouns = "ante ate até após apos com contra desde entre para per perante por sob sobre trás tras"
 
       //var filter_romanianNumerals = "I II III IV V VI VII VIII IX X XI XII XIII XIV";
       filter_romanianNumerals = "";
-      stopwords = stopwords+" "+filter_romanianNumerals+" "+conectingVerbs+" "+otherVerbs+" "+adverbs;
+      stopwords = stopwords+" "+filter_romanianNumerals+" "+conectingVerbs+" "+otherVerbs+" "+adverbs+" "+pronouns;
       stopwords = stopwords.split(" ");
 
       //ex9: R$ 754,00 -> r 75400 -> 75400
@@ -167,7 +168,7 @@ var lib = {
       }
 
       //vowels and diactrics
-      var articleVowels = "àaeiíouéèêëçàâäîïùúûüôóö";
+      var articleVowels = "àaeiíouéèêëàâäîïùúûüôóö";
       articleVowels = articleVowels.split("");
 
       //regExp removes a word contain vogals as described above and also remove the spaces besides the vowel. This expression is replaced for a single space
@@ -183,8 +184,8 @@ var lib = {
         // \b pattern that checks for a word that contains exactly what is between \b
         // i = case insensitive, g = global search
 
-        regExp = new RegExp("\\b"+stopwords[i]+"\\b", "ig");
-        claim = claim.replace(regExp, "");
+        regExp = new RegExp("\\s"+stopwords[i]+"\\s", "ig");
+        claim = claim.replace(regExp, " ");
         //remove double emptySpace
         regExpWhiteSpace = new RegExp("(\\s+)", "g");
         claim = claim.replace(regExpWhiteSpace, " ");
