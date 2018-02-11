@@ -126,7 +126,7 @@ var lib = {
       claim = claim.replace(regExpWhiteSpace, " ");
 
       //também contém palavras ou expressões aglutinadas de uma stopword: você = vc. 
-      var stopwords = "vc eu meu sua seu suas seus poderia gostaria disto isso deste esse desta esta dessa essa menos mais assim como ele ela eles elas dela dele nosso nossa até apenas era eram sou uma um para ou ao de da do das dos que em no na nos nas ter com sem nao não mas porem porém entretanto todavia ainda se os as por pelo pela pelos pelas todo toda mesmo mesma lá la ali cada";
+      var stopwords = "vc eu meu sua seu suas seus poderia gostaria disto isso deste esse desta esta dessa essa menos mais assim como ele ela eles elas dela dele nosso nossa até apenas era eram sou uma um para ou ao de da do das dos que em no na nos nas ter com sem nao não mas porem porém entretanto todavia ainda se os as por pelo pela pelos pelas todo toda mesmo mesma lá la ali cada sobre";
 
       //verbos de ligação (#TODO: adicionar dps conjugação verbal)
       var conectingVerbs = "foi ser são sao serão serao sera será sendo foram";
