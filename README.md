@@ -49,4 +49,4 @@ Trello para gerenciamento das atividades:<br>
 Release 2: https://trello.com/b/Xtn4jnUl/dev-release-2
 
 Acesso a aplicação externamente:</br>
-https://blooming-eyrie-81507.herokuapp.com
+http://chatbot-cdc.herokuapp.com/
