@@ -249,12 +249,14 @@ exports.complaints = function(req, res) {
       sqlSelect = `SELECT 
                       h.id AS claimId, h.claim_text AS claimText, h.keywords, a.art_id AS artId, a.subject, a.text AS artText, vote_positive as votePos, vote_negative as voteNeg, valid_claim as validClaim
                       FROM historical_learning AS h 
-                      INNER JOIN articles AS a ON h.article_number = a.art_id WHERE user_id = ${user.id}`;
+                      INNER JOIN articles AS a ON h.article_number = a.art_id WHERE user_id = ${user.id}
+                    ORDER BY h.id`;
     } else {
       sqlSelect = `SELECT 
-                      h.id AS claimId, h.claim_text AS claimText, h.keywords, a.art_id AS artId, a.subject, a.text AS artText, vote_positive as votePos, vote_negative as voteNeg 
+                      h.id AS claimId, h.claim_text AS claimText, h.keywords, a.art_id AS artId, a.subject, a.text AS artText, vote_positive as votePos, vote_negative as voteNeg, valid_claim as validClaim 
                       FROM historical_learning AS h 
-                      INNER JOIN articles AS a ON h.article_number = a.art_id`;
+                      INNER JOIN articles AS a ON h.article_number = a.art_id
+                    ORDER BY h.id`;
     }
 
 
