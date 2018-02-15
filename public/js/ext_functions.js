@@ -129,13 +129,13 @@ var lib = {
       var stopwords = "vc eu meu sua seu suas seus poderia gostaria disto isso deste esse desta esta dessa essa menos mais assim ele ela eles elas dela dele nosso nossa apenas era eram sou uma umas um uns ou ao de da do das dos que em no na nos nas ter com sem nao não mas porem porém entretanto todavia ainda se os as pelo pela pelos pelas todo toda mesmo mesma lá me la las lo los ali cada so só somente todos nenhum";
 
       //verbos de ligação (#TODO: adicionar dps conjugação verbal)
-      var conectingVerbs = "foi ser são sao serão serao sera será sido sendo foram";
+      var conectingVerbs = "fui foi ser são sao serão serao sera será sido sendo foram";
 
       //outros verbos
       var otherVerbs = "faz fazem fez fizeram fazendo ir iram irão indo ido vi viu viram";
 
       //adverbios
-      let adverbs = "como sempre";
+      let adverbs = "como sempre depois através antes";
       let pronouns = "ante ate até após apos com contra desde entre para per perante por sob sobre trás tras"
 
       //var filter_romanianNumerals = "I II III IV V VI VII VIII IX X XI XII XIII XIV";
