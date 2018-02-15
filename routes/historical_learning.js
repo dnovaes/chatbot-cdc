@@ -213,7 +213,7 @@ exports.selectClaimById = function(req, res) {
   db.getConnection(function(err, connection) {
 
     let sqlSelect = `SELECT 
-                      h.id, h.claim_text, h.keywords, a.art_id, a.subject, a.text, user_id, vote_positive, vote_negative 
+                      h.id, h.claim_text, h.keywords, a.art_id, a.subject, a.text, user_id, vote_positive, vote_negative, valid_claim
                     FROM historical_learning AS h 
                     INNER JOIN articles AS a ON h.article_number = a.art_id
                     WHERE h.id = ${claimId}`;
@@ -233,7 +233,8 @@ exports.selectClaimById = function(req, res) {
           artText: results[0].text,
           votePos: results[0].vote_positive,
           voteNeg: results[0].vote_negative,
-          keywords: results[0].keywords
+          keywords: results[0].keywords,
+          validClaim: results[0].valid_claim
         }
       }
       res.send(obj);
@@ -250,7 +251,7 @@ exports.searchSimilarClaims = function(req, res){
   db.getConnection(function(err, connection) {
 
     let sqlSelect = `SELECT 
-                      h.id, h.keywords, h.claim_text, a.art_id, a.subject, a.text, user_id, vote_positive AS votePos, vote_negative as voteNeg
+                      h.id, h.keywords, h.claim_text, a.art_id, a.subject, a.text, user_id, vote_positive AS votePos, vote_negative as voteNeg, valid_claim AS validClaim
                     FROM historical_learning AS h 
                     INNER JOIN articles AS a ON h.article_number = a.art_id`
 
