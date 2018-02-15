@@ -10,6 +10,7 @@ window.onpopstate = function(event) {
       claimId: event.state.claimId
     })
     .then(function (res){
+      //2nd parameter bool, if true then donot update url string
       app.showCaseToUser(res.data, true);
     });
   }else{
@@ -798,8 +799,33 @@ var app = new Vue({
           app.resultsBool = true;
           app.hits = "";
 
-          //iniciate chatbot with the user based on the result that we have in app.resultUnits
-          startChatbot();
+          axios.post('/historical_learning/searchMostSimilarClaim', {
+            myKeywords: app.keywords 
+          })
+          .then(function (res){
+            //if(claim returned is higher than 95, select claim and article from the database
+
+            if(res.data.ratio > 95){
+              alert("Encontrei uma queixa muito similar ao seu caso!");
+              console.log(`Grau de Similaridade da queixa encontrada: ${res.data.ratio}`);
+              axios.post('/historical_learning/selectClaimById', {
+                claimId: res.data.claimId 
+              })
+              .then(function (res){
+
+                app.showCaseToUser(res.data);
+              });
+            }else{
+              //iniciate chatbot with the user based on the result that we have in app.resultUnits
+              startChatbot();
+            }
+          })
+          .catch(function(err){
+            console.log(err);
+            console.log("Erro: searchMostSimilarClaim");
+            alert(`Erro de conexão com o servidor aconteceu. Tente novamente.`);
+            location.href = "/";
+          });
 
         }else{
           app.results = "Não encontrei nada relacionado. Poderia escrever novamente com outras palavras?"
@@ -1038,85 +1064,54 @@ var app = new Vue({
 
                 //checks if there is already a article too similar to that one based on the keywords and questions answered
                 //[1] if there is, then do not register claim at history, shows the one that is already registered.
-                //[2] if there is, then do register claim, but copy the related claim to this one.... no doesnt make sense
+                //    if not, register and show the new claim to user
                 //start to checck for keywords arrays:
                 //
-                // make a request to databse to retrieve all the keywords from the registered claims
-                // question here: make the server or client process this ?
-                //
-                // try #1: processing by the server and return if this is a new claim or not
+                // question here: make the server or the client browser process this ?
 
 
-                //function will return a equivalent claim in case was found one.
-                axios.post('/historical_learning/searchMostSimilarClaim', {
-                  myKeywords: app.keywords 
+                //call function to show claim to user passing blank obj as parameter. meaning that the claim info
+                //is at the app.resultUnits[0]["artId"], app.resultUnits[0]["data"] (content of the article).
+               
+                //alert("Nova queixa identificada");
+                console.log(`artigo relacionado: ${app.resultUnits[0]["artId"]}`);
+
+                let divReportContentEl = document.querySelector(".div-report-content");
+                divReportContentEl.innerHTML = app.resultUnits[0]["data"];
+
+                //convert app.keywords tipo 'object' para 'string' para inserir no banco de dados
+                let keywords = "";
+                app.keywords.forEach(function(val, i){
+                  //console.log(i, app.keywords.length);
+                  if(i < (app.keywords.length-1)){
+                    keywords+= val+",";
+                  }else{
+                    keywords+= val;
+                  }
+                });
+                
+                //Envia requisição ajax para registrar queixa no servidor.
+                axios.post('/historical_learning/create', {
+                  claim_text: app.claimData,
+                  keywords: keywords,
+                  article_number: app.resultUnits[0]["artId"]
                 })
                 .then(function (res){
-                  //if(claim returned is higher than 95, select claim and article from the database
 
-                  if(res.data.ratio > 95){
-                    alert("Encontrei uma queixa muito similar ao seu caso!");
-                    console.log(`Grau de Similaridade da queixa encontrada: ${res.data.ratio}`);
-                    axios.post('/historical_learning/selectClaimById', {
-                      claimId: res.data.claimId 
-                    })
-                    .then(function (res){
-
-                      app.showCaseToUser(res.data);
-                      
-                    });
-                  }else{
-                    //call function to show claim to user passing blank obj as parameter. meaning that the claim info
-                    //is at the app.resultUnits[0]["artId"], app.resultUnits[0]["data"] (content of the article).
-                   
-                    //new claim
-                    alert("Queixa nova identificada");
-                    console.log(`artigo relacionado: ${app.resultUnits[0]["artId"]}`);
-
-                    let divReportContentEl = document.querySelector(".div-report-content");
-                    divReportContentEl.innerHTML = app.resultUnits[0]["data"];
-
-                    //convert app.keywords tipo 'object' para 'string' para inserir no banco de dados
-                    let keywords = "";
-                    app.keywords.forEach(function(val, i){
-                      //console.log(i, app.keywords.length);
-                      if(i < (app.keywords.length-1)){
-                        keywords+= val+",";
-                      }else{
-                        keywords+= val;
-                      }
-                    });
-                    
-                    //Envia requisição ajax para registrar queixa no servidor.
-                    axios.post('/historical_learning/create', {
-                      claim_text: app.claimData,
-                      keywords: keywords,
-                      article_number: app.resultUnits[0]["artId"]
-                    })
-                    .then(function (res){
-
-                      axios.post('/historical_learning/selectClaimById', {
-                        claimId: res.data.claimId 
-                      })
-                      .then(function (res){
-                        app.showCaseToUser(res.data);
-                      })
-                      .catch(function(err){
-                        console.log("Erro: selectClaimById");
-                        alert(`Erro de conexão com o servidor aconteceu. Tente novamente.`);
-                        location.href = "/";
-                      });
-                    })
-                    .catch(function(err){
-                      console.log("Erro: create");
-                      alert(`Erro de conexão com o servidor aconteceu. Tente novamente.`);
-                      location.href = "/";
-                    });
-                  }
+                  axios.post('/historical_learning/selectClaimById', {
+                    claimId: res.data.claimId 
+                  })
+                  .then(function (res){
+                    app.showCaseToUser(res.data);
+                  })
+                  .catch(function(err){
+                    console.log("Erro: selectClaimById");
+                    alert(`Erro de conexão com o servidor aconteceu. Tente novamente.`);
+                    location.href = "/";
+                  });
                 })
                 .catch(function(err){
-                  console.log(err);
-                  console.log("Erro: searchMostSimilarClaim");
+                  console.log("Erro: create");
                   alert(`Erro de conexão com o servidor aconteceu. Tente novamente.`);
                   location.href = "/";
                 });
