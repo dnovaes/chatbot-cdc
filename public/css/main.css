@@ -465,8 +465,8 @@
   min-height: 0;
   //min-height: 90%;
   border-radius: 9px;
-  padding: 5px;
-  text-align: center;
+  padding: 2px 7px;
+  text-align: left;
   font-size: 14px;
 
 }
