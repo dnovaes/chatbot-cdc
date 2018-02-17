@@ -561,7 +561,7 @@ var app = new Vue({
         "O fornecedor do produto ou serviço potencialmente nocivo te informou devidamente a respeito do risco e periculosidade que o mesmo apresenta?",
         "O Fornecedor sabia do perigo que o produto ou serviço apresentava e mesmo assim lhe forneceu dizendo que era de 'ótima' qualidade?",
         "-",
-        "Você deseja ter reparo dos danos (causado a sua saúde ou segurança) causados pelo produto adquirido?",
+        "Você deseja ter reparo dos danos (causado a sua saúde ou segurança) pelo produto adquirido?",
         "Você não consegue identificar o fabricante, produto ou responsável do produto e o comerciante se nega a assumir responsabilidade pelos danos do produto?",
         "O responsável se nega de alguma forma a reparação do causado pela prestação do serviço defeituoso ou pela informação insuficiente do serviço e você deseja ser indenizado parcialmente ou totalmente pelo serviço realizado?",
         "-", //Art 15 (vetado)
