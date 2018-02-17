@@ -48,5 +48,5 @@ http://goo.gl/5bSDbb
 Trello para gerenciamento das atividades:<br>
 Release 2: https://trello.com/b/Xtn4jnUl/dev-release-2
 
-Acesso a aplicação externamente:</br>
-http://chatbot-cdc.herokuapp.com/
+Acesso a aplicação:</br>
+http://meusdireitosconsumidor.com.br/
