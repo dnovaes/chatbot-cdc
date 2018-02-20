@@ -136,43 +136,46 @@ function highlight(content, dataStruct){
 //split the content data string in the articles
 //return an array o segments of this content string
 function splitDocument(content, type){
-    let articles=[];
-    let numberArticles = [];
+  let articles=[];
+  let numberArticles = [];
 
-    //pattern for start of the article
-    //original pattern at the beggining of the conception:
-    //(?<![\w\d])Art(?![\w\d]) but negative lookbehind doesnt work in js (?!>)
+  //pattern for start of the article
+  //original pattern at the beggining of the conception:
+  //(?<![\w\d])Art(?![\w\d]) but negative lookbehind doesnt work in js (?!>)
 
-    regExp = new RegExp("(?:^|\\s)Artigo([\\d]+)|(?:^|\\s)Art. ([\\d]+)");
+  regExp = new RegExp("(?:^|\\s)Artigo([\\d]+)|(?:^|\\s)Art. ([\\d]+)");
+  var startPosMatch = regExp.exec(content);
 
-    let i=0;
-    while(content.length>0){
-      //.exec returns an array "result" containing [0] = the full string of characters matched, [1]..[n] substring matches if any.
-      //[index] the 0-based index of the match in the string
-      //[input] original string
- 
-      var startPosMatch = regExp.exec(content);
+  let i=0;
 
-      if(startPosMatch){
-        articles[i] = startPosMatch[0];
-        content = content.substr(startPosMatch.index+(startPosMatch[0].length), content.length-1);
+  while(content.length>0 && (startPosMatch != null)){
 
-        //try a match again, if it finds more matchs after removing the previous match. Then this documents has more than one article
-        var endPosMatch = regExp.exec(content);
-        if(endPosMatch){
-          articles[i] = articles[i] + content.substr(0, endPosMatch.index-1); 
-          content = content.substr(endPosMatch.index, content.length-1);
-        }else{
-          //not anymore articles was found.
-          articles[i] = articles[i] + content;
-          content = "";
-        }
+    //.exec returns an array "result" containing [0] = the full string of characters matched, [1]..[n] substring matches if any.
+    //[index] the 0-based index of the match in the string
+    //[input] original string
 
-        //add the number of the article found
-        numberArticles[i] = startPosMatch[2];
+    startPosMatch = regExp.exec(content);
+
+    if(startPosMatch){
+      articles[i] = startPosMatch[0];
+      content = content.substr(startPosMatch.index+(startPosMatch[0].length), content.length-1);
+
+      //try a match again, if it finds more matchs after removing the previous match. Then this documents has more than one article
+      var endPosMatch = regExp.exec(content);
+      if(endPosMatch){
+        articles[i] = articles[i] + content.substr(0, endPosMatch.index-1); 
+        content = content.substr(endPosMatch.index, content.length-1);
+      }else{
+        //not anymore articles was found.
+        articles[i] = articles[i] + content;
+        content = "";
       }
-      i++;
+
+      //add the number of the article found
+      numberArticles[i] = startPosMatch[2];
     }
+    i++;
+  }
   let groupArticles = [];
 
   groupArticles[0] = articles;
@@ -334,11 +337,11 @@ var vueHeader = new Vue({
             posBool: app.posBool
           })
           .then(function (res){
+              console.log(res.data);
             app.keywords = res.data.keywords;
 
             //check if keywords has synonyms and add then to app.keywords
             checkforSynonyms();
-console.log(app.keywords);
             app.claimDataSW = "Keywords: "+app.keywords;
             //altervist
             //var synonyms = getSynonyms(res.data.keywords);
@@ -558,7 +561,7 @@ var app = new Vue({
         "Um dos atores (fornecedores ou consumidores), rejeitam a responder pelo reparo de danos?",
         //Art 8
         "O produto ou serviço que adquiriu apresenta algum risco a sua saúde ou segurança e não foi alertado pelo fornecedor?",
-        "O fornecedor do produto ou serviço potencialmente nocivo te informou devidamente a respeito do risco e periculosidade que o mesmo apresenta?",
+        "No seu caso, o fornecedor do produto ou serviço potencialmente nocivo não te informou devidamente a respeito do risco e periculosidade que o mesmo apresenta?",
         "O Fornecedor sabia do perigo que o produto ou serviço apresentava e mesmo assim lhe forneceu dizendo que era de 'ótima' qualidade?",
         "-",
         "Você deseja ter reparo dos danos (causado a sua saúde ou segurança) pelo produto adquirido?",
@@ -731,8 +734,6 @@ var app = new Vue({
       axios.get('/elastic/?q='+app.keywords, config).then(function (res){
         app.hits = res.data.hits
 
-        //debug in log results found
-        //console.log(app.hits.hits);
 
         //app.hits.hits.length = tell how many results were found.
         if(app.hits.hits.length> 0){
@@ -766,6 +767,7 @@ var app = new Vue({
             var j=0;
 
             app.hits.hits.forEach(function(val, i){
+
               tempContent = val._source.content
 
               //split document in articles units
@@ -776,7 +778,6 @@ var app = new Vue({
 
               //highlight words in the articles that matches with the keywords from the user claim
               //if it doesnt find a match, article is excluded
-              
               groupArticles = highlight(groupArticles, app.configSearchStruct);
             
               for(var k=0;k<groupArticles[0].length;k++){
