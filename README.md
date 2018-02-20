@@ -18,7 +18,7 @@ sudo apt-get install -y nodejs
 ###### Git:
 ```
 git clone https://github.com/terciodejesus/chatbot-cdc
-cd chatbot-cdc/website
+cd chatbot-cdc/
 npm install
 ```
 
