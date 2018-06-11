@@ -319,7 +319,8 @@ var vueHeader = new Vue({
   data: function(){
     return {
       phValue: "Descreva seu problema",
-      claimData: ""
+      claimData: "",
+      loadingBool: false
     }
   },
   methods: {
@@ -332,12 +333,13 @@ var vueHeader = new Vue({
           
           app.claimData = vueHeader.claimData;
 
+          this.addLoadingDiv();
           axios.post('/ajax/stopwordsremovalPT', {
             claim: app.claimData,
             posBool: app.posBool
           })
           .then(function (res){
-              console.log(res.data);
+            console.log(res.data);
             app.keywords = res.data.keywords;
 
             //check if keywords has synonyms and add then to app.keywords
@@ -400,7 +402,7 @@ var vueHeader = new Vue({
           }
         }
       }else{
-        alert("A busca da queixa já foi iniciada. Respondam as perguntas ou para iniciar nova queixa, atualize a página.");
+        alert("A busca da queixa já foi iniciada. Respondam as perguntas ou, para iniciar nova queixa, atualize a página.");
         document.getElementById('div-chatbot').scrollIntoView();
 
         //focus on the input of typing message to the chatbot
@@ -423,6 +425,12 @@ var vueHeader = new Vue({
     },
     jumpToId: (elId)=>{
       document.getElementById(elId).scrollIntoView();
+    },
+    addLoadingDiv: function(){
+      this.loadingBool = true;  
+    },
+    removeLoadingDiv: function(){
+      this.loadingBool = false;
     }
   }
 }); 
@@ -504,19 +512,23 @@ var app = new Vue({
         ["passado", "informação"]
       ],
       //Div elements
+      emptySimilarCasesMessage: false,
       chatbotStartedBool: false,
       suggestionTitleBool: true,
       reportClaimTitleBool: false,
       thanksVotingBool: false,
       newSuggestionAnswerBool: false,
-      emptySimilarCasesMessage: false,
       outputBool: false,
       posBool: false, //indicate to system if it should apply the POS Tagger on the claim or not
       posResult: "", // var the has the contents of pos
       posDivShow: false, //shows the div content of pos taggs
       kwordsDivShow: false, //shows the content of keywords div
-      configDivBool: false, //bool that sinalizes the systems if it the configDiv should be visible or not
+      configDivBool: false, //bool that sinalizes the systems if the configDiv should be visible or not
       resultsBool: false, //bool that sinalize the systems to show the div of results
+      expBool: false,
+      voteClaimBool: false,
+      suggestionExpData: "",
+      termName: "",
       resultsTitle: "Documentos: ",
       voteButtons: [],
       results: "",
@@ -800,11 +812,15 @@ var app = new Vue({
           app.resultsBool = true;
           app.hits = "";
 
+          //checks if there is already an article too similar to that one based on the keywords
+          //[1] if there is, then do not register claim at db, shows the one that is already registered.
+          //[2] if not, start the chatbot 
           axios.post('/historical_learning/searchMostSimilarClaim', {
             myKeywords: app.keywords 
           })
           .then(function (res){
             //if(claim returned is higher than 95, select claim and article from the database
+            vueHeader.removeLoadingDiv();
 
             if(res.data.ratio > 95){
               alert("Encontrei uma queixa muito similar ao seu caso!");
@@ -829,6 +845,7 @@ var app = new Vue({
           });
 
         }else{
+          vueHeader.removeLoadingDiv();
           app.results = "Não encontrei nada relacionado. Poderia escrever novamente com outras palavras?"
           alert(app.results);
           app.chatbotStartedBool = false;
@@ -1063,14 +1080,6 @@ var app = new Vue({
               if(app.positiveAnswers.indexOf(lastAnswer) > -1){
                 let similarClaim = {};
 
-                //checks if there is already a article too similar to that one based on the keywords and questions answered
-                //[1] if there is, then do not register claim at history, shows the one that is already registered.
-                //    if not, register and show the new claim to user
-                //start to checck for keywords arrays:
-                //
-                // question here: make the server or the client browser process this ?
-
-
                 //call function to show claim to user passing blank obj as parameter. meaning that the claim info
                 //is at the app.resultUnits[0]["artId"], app.resultUnits[0]["data"] (content of the article).
                
@@ -1099,6 +1108,7 @@ var app = new Vue({
                 })
                 .then(function (res){
 
+                  //collect the just new registed claim in db and show to user
                   axios.post('/historical_learning/selectClaimById', {
                     claimId: res.data.claimId 
                   })
@@ -1179,7 +1189,8 @@ var app = new Vue({
       div_voting.appendChild(thanksVoting);
       */
       app.thanksVotingBool = true;
-
+      app.voteClaimBool = true;
+      
       let claimId = 0;
       if(app.viewCase){
         claimId = app.viewCase.claimId; 
@@ -1474,6 +1485,23 @@ var app = new Vue({
           window.location = "/login";
         }).catch(function(dialog){});
         
+      }
+    },
+    finishExperiment: function(){
+
+      console.log(app.voteClaimBool);
+      if(app.voteClaimBool){
+        axios.post('/user/registerExperiment', {
+          termName: this.termName,
+          claimId: this.viewCase.claimId,
+          suggestionExp: this.suggestionExpData
+        })
+        .then(function (res){
+          alert("Sua contribuição foi registrada com sucesso, Obrigado!");
+          window.location.reload();
+        });
+      }else{
+        alert("Por favor nos informe se o artigo encontrado está relacionado com sua queixa");
       }
     }
   }

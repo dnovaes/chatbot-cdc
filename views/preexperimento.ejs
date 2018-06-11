@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <script src="js/vue@2.3.3"></script>
+  <script src="js/axios.min.js"></script>
+
+  <link rel="shortcut icon" href="/public/imgs/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/preexperimento.css">
+  <title>Experimento - Código de Defesa do Consumidor</title>
+
+</head>
+<body>
+
+<div class="content" id="experimento-cdc">
+  <div class="title"><b>Experimento</b>:<br/>Plataforma para extração de artigos legais do Código de Defesa do Consumidor a partir de queixas-texto.</div>
+  <div class="photo"></div>
+  <div class="text">
+  Olá, me chamo Diego Novaes Batista e sou concluinte do curso de Ciência da Computação da Universidade Federal da Bahia (2018.1).
+  Este experimento faz parte do meu projeto de tese para conclusão do curso. Através deste, com sua ajuda, espero validar o desempenho da plataforma criada com testes realizados. 
+  Ao concluir o experimento, a sua contribuição permitirá que este projeto, aberto e gratuito, contribua com a democratização do conhecimento legal, ou seja, tornando o acesso ao direito do consumidor pelo cidadão mais fácil e visível. Desde já agradeço com sua contribuição neste projeto.
+  <br/><br/>Att, <span style="font-family: cursive; font-style: italic;">Diego Novaes</span>
+  </div>
+  <button id="termConsent" class="cursor" @click="showTermoConsent">Termo de Consentimento</button>
+  <div class="checkboxBlockConsent">
+    <input type="checkbox" id="checkboxConsent" v-model="termCheckbox"/>
+    <span style="padding: 5px;">Respondi o questionário contido neste link (<a href="https://goo.gl/forms/8925rvcBLPqW4CFY2" target="_blank">https://goo.gl/forms/8925rvcBLPqW4CFY2</a>), concordo com o termo de consentimento acima e gostaria de prosseguir com o experimento.</span> 
+  </div>
+  <div class="startExperiment">
+    <form ref="formExp" method="POST">
+      <input name="termName" id="nome" v-model="termName" ref="termName" type="text" placeholder="Digite seu nome completo"/>
+    </form>
+    <button id="btContinuar" class="cursor" @click="validateTermoConsent">Continuar</button>
+  </div>
+</div>
+<div class="overlay" style="display: none"></div>
+<div class="divTermo" style="display: none">
+  <div class="title"><b>Termo de Consentimento</b></div>
+  <div class="content-term">
+    Concordo em participar dos estudos não invasivos os quais serão conduzidos pelo Professor Vinicius Petrucci e pelo aluno de Graduação da UFBA Diego Novaes Batista, como parte do trabalho de conclusão de Curso, realizada na UFBA. Este estudo visa avaliar o desempenho da ferramenta criada, o <i>MeusDireitosConsumidor.com.br</i>, através do acompanhamento dos usuários utilizando métodos tradicionais com intuito de comparar o resultado esperado pelo cidadão com resultado entregue pelo sistema.
+    <br/><br/>
+    PROCEDIMENTO<br/>
+    Eu entendo que, uma vez o experimento terminado, os trabalhos que desenvolvi serão estudados visando a avaliar a eficiência do sistema <i>MeusDireitosConsumidor.com.br</i> na geração de artigos relacionados às queixas-texto do cidadão consumidor. Os pesquisadores conduzirão o estudo consistindo da coleta, análise e relato dos dados das atividades desenvolvidas. Eu entendo que não tenho obrigação alguma em contribuir com informação sobre meu desempenho na atividade, e que posso solicitar a retirada de meus resultados do experimento a qualquer momento e sem qualquer penalidade ou prejuízo. Eu entendo também que quando os dados forem coletados e analisados, meu nome será removido dos dados e
+    que este não será utilizado em nenhum momento durante a análise ou quando os resultados forem apresentados.
+    <br/><br/>
+    CONFIDENCIALIDADE<br/>
+    Toda informação coletada neste estudo é confidencial, e meu nome não será identificado em momento algum. Da mesma forma, me comprometo a não comunicar os meus resultados enquanto não terminar o estudo, bem como manter sigilo dos documentos apresentados e que fazem parte do experimento, e respeitar as regras declaradas no escopo do referido experimento.
+    <br/><br/>
+    BENEFÍCIOS e LIBERDADE DE DESISTÊNCIA<br/>
+    Eu entendo que os benefícios que receberei deste estudo são limitados ao aprendizado do material que é distribuído e ensinado visando atender os requisitos do experimento, independentemente de participar ou não desse estudo, mas que os pesquisadores esperam aprender mais sobre quão eficiente é a utilização do algoritmo e abordagem aplicada no sistema. Assim como, os benefícios trazidos por esses estudos para o contexto da Engenharia de Software. Eu entendo que sou livre para realizar perguntas a qualquer momento ou solicitar que qualquer informação relacionada à minha pessoa não seja incluída no estudo. Eu entendo que participo de livre e espontânea vontade com o único intuito contribuir para o avanço e desenvolvimento de técnicas e processos para a Engenharia do Software.
+  </div>
+  <button id="btCloseTerm" class="cursor">Fechar</button>
+</div>
+
+<script src="js/preexperimento.js"></script>
+<script>
+var vueHeader = new Vue({
+  el: '#experimento-cdc',
+  data: function(){
+    return {
+      termName: "",
+      termCheckbox: false
+    }
+  },
+  methods: {
+    showTermoConsent: function(){
+      showDivTermoConsentimento();
+    },
+    validateTermoConsent: function(){
+      //computed
+      this.termName = this.termName.replace(/^\s+/g, '').replace();
+
+      if(!this.termCheckbox){
+        alert("Para iniciar o experimento é preciso que você esteja de acordo com o Termo de Consentimento");
+      }else if((!this.termName) || (this.termName.length == 0)){
+        alert("Preencha seu nome");
+        this.$refs.termName.focus();
+      }else{
+        let formExp = this.$refs.formExp;
+        formExp.action = `${window.location.origin}`;
+        formExp.submit();
+      }
+    }
+  }
+});
+
+var divOverlay = document.querySelector(".overlay");
+var divTermo = document.querySelector(".divTermo");
+var btCloseTerm = document.querySelector("#btCloseTerm");
+
+divOverlay.addEventListener("click", function(){
+  divTermo.style.display = "none";
+  divOverlay.style.display = "none";
+});
+
+btCloseTerm.addEventListener("click", function(){
+  divTermo.style.display = "none";
+  divOverlay.style.display = "none";
+});
+
+</script>
+
+</body>
+</html>

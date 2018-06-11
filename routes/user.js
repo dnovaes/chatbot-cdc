@@ -298,3 +298,27 @@ exports.getUserInfoById = (req, res)=>{
     //res.status(404).render('404', { url: req.originalUrl });
   }
 }
+
+exports.registerExperiment = (req, res) =>{
+
+  db.getConnection(function(err, connection) {
+    let termName = connection.escape(req.body.termName);
+    let suggestionExp = connection.escape(req.body.suggestionExp);
+    let claimId = connection.escape(req.body.claimId);
+
+    let sqlInsert = `
+      INSERT INTO experiments
+    (name, claim_id, final_appointment, datetime) 
+      VALUES 
+    (${termName}, ${claimId}, ${suggestionExp}, now())`;
+
+    connection.query(sqlInsert, function(err, results) {
+      connection.release();
+
+      if(err) throw err;
+      res.send({
+        result: results
+      });
+    });
+  });
+}

@@ -9,8 +9,11 @@ var bodyparser = require('body-parser');
 const functions  = require(__dirname+"/public/js/ext_functions.js");
 var port       = process.env.PORT || 3000;
 var nlp        = require(__dirname+"/public/js/natural.js");
-var user       = require('./routes/user');
+
+//Routes
+const user       = require('./routes/user');
 const historical_learning = require('./routes/historical_learning');
+const router = express.Router();
 
 // There is a special routing method which is not derived from any HTTP method. 
 // This method is used for loading middleware functions at a path for all request methods.
@@ -57,20 +60,40 @@ app.use(function(req, res, next){
 //load file of route configs | also called as controllers
 //require('./controller/routing.js')(app, { verbose: !module.parent, express: express });
 
-var router = express.Router();
-
 router.get('/', function (req, res){
+  let adm = false;
+  let exp = false;
 
   if(req.query){
     if(req.query.adm){
-      res.render('index', {adm: true});
+      adm = true;
+    }
+    if(req.query.exp){
+      exp = true;
+      res.render('index', {adm: adm, exp: exp});
     }else{
-      res.render('index', {adm: false});
+      res.redirect('/experimento');
     }
   }else{
-    res.render('index', {adm: false});
+    res.render('index', {adm: adm, exp: exp});
   }
-    
+});
+router.post('/', function (req, res){
+  let adm = false;
+  let exp = false;
+  let termName = "";
+
+  if(req.body){
+    if(req.body.termName){
+      exp = true;
+      termName = req.body.termName;
+    }
+  }
+  res.render('index', {adm: adm, exp: exp, termName: req.body.termName});
+});
+
+router.get('/experimento/', function (req, res){
+  res.render('preexperimento');
 });
 
 router.get('/view/', function (req, res){
@@ -165,6 +188,7 @@ router.post('/update/', function(req, res){
 });
 
 router.post('/user/getUserInfoById', user.getUserInfoById)
+router.post('/user/registerExperiment', user.registerExperiment)
 
 router.post('/historical_learning/create', historical_learning.create);
 router.post('/historical_learning/voteclaim', historical_learning.voteClaim);
