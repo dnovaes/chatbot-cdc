@@ -19,12 +19,23 @@
   Olá, me chamo Diego Novaes Batista e sou concluinte do curso de Ciência da Computação da Universidade Federal da Bahia (2018.1).
   Este experimento faz parte do meu projeto de tese para conclusão do curso. Através deste, com sua ajuda, espero validar o desempenho da plataforma criada com testes realizados. 
   Ao concluir o experimento, a sua contribuição permitirá que este projeto, aberto e gratuito, contribua com a democratização do conhecimento legal, ou seja, tornando o acesso ao direito do consumidor pelo cidadão mais fácil e visível. Desde já agradeço com sua contribuição neste projeto.
-  <br/><br/>Att, <span style="font-family: cursive; font-style: italic;">Diego Novaes</span>
+  <br/><br/>Att, <span style="font-family: cursive;">Diego Novaes</span>
   </div>
   <button id="termConsent" class="cursor" @click="showTermoConsent">Termo de Consentimento</button>
   <div class="checkboxBlockConsent">
     <input type="checkbox" id="checkboxConsent" v-model="termCheckbox"/>
-    <span style="padding: 5px;">Respondi o questionário contido neste link (<a href="https://goo.gl/forms/8925rvcBLPqW4CFY2" target="_blank">https://goo.gl/forms/8925rvcBLPqW4CFY2</a>), concordo com o termo de consentimento acima e gostaria de prosseguir com o experimento.</span> 
+    <span style="padding: 5px;">
+      Concordo com o termo de consentimento acima e responderei o questionário neste link (<a href="https://goo.gl/forms/irOkb0TIAVZbY4k53" target="_blank">https://goo.gl/forms/irOkb0TIAVZbY4k53</a>) após finalizar o experimento.
+    </span>
+  </div>
+  <div class="infoExperiment">
+    <span><b>Obs:</b> Sugiro deixar o questionário já aberto em outra aba antes de continuar.</span>
+    <br><br>
+    <span>
+      O experimento consiste em duas etapas:<br><br>
+      <b>1º parte:</b> Usar a plataforma MeusDireitosConsumidor.com.br digitando uma queixa que você tenha tido relacionada a compra de um produto, serviço ou contrato e verificar se o artigo encontrado relaciona com seu prbolema.<br>
+      <b>2º parte:</b> Preencher o questionário informado no link acima
+    </span>
   </div>
   <div class="startExperiment">
     <form ref="formExp" method="POST">

@@ -12,11 +12,15 @@ body{
   position: fixed;
   background-color: white;
   width: 70%;
-  height: 68%;
+  height: 90%;
   border-radius: 9px;
   padding: 8px;
-  top: 16%;
+  top: 5%;
   left: 15%;
+}
+
+.infoExperiment{
+  margin: 3%;
 }
 
 body .content .title{
