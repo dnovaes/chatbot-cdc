@@ -305,12 +305,13 @@ exports.registerExperiment = (req, res) =>{
     let termName = connection.escape(req.body.termName);
     let suggestionExp = connection.escape(req.body.suggestionExp);
     let claimId = connection.escape(req.body.claimId);
+    let userVote = connection.escape(req.body.userVote);
 
     let sqlInsert = `
       INSERT INTO experiments
-    (name, claim_id, final_appointment, datetime) 
+    (name, claim_id, final_appointment, datetime, user_vote) 
       VALUES 
-    (${termName}, ${claimId}, ${suggestionExp}, now())`;
+    (${termName}, ${claimId}, ${suggestionExp}, now(), ${userVote})`;
 
     connection.query(sqlInsert, function(err, results) {
       connection.release();

@@ -25,21 +25,20 @@
   <div class="checkboxBlockConsent">
     <input type="checkbox" id="checkboxConsent" v-model="termCheckbox"/>
     <span style="padding: 5px;">
-      Concordo com o termo de consentimento acima e responderei o questionário neste link (<a href="https://goo.gl/forms/irOkb0TIAVZbY4k53" target="_blank">https://goo.gl/forms/irOkb0TIAVZbY4k53</a>) após finalizar o experimento.
+      Concordo com o termo de consentimento acima e aceito participar do experimento.
     </span>
   </div>
   <div class="infoExperiment">
-    <span><b>Obs:</b> Sugiro deixar o questionário já aberto em outra aba antes de continuar.</span>
-    <br><br>
     <span>
-      O experimento consiste em duas etapas:<br><br>
-      <b>1º parte:</b> Usar a plataforma MeusDireitosConsumidor.com.br digitando uma queixa que você tenha tido relacionada a compra de um produto, serviço ou contrato e verificar se o artigo encontrado relaciona com seu prbolema.<br>
-      <b>2º parte:</b> Preencher o questionário informado no link acima
+      Apertando em "Continuar", você iniciar o experimento que será realizado em duas etapas:<br><br>
+      <b>1º parte:</b> você irá acessar a plataforma MeusDireitosConsumidor.com.br, digitar uma queixa que você tenha tido relacionada 
+      a compra de um produto, serviço ou contrato e irá verificar se o artigo encontrado relaciona com seu problema.<br>
+      <b>2º parte:</b> Preencher o questionário que será informado ao finalizar o experimento.
     </span>
   </div>
   <div class="startExperiment">
     <form ref="formExp" method="POST">
-      <input name="termName" id="nome" v-model="termName" ref="termName" type="text" placeholder="Digite seu nome completo"/>
+      <input name="termName" id="nome" v-model="termName" ref="termName" @keydown="validateTermoConsent" type="text" placeholder="Digite seu nome completo"/>
     </form>
     <button id="btContinuar" class="cursor" @click="validateTermoConsent">Continuar</button>
   </div>
@@ -77,19 +76,22 @@ var vueHeader = new Vue({
     showTermoConsent: function(){
       showDivTermoConsentimento();
     },
-    validateTermoConsent: function(){
-      //computed
-      this.termName = this.termName.replace(/^\s+/g, '').replace();
+    validateTermoConsent: function(e){
+      if(e.key == "Enter" || e.type == "click"){
+        e.preventDefault();
+        //computed
+        this.termName = this.termName.replace(/^\s+/g, '').replace();
 
-      if(!this.termCheckbox){
-        alert("Para iniciar o experimento é preciso que você esteja de acordo com o Termo de Consentimento");
-      }else if((!this.termName) || (this.termName.length == 0)){
-        alert("Preencha seu nome");
-        this.$refs.termName.focus();
-      }else{
-        let formExp = this.$refs.formExp;
-        formExp.action = `${window.location.origin}`;
-        formExp.submit();
+        if(!this.termCheckbox){
+          alert("Para iniciar o experimento é preciso que você esteja de acordo com o Termo de Consentimento");
+        }else if((!this.termName) || (this.termName.length == 0)){
+          alert("Preencha seu nome");
+          this.$refs.termName.focus();
+        }else{
+          let formExp = this.$refs.formExp;
+          formExp.action = `${window.location.origin}`;
+          formExp.submit();
+        }
       }
     }
   }

@@ -1,4 +1,6 @@
 
+//responderei o questionário neste link (<a href="https://goo.gl/forms/irOkb0TIAVZbY4k53" target="_blank">https://goo.gl/forms/irOkb0TIAVZbY4k53</a>) após finalizar o experimento.
+
 //tell Vue to install the plugin
 window.Vue.use(VuejsDialog.default);
 
@@ -547,7 +549,7 @@ var app = new Vue({
       },
       viewCase: {},
       positiveAnswers: ["sim", "s", "isso", "perfeito", "de acordo", "positivo", "claro", "ok", "exatamente", "exato", "correto"],
-      negativeAnswers: ["não", "n", "nao", "naõ", "nada a ver", "negativo", "nem pensar", "foi longe", "errado"],
+      negativeAnswers: ["não", "n", "no", "nao", "naõ", "nada a ver", "negativo", "nem pensar", "foi longe", "errado", "não faz sentido", "nao faz sentido"],
       //zero based array: i: index of questions array, (i+1) article number. When i is the array index and (i+1) is the number of the article
       questions: [
         "Foi demonstrado alguma confusão pelo vendedor a respeito do papel de fornecedor ou consumidor?",
@@ -1163,9 +1165,33 @@ var app = new Vue({
 
             //TODO: cadastrar sugestao digitada no banco de dados
 
-            alert("Obrigado. Espero te ajuda-lo na próxima :)");
-            //atualiza a pagina
-            location.href = "/";
+            let overlayDiv = document.querySelector(".overlay");
+            if(!overlayDiv){
+              //add overlay
+              let bodyEl = document.querySelector("body");
+              overlayDiv = document.createElement("div");
+              overlayDiv.className = "overlay";
+              bodyEl.appendChild(overlayDiv);
+            }
+
+            if(app.expBool){
+              axios.post('/user/registerExperiment', {
+                termName: app.termName,
+                claimId: 0,
+                userVote: false,
+                suggestionExp: "Chatbot não mostrou uma pergunta relacionada a minha queixa.",
+              })
+              .then(function (res){
+                //force page to redirect to 'preexperimento' page
+                app.termName = "";
+                app.expBool = false;
+                app.alertDiv("Sua participação foi registrada com sucesso. Para finalizarmos, favor responder esse pequeno questionário, Obrigado!", "experiment");
+              });
+            }else{
+              alert("Obrigado. Espero te ajudar na próxima :)");
+              //atualiza a pagina
+              location.href = "/";
+            }
           }
         }, 2000);
       }
@@ -1188,9 +1214,17 @@ var app = new Vue({
       thanksVoting.className = "thanks-voting";
       div_voting.appendChild(thanksVoting);
       */
+
+      //initializing vars
       app.thanksVotingBool = true;
       app.voteClaimBool = true;
-      
+      app.viewCase.userVote = false;
+
+      //getting value of user vote
+      if(vote_id === "vote-pos"){
+        app.viewCase.userVote = true;
+      }
+
       let claimId = 0;
       if(app.viewCase){
         claimId = app.viewCase.claimId; 
@@ -1490,19 +1524,70 @@ var app = new Vue({
     finishExperiment: function(){
 
       console.log(app.voteClaimBool);
+      console.log(app.viewCase);
+
+      //check if user did vote before finish the experiment
       if(app.voteClaimBool){
         axios.post('/user/registerExperiment', {
           termName: this.termName,
           claimId: this.viewCase.claimId,
+          userVote: this.viewCase.userVote,
           suggestionExp: this.suggestionExpData
         })
         .then(function (res){
-          alert("Sua contribuição foi registrada com sucesso, Obrigado!");
-          window.location.reload();
+          //force page to redirect to 'preexperimento' page
+          app.termName = "";
+          app.expBool = false;
+          app.alertDiv("Sua contribuição foi registrada com sucesso. Para finalizarmos, favor responder esse pequeno questionário, Obrigado! =)", "experiment");
         });
       }else{
         alert("Por favor nos informe se o artigo encontrado está relacionado com sua queixa");
       }
+    },
+    alertDiv: function(msg, divName){
+      let alertParamObj;
+
+      if(divName && (divName == "experiment")){
+        alertParamObj = {
+          props: ['msgText'], 
+          template: `<div class="alertBox">
+                      <div class="text">{{ msgText }}</div>
+                        <div class="linkQuestion">
+                        Link: <a href="https://goo.gl/forms/irOkb0TIAVZbY4k53" target="_blank">https://goo.gl/forms/irOkb0TIAVZbY4k53</a>
+                        </div>
+                        <button class="closeAlert" @click="testinga">Ok</button>
+                     </div>`,
+          methods: {
+            testinga: function(){
+              location.href = "/";
+            }
+          }
+        }
+      }else{
+        alertParamObj = {
+          props: ['msgText'], 
+          template: `<div class="alertBox">
+                      <div class="text">{{ msgText }}</div>
+                      <button class="closeAlert" @click="testinga">Ok</button>
+                  </div>`,
+          methods: {
+            testinga: function(){
+              window.location.reload();
+            }
+          }
+        }
+      }
+
+      let reportDiv = document.querySelector(".div-view-report");
+      reportDiv.parentNode.removeChild(reportDiv);
+
+      const AlertVue = Vue.extend(alertParamObj);
+      const vueAlertComp = new AlertVue({
+        propsData: {
+          msgText: msg
+        }   
+      }).$mount("#alertBox");
+      vueAlertComp.msgText += '';
     }
   }
 });

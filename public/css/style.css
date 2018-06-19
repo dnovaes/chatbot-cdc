@@ -209,4 +209,30 @@
 .input-small {
   width: 50%; }
 
-/*# sourceMappingURL=style.css.map */
+/*index custom alert div*/
+.alertBox{
+  position: fixed;
+  z-index: 9;
+  width: 500px;
+  height: 190px;
+  background-color: white;
+  top: 50%;
+  border: 2px solid #053a58;
+  left: 50%;
+  font-size: 20px;
+  padding: 10px;
+  text-align: center;
+  border-radius: 15px;
+  margin-left: -250px;
+  margin-top: -100px;
+}
+
+button.closeAlert{
+  cursor: pointer;
+  width: 30%;
+  color: white;
+  background-color: #053a58;
+  border-radius: 5px;
+  height: 30px;
+  margin: 10px; 
+}

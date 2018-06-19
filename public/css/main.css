@@ -476,6 +476,7 @@
   background-color: #1c227c;
   color: white;
   float: left;
+  text-align: justify;
 }
 
 .div-bot .msg-photo{

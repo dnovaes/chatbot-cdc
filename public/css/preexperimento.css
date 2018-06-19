@@ -11,12 +11,14 @@ body{
 #experimento-cdc.content{
   position: fixed;
   background-color: white;
-  width: 70%;
-  height: 90%;
+  width: 760px;
+  height: 590px;
   border-radius: 9px;
   padding: 8px;
-  top: 5%;
-  left: 15%;
+  top: 50%;
+  left: 50%;
+  margin-top: -300px;
+  margin-left: -380px;
 }
 
 .infoExperiment{
