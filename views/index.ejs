@@ -56,7 +56,7 @@
       <div class="columns">
         <div class="title">
           <div>Mostrando os seus direitos de uma</div>
-          <div>maneira rápida e fácil</div>
+          <div>maneira rápida e intuitiva</div>
         </div>
       </div>
     </div>
@@ -183,16 +183,6 @@
       <div class="div-report-claim-title" :class="{ active: reportClaimTitleBool}" @click="showClaimText" >Queixa descrita pelo usuário:</div>
       <div class="div-report-claim" v-show="reportClaimTitleBool">{{viewCase.claimText}}</div>
 
-      <div class="voting">
-        <div class="section-title" v-if="suggestionTitleBool"><center>Esse artigo está relacionado com a queixa que digitou?<center></div>
-        <div class="div-report-voting" v-if="voteButtons.length > 0">
-          <button v-for="bt in voteButtons" :id="bt.id" class="vote-button" @click="voteClaim(bt.id)">
-            <span class="number-votes">{{ bt.count }}</span>  
-          </button>
-        </div>
-        <div class="thanks-voting" v-if="thanksVotingBool">Seu voto foi computado com sucesso. Obrigado por participar</div>
-      </div>
-
       <div class="section-title"><center>Casos Similares</center></div>
       <div class="similar-claim-loading" v-if="(gridSimilarClaims.data.length <= 0)&&(!emptySimilarCasesMessage)"></div>
 
@@ -202,6 +192,16 @@
         :data="gridSimilarClaims.data"
         :columns="gridSimilarClaims.columns">
       </comp-similar-claim-units>
+
+      <div class="voting">
+        <div class="title" v-if="suggestionTitleBool"><center>Esse artigo está relacionado com a queixa que digitou?<center></div>
+        <div class="div-report-voting" v-if="voteButtons.length > 0">
+          <button v-for="bt in voteButtons" :id="bt.id" class="vote-button" @click="voteClaim(bt.id)">
+            <span class="number-votes">{{ bt.count }}</span>  
+          </button>
+        </div>
+        <div class="thanks-voting" v-if="thanksVotingBool">Seu voto foi computado com sucesso. Obrigado por participar</div>
+      </div>
 
       <div class="suggestion" v-if="expBool">
         <div class="section-title">Gostaria de adicionar alguma crítica ou sugestão?</div>

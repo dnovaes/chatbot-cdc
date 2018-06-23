@@ -1542,6 +1542,7 @@ var app = new Vue({
         });
       }else{
         alert("Por favor nos informe se o artigo encontrado está relacionado com sua queixa");
+        app.blinkDiv(".voting");
       }
     },
     alertDiv: function(msg, divName){
@@ -1588,6 +1589,10 @@ var app = new Vue({
         }   
       }).$mount("#alertBox");
       vueAlertComp.msgText += '';
+    },
+    blinkDiv: function(divStrName){
+      let divEl = document.querySelector(divStrName);
+      divEl.style.animation = "blink_border 1s 9";
     }
   }
 });
