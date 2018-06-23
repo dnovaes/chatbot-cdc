@@ -184,7 +184,7 @@
       <div class="div-report-claim" v-show="reportClaimTitleBool">{{viewCase.claimText}}</div>
 
       <div class="voting">
-        <div class="section-title" v-if="suggestionTitleBool"><center>Essa sugestão te ajudou a encontrar o que procurava?</center></div>
+        <div class="section-title" v-if="suggestionTitleBool"><center>Esse artigo está relacionado com a queixa que digitou?<center></div>
         <div class="div-report-voting" v-if="voteButtons.length > 0">
           <button v-for="bt in voteButtons" :id="bt.id" class="vote-button" @click="voteClaim(bt.id)">
             <span class="number-votes">{{ bt.count }}</span>  

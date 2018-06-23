@@ -791,7 +791,8 @@ textarea[name=suggestion]{
   cursor: pointer;
   width: 200px;
   height: 37px;
-  background-color: #1c227c;
+  /*background-color: #1c227c;*/
+  background-color: #289028;
   color: white;
   font-weight: bold;
   text-align: center;
