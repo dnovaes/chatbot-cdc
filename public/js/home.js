@@ -529,6 +529,7 @@ var app = new Vue({
       resultsBool: false, //bool that sinalize the systems to show the div of results
       expBool: false,
       voteClaimBool: false,
+      CONST_NUMBER_SIMILAR_KEYWORDS: 6, 
       suggestionExpData: "",
       termName: "",
       resultsTitle: "Documentos: ",
@@ -817,34 +818,39 @@ var app = new Vue({
           //checks if there is already an article too similar to that one based on the keywords
           //[1] if there is, then do not register claim at db, shows the one that is already registered.
           //[2] if not, start the chatbot 
-          axios.post('/historical_learning/searchMostSimilarClaim', {
-            myKeywords: app.keywords 
-          })
-          .then(function (res){
-            //if(claim returned is higher than 95, select claim and article from the database
+
+          if(app.keywords.length >= app.CONST_NUMBER_SIMILAR_KEYWORDS){
+            axios.post('/historical_learning/searchMostSimilarClaim', {
+              myKeywords: app.keywords 
+            })
+            .then(function (res){
+              //if(claim returned is higher than 95, select claim and article from the database
+              vueHeader.removeLoadingDiv();
+
+              if(res.data.ratio > 95){
+                alert("Encontrei uma queixa muito similar ao seu caso!");
+                console.log(`Grau de Similaridade da queixa encontrada: ${res.data.ratio} ["Estou com Sorte"]`);
+                axios.post('/historical_learning/selectClaimById', {
+                  claimId: res.data.claimId 
+                })
+                .then(function (res){
+                  app.showCaseToUser(res.data);
+                });
+              }else{
+                //iniciate chatbot with the user based on the result that we have in app.resultUnits
+                startChatbot();
+              }
+            })
+            .catch(function(err){
+              console.log(err);
+              console.log("Erro: searchMostSimilarClaim");
+              alert(`Erro de conexão com o servidor aconteceu. Tente novamente.`);
+              location.href = "/";
+            });
+          }else{
             vueHeader.removeLoadingDiv();
-
-            if(res.data.ratio > 95){
-              alert("Encontrei uma queixa muito similar ao seu caso!");
-              console.log(`Grau de Similaridade da queixa encontrada: ${res.data.ratio}`);
-              axios.post('/historical_learning/selectClaimById', {
-                claimId: res.data.claimId 
-              })
-              .then(function (res){
-
-                app.showCaseToUser(res.data);
-              });
-            }else{
-              //iniciate chatbot with the user based on the result that we have in app.resultUnits
-              startChatbot();
-            }
-          })
-          .catch(function(err){
-            console.log(err);
-            console.log("Erro: searchMostSimilarClaim");
-            alert(`Erro de conexão com o servidor aconteceu. Tente novamente.`);
-            location.href = "/";
-          });
+            startChatbot();
+          }
 
         }else{
           vueHeader.removeLoadingDiv();
