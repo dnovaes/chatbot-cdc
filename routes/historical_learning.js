@@ -164,6 +164,7 @@ exports.searchMostSimilarClaim = function(req, res) {
             //console.log("comparing '"+val+"'");
             //console.log("comparing '"+val+"' in "+arrkeywords);
 
+            //check if it is equals
             if(arrkeywords.indexOf(val) > -1){
               cnt++;
             }
