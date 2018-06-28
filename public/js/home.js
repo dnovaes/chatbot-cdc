@@ -635,8 +635,11 @@ var app = new Vue({
           "Você considera que a publicidade é discrimatória, te induz ao erro ou contém total ou parcialmente informações falsas?"
         ],
         "Você considera que a publicidade é discrimatória, te induz ao erro ou contém total ou parcialmente informações falsas?",
-        [
-          "O vendedor forneceu um produto atrelado a outro, recusou atendimento, aproveitou da sua falta de informação, reajustou preços ou informações da venda sem negociação ou ainda, produto esta fora das normas da abnt?",
+        [`Em alguma dessas alternativas, o vendedor: 
+          forneceu um produto atrelado a outro durante a venda,
+          recusou atendimento,
+          aproveitou-se da sua falta de informação,
+          reajustou preços da venda sem negociação ou o produto estava fora das normas da abnt?`,
           "O vendedor disse que só poderia adquirir um produto ou serviço se adquirisse um outro diferente produto ou serviço?",
           "O vendedor recusou atendimento a ti mesmo em condições de prestar o serviço ou com disponibilidade de estoque ou ainda sem justificativa?",
           "Te enviaram um produto ou serviço sem solicitação feita por ti e em seguida te cobraram por isso?",
