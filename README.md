@@ -49,4 +49,4 @@ Trello para gerenciamento das atividades:<br>
 Release 2: https://trello.com/b/Xtn4jnUl/dev-release-2
 
 Acesso a aplicação:</br>
-http://meusdireitosconsumidor.com.br/
+https://chatbot-cdc.herokuapp.com/
