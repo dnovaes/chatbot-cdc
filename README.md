@@ -1,4 +1,8 @@
-# chatbot-cdc
+# Chatbot-cdc
+
+Features preview  
+https://drive.google.com/file/d/1B2i7QeuBA8DNmXSYA-8qakwdAwtrmJJE/view?usp=sharing
+
 
 ## Pré-Requisitos:
 
